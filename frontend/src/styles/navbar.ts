@@ -1,8 +1,9 @@
 import styled from "styled-components";
+import * as classes from './variables';
 
 export const Nav = styled.nav `
-  background: #333;
-  color: #fff;
+  background: ${classes.secondary};
+  color: ${classes.light};
   padding: 0 30px;
   height: 70px;
   display: flex;
@@ -13,7 +14,7 @@ export const Nav = styled.nav `
 export const Brand = styled.li `
   font-size: 1.2rem;
   text-transform: uppercase;
-  color: #ffd90c;
+  color: ${classes.primary};
 `
 
 export const ListContainer = styled.div `
@@ -25,6 +26,6 @@ export const ListItem = styled.li `
   padding: 0 10px;
   transition: all .3s ease;
   &:hover {
-    color: #ffd90c;
+    color: ${classes.primary};
   }
 `
