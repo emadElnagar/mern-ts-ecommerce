@@ -11,8 +11,8 @@ function NavBar() {
       </Brand>
       <ListContainer>
         <ListItem><Link to='/'>home</Link></ListItem>
-        <ListItem>products</ListItem>
-        <ListItem>collections</ListItem>
+        <ListItem><Link to='/products'>products</Link></ListItem>
+        <ListItem><Link to='/collections'>collections</Link></ListItem>
       </ListContainer>
       <ListContainer>
         <ListItem><AiOutlineSearch /></ListItem>
