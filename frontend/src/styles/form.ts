@@ -13,6 +13,9 @@ export const Field = styled.div`
   display: flex;
   flex-direction: column-reverse;
   margin-top: 15px;
+  &:last-of-type {
+    margin-bottom: 15px;
+  }
 `
 
 export const Input = styled.input`
@@ -25,5 +28,12 @@ export const Input = styled.input`
   }
   &:required + label:after {
     content: ' *'
+  }
+`
+
+export const Paragraph = styled.p`
+  margin-top: 15px;
+  a {
+    color: #00B7FF;
   }
 `

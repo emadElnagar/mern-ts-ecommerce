@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import * as classes from './variables';
 
 export const Container = styled.div`
   margin: auto;
@@ -17,4 +18,27 @@ export const Container = styled.div`
   @media (max-width:576px) {
     max-width: 100%;
   }  
+`
+
+export const Section = styled.section`
+  padding-top: 40px;
+  padding-bottom: 40px;
+`
+
+export const Button = styled.button`
+  background: ${classes.primary};
+  text-transform: capitalize;
+  border: 1px solid ${classes.primary};
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 100%;
+`
+
+export const Header = styled.h1`
+  margin-bottom: 30px;
+`
+
+export const HeaderCenter = styled.h1`
+  margin-bottom: 30px;
+  text-align: center;
 `

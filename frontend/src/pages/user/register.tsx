@@ -1,15 +1,23 @@
 import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
-import { Container, Section, Button, HeaderCenter } from '../../styles/main';
+import { Container, Button, HeaderCenter, Section } from '../../styles/main';
 
-function LoginPage() {
+function RegisterPage() {
   return (
     <Fragment>
       <Container>
         <Section>
           <Form>
-            <HeaderCenter>login</HeaderCenter>
+            <HeaderCenter>sign up</HeaderCenter>
+            <Field>
+              <Input type="firstName" id='firstName' required />
+              <label htmlFor="firstName">firstName</label>
+            </Field>
+            <Field>
+              <Input type="lastName" id='lastName' required />
+              <label htmlFor="lastName">lastName</label>
+            </Field>
             <Field>
               <Input type="email" id='email' required />
               <label htmlFor="email">email</label>
@@ -18,9 +26,9 @@ function LoginPage() {
               <Input type="password" id='password' required />
               <label htmlFor="password">password</label>
             </Field>
-            <Button type='submit'>login</Button>
+            <Button type='submit'>signup</Button>
             <Paragraph>
-              don't have an account? <Link to='/users/register'>register</Link>
+              have an account? <Link to='/users/login'>login</Link>
             </Paragraph>
           </Form>
         </Section>
@@ -29,4 +37,4 @@ function LoginPage() {
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
