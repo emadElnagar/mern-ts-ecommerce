@@ -1,10 +1,11 @@
 import { Fragment } from 'react';
 import { Form, Field, Input } from '../../styles/form';
+import { Container } from '../../styles/main';
 
 function LoginPage() {
   return (
     <Fragment>
-      <div className='container'>
+      <Container>
         <Form>
           <h1>login</h1>
           <Field>
@@ -16,7 +17,7 @@ function LoginPage() {
             <label htmlFor="password">password</label>
           </Field>
         </Form>
-      </div>
+      </Container>
     </Fragment>
   );
 }
