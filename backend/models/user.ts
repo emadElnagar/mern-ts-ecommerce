@@ -4,6 +4,7 @@ interface User {
   firstName: string;
   lastName: string;
   email: string;
+  password: string;
   image?: string;
   phone?: string;
 }
@@ -11,7 +12,8 @@ interface User {
 const userSchema = new Schema<User>({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
-  email: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   image: String,
   phone: String,
 }, {
