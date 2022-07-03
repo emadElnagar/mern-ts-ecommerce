@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import User from "../models/user";
 import bcrypt from 'bcrypt'; 
 
+// USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
   const tokenEmail = await User.findOne({ email: req.body.email });
   if (tokenEmail) {

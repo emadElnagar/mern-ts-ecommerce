@@ -1,4 +1,4 @@
-export const primary = '#ffd90c';
+export const primary = '#fed700';
 
 export const secondary = '#333333';
 
