@@ -21,8 +21,8 @@ export const Container = styled.div`
 `
 
 export const Section = styled.section`
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 60px;
+  padding-bottom: 60px;
 `
 
 export const Button = styled.button`

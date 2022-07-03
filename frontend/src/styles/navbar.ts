@@ -59,6 +59,7 @@ export const ListItem = styled.li `
   text-transform: capitalize;
   padding: 0 10px;
   transition: all .3s ease;
+  cursor: pointer;
   &:hover {
     color: ${classes.primary};
   }
@@ -90,4 +91,30 @@ export const HumburgerDiv = styled.div`
   width: 20px;
   background: ${classes.light};
   margin-top: 4px;
+`
+
+export const SearchForm = styled.form`
+  height: 35px;
+  width: 100%;
+  display: none;
+  padding: 5px 0;
+  &.active {
+    display: flex;
+  }
+`
+
+export const SearchInput = styled.input`
+  width: 100%;
+  padding: 0 5px;
+  &:focus {
+    outline: none
+  }
+`
+
+export const SearchButton = styled.button`
+  color: #000;
+  padding: 0 20px;
+  background: ${classes.primary};
+  border: 1px solid ${classes.primary};
+  cursor: pointer;
 `
