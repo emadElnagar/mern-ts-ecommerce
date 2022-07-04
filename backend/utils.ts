@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-const jwtSecret = 'seretcode';
+const jwtSecret = process.env.SJWT_SECRET || 'seretcode';
 
 export const generateToken = (user: { 
     _id: object; firstName: string; lastName: string; email: string; isAdmin: boolean; image: string; phone: string; 

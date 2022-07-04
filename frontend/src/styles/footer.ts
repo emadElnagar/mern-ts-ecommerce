@@ -4,14 +4,14 @@ import * as classes from './variables';
 export const FooterEle = styled.div `
   display: flex;
   justify-content: space-between;
-  padding: 60px 100px;
+  padding: 4rem 6rem;
   flex-wrap: wrap;
   color: ${classes.light};
   background: ${classes.secondary}
 `
 
 export const ListItem = styled.li `
-  margin: 30px 0;
+  margin: 1rem 0;
   transition: all .3s ease;
   text-transform: capitalize;
   cursor: pointer;
@@ -21,7 +21,7 @@ export const ListItem = styled.li `
 `
 
 export const Header = styled.h2 `
-  margin-bottom: 30px
+  margin-bottom: 2rem
 `
 
 export const Summary = styled.div `
