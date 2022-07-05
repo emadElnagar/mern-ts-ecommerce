@@ -2,10 +2,14 @@ import { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Section, Button, HeaderCenter } from '../../styles/main';
+import { Helmet } from "react-helmet";
 
 function LoginPage() {
   return (
     <Fragment>
+      <Helmet>
+        <title>Electronics-login</title>
+      </Helmet>
       <Container>
         <Section>
           <Form>
