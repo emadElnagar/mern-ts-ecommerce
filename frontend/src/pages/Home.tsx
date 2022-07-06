@@ -1,6 +1,13 @@
+import { Fragment } from "react";
+import { Helmet } from "react-helmet";
+
 function Home() {
   return (
-    <div>Home Page</div>
+    <Fragment>
+      <Helmet>
+        <title>Electronics</title>
+      </Helmet>
+    </Fragment>
   );
 }
 

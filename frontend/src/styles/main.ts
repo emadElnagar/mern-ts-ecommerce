@@ -42,3 +42,9 @@ export const HeaderCenter = styled.h1`
   margin-bottom: 30px;
   text-align: center;
 `
+
+export const FlexBetweenRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 15px;
+`
