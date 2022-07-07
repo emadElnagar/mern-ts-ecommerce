@@ -25,10 +25,16 @@ function NavBar() {
           <ListItem><Link to='/collections'>collections</Link></ListItem>
         </ListContainer>
         <ListContainerIcon>
-          <ListItem><AiOutlineUser /></ListItem>
+          <Link to='/users/login'>
+            <ListItem><AiOutlineUser /></ListItem>
+          </Link>
           <ListItem onClick={toggleIsSearchHandler}><AiOutlineSearch /></ListItem>
-          <ListItem><AiOutlineShoppingCart /></ListItem>
-          <ListItem><AiOutlineHeart /></ListItem>
+          <Link to='/cart'>
+            <ListItem><AiOutlineShoppingCart /></ListItem>
+          </Link>
+          <Link to='/wishlist'>
+            <ListItem><AiOutlineHeart /></ListItem>
+          </Link>
           <Humburger onClick={toggleIsActiveHandler} className={`${isActive === true ? 'active' : ''}`}>
             <HumburgerDiv></HumburgerDiv>
             <HumburgerDiv></HumburgerDiv>
