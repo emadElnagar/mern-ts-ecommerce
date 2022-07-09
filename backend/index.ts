@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRoutes';
+import productRouter from './routes/productRoutes';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -17,6 +18,7 @@ mongoose.connect('mongodb://localhost/electronics', (err) => {
 });
 
 app.use('/api/users', userRouter);
+app.use('/api/products', productRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
