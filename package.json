@@ -10,7 +10,18 @@
     "type": "git",
     "url": "git+https://github.com/emadElnagar/mern-ts-ecommerce.git"
   },
-  "keywords": [],
+  "keywords": [
+    "NodeJS",
+    "Express",
+    "React",
+    "Redux",
+    "TypeScript",
+    "Mongoose",
+    "MongoDB",
+    "MERN",
+    "MERN-stack",
+    "MERN-Ecommerce"
+  ],
   "author": "Emad Elnagar",
   "license": "ISC",
   "bugs": {
