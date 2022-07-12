@@ -1,17 +1,9 @@
 import jwt from 'jsonwebtoken';
 const jwtSecret = process.env.SJWT_SECRET || 'seretcode';
 
-export const generateToken = (user: { 
-    _id: object; firstName: string; lastName: string; email: string; isAdmin: boolean; image: string; phone: string; 
-  }) => {
+export const generateToken = (id: object) => {
   return jwt.sign({
-    _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    isAdmin: user.isAdmin,
-    image: user.image,
-    phone: user.phone,
+    id
   }, jwtSecret, {
     expiresIn: '3d'
   });
