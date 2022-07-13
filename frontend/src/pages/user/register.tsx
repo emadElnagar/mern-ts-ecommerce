@@ -13,17 +13,26 @@ function RegisterPage() {
   const [passwordConfirm, setPasswordConfirm] = useState('');
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    axios.post('http://localhost:5000/api/users/register', {
-      firstName,
-      lastName,
-      email,
-      password
-    });
-    console.log(firstName);
-    console.log(lastName);
-    console.log(email);
-    console.log(password);
-    console.log(passwordConfirm);
+    if (! isNaN(Number(firstName))) {
+      alert(`first name can't be a number`);
+    } else if (! isNaN(Number(lastName))) {
+      alert(`last name can't be a number`);
+    } else if (firstName.length < 3 || firstName.length > 20) {
+      alert('first name must be between 3 characters and 20 characters');
+    } else if ((lastName.length < 3 || lastName.length > 20)) {
+      alert('last name must be between 3 characters and 20 characters');
+    } else if (password.length < 8) {
+      alert('password must be at least 8 characters');
+    } else if (password !== passwordConfirm) {
+      alert(`password and confirm password doesn't match`);
+    } else {
+      axios.post('http://localhost:5000/api/users/register', {
+        firstName,
+        lastName,
+        email,
+        password
+      });
+    }
   }
   return (
     <Fragment>
