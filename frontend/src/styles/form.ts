@@ -21,7 +21,10 @@ export const Field = styled.div`
 export const Input = styled.input`
   border: none;
   border-bottom: 1px solid #888888;
-  height: 20px;
+  padding: 5px 0;
+  &:not(:placeholder-shown) {
+    font-size: 14px;
+  }
   &:focus {
     outline: none;
     border-bottom: 1px solid #000;
