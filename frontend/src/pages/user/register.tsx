@@ -4,6 +4,7 @@ import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Button, HeaderCenter, Section } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -14,17 +15,47 @@ function RegisterPage() {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (! isNaN(Number(firstName))) {
-      alert(`first name can't be a number`);
+      const errorMsg = `first name can't be a number`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else if (! isNaN(Number(lastName))) {
-      alert(`last name can't be a number`);
+      const errorMsg = `last name can't be a number`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else if (firstName.length < 3 || firstName.length > 20) {
-      alert('first name must be between 3 characters and 20 characters');
+      const errorMsg = `first name must be between 3 characters and 20 characters`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else if ((lastName.length < 3 || lastName.length > 20)) {
-      alert('last name must be between 3 characters and 20 characters');
+      const errorMsg = `last name must be between 3 characters and 20 characters`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else if (password.length < 8) {
-      alert('password must be at least 8 characters');
+      const errorMsg = `password must be at least 8 characters`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else if (password !== passwordConfirm) {
-      alert(`password and confirm password doesn't match`);
+      const errorMsg = `password and confirm password doesn't match`;
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: errorMsg,
+      });
     } else {
       axios.post('http://localhost:5000/api/users/register', {
         firstName,
