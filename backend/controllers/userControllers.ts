@@ -52,3 +52,15 @@ export const userLogin: RequestHandler = async (req, res) => {
   }
   res.status(401).send({message: 'invalid email or password'});
 }
+
+// GET USER PROFILE CONTROLLER
+export const userProfile: RequestHandler = async (req, res) => {
+  const profile = await User.findById(req.params.id);
+  if (profile) {
+    res.send(profile);
+  } else {
+    res.status(404).json({
+      message: 'User Not Found'
+    });
+  }
+}
