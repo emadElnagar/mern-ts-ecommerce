@@ -22,8 +22,15 @@ export const userRegister: RequestHandler = async (req, res) => {
     password: await bcrypt.hash(req.body.password, 10),
   });
   user.save().then(user => {
-    res.status(200).json({
-      message: 'User registered successfully'
+    res.send({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      isAdmin: user.isAdmin,
+      image: user.image,
+      phone: user.phone,
+      token: generateToken(user._id)
     });
   }).catch(err => {
     res.status(401).json({
