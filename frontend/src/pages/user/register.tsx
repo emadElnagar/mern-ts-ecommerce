@@ -1,10 +1,11 @@
 import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Button, HeaderCenter, Section } from '../../styles/main';
 import { Helmet } from "react-helmet";
-import axios from 'axios';
 import Swal from 'sweetalert2';
+import { register } from '../../actions/UserActions';
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -12,6 +13,9 @@ function RegisterPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  const dispatch = useDispatch();
+
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (! isNaN(Number(firstName))) {
@@ -57,12 +61,7 @@ function RegisterPage() {
         text: errorMsg,
       });
     } else {
-      axios.post('http://localhost:5000/api/users/register', {
-        firstName,
-        lastName,
-        email,
-        password
-      });
+      dispatch(register(firstName, lastName, email, password));
     }
   }
   return (
