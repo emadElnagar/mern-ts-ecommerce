@@ -10,3 +10,15 @@ export const getAllProducts: RequestHandler = async (req, res) => {
     res.send(error);
   }
 }
+
+// GET SINGLE PRODUCT
+export const getSingleProduct: RequestHandler = async (req, res) => {
+  const product = Product.findById(req.params.id);
+  if (product) {
+    res.send(product)
+  } else {
+    res.status(404).json({
+      message: 'Product Not Found'
+    });
+  }
+}
