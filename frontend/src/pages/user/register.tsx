@@ -16,7 +16,7 @@ function RegisterPage() {
 
   const dispatch = useDispatch();
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (! isNaN(Number(firstName))) {
       const errorMsg = `first name can't be a number`;
@@ -71,7 +71,7 @@ function RegisterPage() {
       </Helmet>
       <Container>
         <Section>
-          <Form method='post' onSubmit={handleLogin}>
+          <Form method='post' onSubmit={handleSignUp}>
             <HeaderCenter>sign up</HeaderCenter>
             <Field>
               <Input onChange={(e) => setFirstName(e.target.value)} type="firstName" id='firstName' required />
