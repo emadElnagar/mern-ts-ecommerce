@@ -48,3 +48,49 @@ export const FlexBetweenRow = styled.div`
   justify-content: space-between;
   padding: 0.5rem 15px;
 `
+
+export const DropDownButton = styled.button`
+  background: transparent;
+  color: ${classes.light};
+  border: none;
+  cursor: pointer;
+  &:hover, &.active {
+    color: ${classes.primary}
+  }
+`
+
+export const DropDown = styled.div`
+  position: relative;
+`
+
+export const DropDownContent = styled.ul`
+  display: none;
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background: ${classes.light};
+  margin-inline-start: -30px;
+  &.active {
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+export const DropDownItem = styled.li`
+  color: black;
+  padding: 10px 30px;
+  transition: .3s all ease;
+  position: relative;
+  &:hover {
+    color: ${classes.primary};
+  }
+  &:not(:last-child):before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 90%;
+    height: 1px;
+    margin-inline-start: 5%;
+    background: ${classes.secondary};
+  }
+`
