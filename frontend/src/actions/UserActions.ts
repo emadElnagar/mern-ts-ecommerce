@@ -1,5 +1,5 @@
 import axios from "axios";
-import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_SIGN_IN_REQUEST, USER_SIGN_IN_SUCCESS, USER_SIGN_IN_FAIL } from "../constants/UserConstants";
+import { USER_REGISTER_REQUEST, USER_REGISTER_SUCCESS, USER_REGISTER_FAIL, USER_SIGN_IN_REQUEST, USER_SIGN_IN_SUCCESS, USER_SIGN_IN_FAIL, USER_SIGN_OUT } from "../constants/UserConstants";
 
 export const register: any = (firstName: string, lastName: string, email: string, password: string) => async (dispatch: (arg0: { type: string; payload: any; }) => void) => {
   dispatch({ type: USER_REGISTER_REQUEST, payload: { email, password } });
@@ -39,4 +39,9 @@ export const login: any = (email: string, password: string) => async (dispatch: 
         : error.message,
     });
   }
+}
+
+export const signout = () => (dispatch: (arg0: { type: string; }) => void) => {
+  sessionStorage.removeItem('userInfo');
+  dispatch({type: USER_SIGN_OUT});
 }

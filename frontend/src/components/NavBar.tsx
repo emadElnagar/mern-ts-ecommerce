@@ -29,9 +29,6 @@ function NavBar() {
           <ListItem><Link to='/collections'>collections</Link></ListItem>
         </ListContainer>
         <ListContainerIcon>
-          {/* <Link to='/users/login'>
-            <ListItem><AiOutlineUser /></ListItem>
-          </Link> */}
           <ListItem>
             <DropDownButton className={`${isDropDownActive === true ? 'active' : ''}`} onClick={handleDropDown}>
               <AiOutlineUser />
