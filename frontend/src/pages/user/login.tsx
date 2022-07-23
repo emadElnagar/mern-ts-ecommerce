@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Section, Button, HeaderCenter } from '../../styles/main';
 import { Helmet } from "react-helmet";
@@ -10,9 +10,11 @@ function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(login(email, password));
+    navigate('/');
   }
   return (
     <Fragment>

@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Button, HeaderCenter, Section } from '../../styles/main';
@@ -15,6 +15,7 @@ function RegisterPage() {
   const [passwordConfirm, setPasswordConfirm] = useState('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,6 +63,7 @@ function RegisterPage() {
       });
     } else {
       dispatch(register(firstName, lastName, email, password));
+      navigate('/');
     }
   }
   return (
