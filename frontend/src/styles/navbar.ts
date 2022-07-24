@@ -1,20 +1,20 @@
 import styled from "styled-components";
-import * as classes from './variables';
+import * as vars from './variables';
 
 export const Nav = styled.nav `
-  background: ${classes.secondary};
-  color: ${classes.light};
+  color: #000;
   padding: 0 30px;
   height: 70px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid ${vars.shadow};
 `
 
 export const Brand = styled.li `
   font-size: 1.2rem;
   text-transform: uppercase;
-  color: ${classes.primary};
+  color: ${vars.primary};
   z-index: 10000;
   &.active {
     color: #000;
@@ -34,7 +34,7 @@ export const ListContainer = styled.div `
     &.active {
       display: flex;
       flex-direction: column;
-      background: ${classes.light};
+      background: ${vars.light};
       color: #000;
       position: fixed;
       left: 0;
@@ -61,7 +61,7 @@ export const ListItem = styled.li `
   transition: all .3s ease;
   cursor: pointer;
   &:hover {
-    color: ${classes.primary};
+    color: ${vars.primary};
   }
 `
 
@@ -89,7 +89,7 @@ export const Humburger = styled.div`
 export const HumburgerDiv = styled.div`
   height: 2px;
   width: 20px;
-  background: ${classes.light};
+  background: #000;
   margin-top: 4px;
 `
 
@@ -114,7 +114,7 @@ export const SearchInput = styled.input`
 export const SearchButton = styled.button`
   color: #000;
   padding: 0 20px;
-  background: ${classes.primary};
-  border: 1px solid ${classes.primary};
+  background: ${vars.primary};
+  border: 1px solid ${vars.primary};
   cursor: pointer;
 `

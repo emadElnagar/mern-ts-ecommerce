@@ -1,13 +1,13 @@
 import styled from "styled-components";
-import * as classes from './variables';
+import * as vars from './variables';
 
 export const FooterEle = styled.div `
   display: flex;
   justify-content: space-between;
   padding: 4rem 6rem;
   flex-wrap: wrap;
-  color: ${classes.light};
-  background: ${classes.secondary}
+  color: ${vars.fontClr};
+  background: ${vars.light};
 `
 
 export const ListItem = styled.li `
@@ -16,7 +16,7 @@ export const ListItem = styled.li `
   text-transform: capitalize;
   cursor: pointer;
   &:hover {
-    color: ${classes.primary}
+    color: ${vars.primary}
   }
 `
 
@@ -29,8 +29,39 @@ export const Summary = styled.div `
 `
 
 export const CopyRight = styled.div `
-  background: #000;
+  background: ${vars.shadow};
   text-align: center;
   color: #fff;
   padding: 5px 0;
+`
+
+export const Subscribe = styled.div`
+  background: ${vars.primary};
+  color: ${vars.fontClr};
+  display: flex;
+  justify-content: center;
+  padding: 1rem 0;
+`
+
+export const SubscribeForm = styled.form`
+  display: flex;
+  width: 80%
+`
+
+export const SubscribeInput = styled.input`
+  height: 2rem;
+  width: 100%;
+  padding: 0 5px;
+  &:focus {
+    outline: none;
+  }
+`
+
+export const SubscribeButton = styled.button`
+  background: ${vars.secondary};
+  color: ${vars.light};
+  text-transform: capitalize;
+  cursor: pointer;
+  border: none;
+  padding: 0 1rem;
 `

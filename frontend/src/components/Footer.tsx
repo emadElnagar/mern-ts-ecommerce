@@ -1,4 +1,4 @@
-import { FooterEle, Header, Summary, ListItem, CopyRight } from '../styles/footer'
+import { FooterEle, Header, Summary, ListItem, CopyRight, Subscribe, SubscribeForm, SubscribeInput, SubscribeButton } from '../styles/footer'
 import { Link } from 'react-router-dom';
 import { 
   AiFillFacebook, 
@@ -10,6 +10,12 @@ import {
 function Footer() {
   return(
     <footer>
+      <Subscribe>
+        <SubscribeForm>
+          <SubscribeInput placeholder='Subscribe for news letter' />
+          <SubscribeButton>Subscribe</SubscribeButton>
+        </SubscribeForm>
+      </Subscribe>
       <FooterEle>
         <Summary>
           <Header>summary</Header>
