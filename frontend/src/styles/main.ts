@@ -51,7 +51,7 @@ export const FlexBetweenRow = styled.div`
 
 export const DropDownButton = styled.button`
   background: transparent;
-  color: ${classes.light};
+  color: #000;
   border: none;
   cursor: pointer;
   &:hover, &.active {
