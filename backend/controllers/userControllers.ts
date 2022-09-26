@@ -5,8 +5,8 @@ import { generateToken } from "../utils";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
-  const tokenEmail = await User.findOne({ email: req.body.email });
-  if (tokenEmail) {
+  const takenEmail = await User.findOne({ email: req.body.email });
+  if (takenEmail) {
     res.json({ message: 'This email is already registered' });
   }
   interface NewUser {
