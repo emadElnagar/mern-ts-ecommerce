@@ -5,7 +5,7 @@ import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Button, HeaderCenter, Section } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import Swal from 'sweetalert2';
-import { register } from '../../actions/UserActions';
+import { SignUp } from '../../features/UserFeatures';
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -62,8 +62,7 @@ function RegisterPage() {
         text: errorMsg,
       });
     } else {
-      dispatch(register(firstName, lastName, email, password));
-      navigate('/');
+      dispatch(SignUp({ firstName, lastName, email, password })).then(navigate('/'));
     }
   }
   return (
