@@ -13,7 +13,7 @@ export interface User {
 
 interface UserState {
   users: User[],
-  currentUser: User | null,
+  user: User | null,
   isLoading: boolean,
   error: object | null,
   message: string
@@ -21,7 +21,7 @@ interface UserState {
 
 const initialState: UserState = {
   users: [],
-  currentUser: null,
+  user: null,
   isLoading: false,
   error: null,
   message: ''
@@ -78,7 +78,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.users.push(action.payload);
-        state.currentUser = action.payload;
+        state.user = action.payload;
       })
       .addCase(SignUp.rejected, (state, action) => {
         state.isLoading = false;
@@ -91,7 +91,7 @@ const userSlice = createSlice({
       })
       .addCase(Login.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.currentUser = action.payload;
+        state.user = action.payload;
       })
       .addCase(Login.rejected, (state, action) => {
         state.isLoading = false;
