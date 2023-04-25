@@ -4,6 +4,7 @@ import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Section, Button, HeaderCenter } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import { useDispatch } from 'react-redux';
+import { Login } from '../../features/UserFeatures';
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -12,6 +13,7 @@ function LoginPage() {
   const navigate = useNavigate();
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(Login({ email, password })).then(navigate('/'));
   }
   return (
     <Fragment>

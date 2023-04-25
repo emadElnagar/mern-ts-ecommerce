@@ -13,17 +13,21 @@ export interface User {
 
 interface UserState {
   users: User[],
+  currentUser: User | null,
   isLoading: boolean,
-  error: object | null
+  error: object | null,
+  message: string
 }
 
 const initialState: UserState = {
   users: [],
+  currentUser: null,
   isLoading: false,
-  error: null
+  error: null,
+  message: ''
 }
 
-// User Sign Up
+// User Sign Up Service
 export const SignUp: any = createAsyncThunk("users/register", async (register: object, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${url}/register`, register);
@@ -34,10 +38,22 @@ export const SignUp: any = createAsyncThunk("users/register", async (register: o
   }
 });
 
+// User Login Service
+export const Login: any = createAsyncThunk("users/login", async (login: object, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${url}/login`, login);
+    sessionStorage.setItem('userInfo', JSON.stringify(response.data));
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    // User Register Reducer
     UserRegister: (state, action: PayloadAction<{
       firstName: string;
       lastName: string;
@@ -52,19 +68,36 @@ const userSlice = createSlice({
       })
     }
   },
-  extraReducers: {
-    [SignUp.pending]: (state: any, _action: any) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    [SignUp.fullfilled]: (state: any, action: any) => {
-      state.isLoading = false;
-      state.users.push(action.payload);
-    },
-    [SignUp.rejected]: (state: any, action: any) => {
-      state.isLoading = false;
-      state.error = action.error;
-    },
+  extraReducers: (builder) => {
+    builder
+      // User register extra reducers
+      .addCase(SignUp.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SignUp.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.users.push(action.payload);
+        state.currentUser = action.payload;
+      })
+      .addCase(SignUp.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+        state.message = action.error.message;
+      })
+      // User login extra reducers
+      .addCase(Login.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(Login.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload;
+      })
+      .addCase(Login.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+        state.message = action.error.message;
+      })
   }
 });
 
