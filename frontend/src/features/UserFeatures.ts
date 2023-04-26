@@ -15,16 +15,14 @@ interface UserState {
   users: User[],
   user: User | null,
   isLoading: boolean,
-  error: object | null,
-  message: string
+  error: object | null
 }
 
 const initialState: UserState = {
   users: [],
   user: null,
   isLoading: false,
-  error: null,
-  message: ''
+  error: null
 }
 
 // User Sign Up Service
@@ -83,7 +81,6 @@ const userSlice = createSlice({
       .addCase(SignUp.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
-        state.message = action.error.message;
       })
       // User login extra reducers
       .addCase(Login.pending, (state) => {
@@ -96,7 +93,6 @@ const userSlice = createSlice({
       .addCase(Login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
-        state.message = action.error.message;
       })
   }
 });

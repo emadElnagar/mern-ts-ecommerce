@@ -94,3 +94,7 @@ export const DropDownItem = styled.li`
     background: ${classes.secondary};
   }
 `
+export const Box = styled.div`
+  display: "block",
+  margin: "20px auto",
+`
