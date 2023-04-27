@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { Nav, Brand, ListContainer, ListContainerIcon,  ListItem, Humburger, HumburgerDiv, SearchForm, SearchInput, SearchButton } from '../styles/navbar'
 import { Button, Container, DropDown, DropDownButton, DropDownContent, DropDownItem } from '../styles/main';
+import { useSelector } from 'react-redux';
 
 function NavBar() {
   const [isActive, toggleIsActive] = useState(false);
@@ -17,6 +18,10 @@ function NavBar() {
   const handleDropDown = () => {
     isDropDownActive === false ? toggleIsDropDownActive(true) : toggleIsDropDownActive(false);
   }
+  const { user } = useSelector((state: any) => state.user);
+  const handleLogOut = () => {
+    toggleIsDropDownActive(false);
+  }
   return (
     <Fragment>
       <Nav>
@@ -29,25 +34,46 @@ function NavBar() {
           <ListItem><Link to='/collections'>collections</Link></ListItem>
         </ListContainer>
         <ListContainerIcon>
-          <ListItem>
-            <DropDownButton className={`${isDropDownActive === true ? 'active' : ''}`} onClick={handleDropDown}>
-              <AiOutlineUser />
-            </DropDownButton>
-            <DropDown>
-              <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
-                <DropDownItem>
-                  <Link to='/users/login'>
-                    <Button onClick={() => toggleIsDropDownActive(false)}>login</Button>
-                  </Link>
-                </DropDownItem>
-                <DropDownItem>
-                  <Link to='/users/register'>
-                    <Button onClick={() => toggleIsDropDownActive(false)}>register</Button>
-                  </Link>
-                </DropDownItem>
-              </DropDownContent>
-            </DropDown>
-          </ListItem>
+          {
+            user ?
+            <ListItem>
+              <DropDownButton className={`${isDropDownActive === true ? 'active' : ''}`} onClick={handleDropDown}>
+                <AiOutlineUser />
+              </DropDownButton>
+              <DropDown>
+                <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
+                  <DropDownItem>
+                    <Link to='/users/profile'>
+                      <Button onClick={() => toggleIsDropDownActive(false)}>profile</Button>
+                    </Link>
+                  </DropDownItem>
+                  <DropDownItem>
+                    <Button onClick={() => handleLogOut()}>logout</Button>
+                  </DropDownItem>
+                </DropDownContent>
+              </DropDown>
+            </ListItem>
+            :
+            <ListItem>
+              <DropDownButton className={`${isDropDownActive === true ? 'active' : ''}`} onClick={handleDropDown}>
+                <AiOutlineUser />
+              </DropDownButton>
+              <DropDown>
+                <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
+                  <DropDownItem>
+                    <Link to='/users/login'>
+                      <Button onClick={() => toggleIsDropDownActive(false)}>login</Button>
+                    </Link>
+                  </DropDownItem>
+                  <DropDownItem>
+                    <Link to='/users/register'>
+                      <Button onClick={() => toggleIsDropDownActive(false)}>register</Button>
+                    </Link>
+                  </DropDownItem>
+                </DropDownContent>
+              </DropDown>
+            </ListItem> 
+          }
           <ListItem onClick={toggleIsSearchHandler}><AiOutlineSearch /></ListItem>
           <Link to='/cart'>
             <ListItem><AiOutlineShoppingCart /></ListItem>
