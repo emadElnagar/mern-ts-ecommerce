@@ -47,6 +47,11 @@ export const Login: any = createAsyncThunk("users/login", async (login: object, 
   }
 });
 
+// User Logout Service
+export const Logout: any = createAsyncThunk("users/logout", async () => {
+  sessionStorage.removeItem('userInfo');
+})
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -93,6 +98,10 @@ const userSlice = createSlice({
       .addCase(Login.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // User logout extra reducers
+      .addCase(Logout.fulfilled, (state) => {
+        state.user = null;
       })
   }
 });

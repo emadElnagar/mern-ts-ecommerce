@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { Nav, Brand, ListContainer, ListContainerIcon,  ListItem, Humburger, HumburgerDiv, SearchForm, SearchInput, SearchButton } from '../styles/navbar'
 import { Button, Container, DropDown, DropDownButton, DropDownContent, DropDownItem } from '../styles/main';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { Logout } from '../features/UserFeatures';
 
 function NavBar() {
+  const dispatch = useDispatch();
   const [isActive, toggleIsActive] = useState(false);
   const [isSearch, toggleIsSearch] = useState(false);
   const [isDropDownActive, toggleIsDropDownActive] = useState(false);
@@ -21,6 +23,7 @@ function NavBar() {
   const { user } = useSelector((state: any) => state.user);
   const handleLogOut = () => {
     toggleIsDropDownActive(false);
+    dispatch(Logout());
   }
   return (
     <Fragment>
