@@ -5,11 +5,18 @@ interface Product {
   description: string,
   brand: string,
   price: number,
+  discount?: number,
   countInStock: number,
-  images: string,
-  rating: number,
+  sold: number,
+  images: string[],
   category: object,
-  seller: object
+  seller: object,
+  reviews?: [{
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    rating: number,
+    comment: string,
+    createdAt: Date
+  }],
 }
 
 const productSchema = new Schema<Product>({
@@ -17,10 +24,18 @@ const productSchema = new Schema<Product>({
   description: { type: String, required: true },
   brand: { type: String, required: true },
   price: { type: Number, required: true },
+  discount: Number,
   countInStock: { type: Number, required: true },
-  images: { type: String, required: true },
+  sold: { type: Number, default: 0 },
+  images: { type: [String], required: true },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
-  seller: { type: Schema.Types.ObjectId, ref: 'User' }
+  seller: { type: Schema.Types.ObjectId, ref: 'User' },
+  reviews: [{
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    rating: Number,
+    comment: String,
+    createdAt: { type: Date, default: Date.now() }
+  }],
 }, {
   timestamps: true
 });
