@@ -1,11 +1,13 @@
 import { Fragment, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Button, HeaderCenter, Section } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import Swal from 'sweetalert2';
 import { SignUp } from '../../features/UserFeatures';
+import LoadingBox from '../../components/LoadingBox';
+import ErrorBox from '../../components/ErrorBox';
 
 function RegisterPage() {
   const [firstName, setFirstName] = useState('');
@@ -16,6 +18,7 @@ function RegisterPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user, error, loading } = useSelector((state: any) => state.user);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -62,45 +65,52 @@ function RegisterPage() {
         text: errorMsg,
       });
     } else {
-      dispatch(SignUp({ firstName, lastName, email, password })).then(navigate('/'));
+      dispatch(SignUp({ firstName, lastName, email, password }));
     }
+  }
+  if (user) {
+    navigate('/');
   }
   return (
     <Fragment>
       <Helmet>
         <title>Electronics-register</title>
       </Helmet>
-      <Container>
-        <Section>
-          <Form method='post' onSubmit={handleSignUp}>
-            <HeaderCenter>sign up</HeaderCenter>
-            <Field>
-              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFirstName(e.target.value)} type="firstName" id='firstName' required />
-              <label htmlFor="firstName">first name</label>
-            </Field>
-            <Field>
-              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setLastName(e.target.value)} type="lastName" id='lastName' required />
-              <label htmlFor="lastName">last name</label>
-            </Field>
-            <Field>
-              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)} type="email" id='email' required />
-              <label htmlFor="email">email</label>
-            </Field>
-            <Field>
-              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" id='password' required />
-              <label htmlFor="password">password</label>
-            </Field>
-            <Field>
-              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPasswordConfirm(e.target.value)} type="password" id='passwordConfirm' required />
-              <label htmlFor="passwordConfirm">confirm password</label>
-            </Field>
-            <Button type='submit'>signup</Button>
-            <Paragraph>
-              have an account? <Link to='/users/login'>login</Link>
-            </Paragraph>
-          </Form>
-        </Section>
-      </Container>
+      {
+        loading ? <LoadingBox /> :
+        error ? <ErrorBox message={ error.message } /> :
+        <Container>
+          <Section>
+            <Form method='post' onSubmit={handleSignUp}>
+              <HeaderCenter>sign up</HeaderCenter>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFirstName(e.target.value)} type="firstName" id='firstName' required />
+                <label htmlFor="firstName">first name</label>
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setLastName(e.target.value)} type="lastName" id='lastName' required />
+                <label htmlFor="lastName">last name</label>
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)} type="email" id='email' required />
+                <label htmlFor="email">email</label>
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" id='password' required />
+                <label htmlFor="password">password</label>
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPasswordConfirm(e.target.value)} type="password" id='passwordConfirm' required />
+                <label htmlFor="passwordConfirm">confirm password</label>
+              </Field>
+              <Button type='submit'>signup</Button>
+              <Paragraph>
+                have an account? <Link to='/users/login'>login</Link>
+              </Paragraph>
+            </Form>
+          </Section>
+        </Container>
+      }
     </Fragment>
   );
 }
