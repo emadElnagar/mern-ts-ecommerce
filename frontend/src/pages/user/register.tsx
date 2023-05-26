@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
@@ -75,23 +75,23 @@ function RegisterPage() {
           <Form method='post' onSubmit={handleSignUp}>
             <HeaderCenter>sign up</HeaderCenter>
             <Field>
-              <Input onChange={(e) => setFirstName(e.target.value)} type="firstName" id='firstName' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFirstName(e.target.value)} type="firstName" id='firstName' required />
               <label htmlFor="firstName">first name</label>
             </Field>
             <Field>
-              <Input onChange={(e) => setLastName(e.target.value)} type="lastName" id='lastName' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setLastName(e.target.value)} type="lastName" id='lastName' required />
               <label htmlFor="lastName">last name</label>
             </Field>
             <Field>
-              <Input onChange={(e) => setEmail(e.target.value)} type="email" id='email' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)} type="email" id='email' required />
               <label htmlFor="email">email</label>
             </Field>
             <Field>
-              <Input onChange={(e) => setPassword(e.target.value)} type="password" id='password' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" id='password' required />
               <label htmlFor="password">password</label>
             </Field>
             <Field>
-              <Input onChange={(e) => setPasswordConfirm(e.target.value)} type="password" id='passwordConfirm' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPasswordConfirm(e.target.value)} type="password" id='passwordConfirm' required />
               <label htmlFor="passwordConfirm">confirm password</label>
             </Field>
             <Button type='submit'>signup</Button>

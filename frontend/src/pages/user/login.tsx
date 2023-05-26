@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
 import { Container, Section, Button, HeaderCenter } from '../../styles/main';
@@ -25,11 +25,11 @@ function LoginPage() {
           <Form method='post' onSubmit={handleLogin}>
             <HeaderCenter>login</HeaderCenter>
             <Field>
-              <Input onChange={(e) => setEmail(e.target.value)} type="email" name="email" id='email' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setEmail(e.target.value)} type="email" name="email" id='email' required />
               <label htmlFor="email">email</label>
             </Field>
             <Field>
-              <Input onChange={(e) => setPassword(e.target.value)} type="password" name="password" id='password' required />
+              <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" name="password" id='password' required />
               <label htmlFor="password">password</label>
             </Field>
             <Button type='submit'>login</Button>
