@@ -78,9 +78,11 @@ function RegisterPage() {
       </Helmet>
       {
         loading ? <LoadingBox /> :
-        error ? <ErrorBox message={ error.message } /> :
         <Container>
           <Section>
+            {
+              error && <ErrorBox message={ error.message } />
+            }
             <Form method='post' onSubmit={handleSignUp}>
               <HeaderCenter>sign up</HeaderCenter>
               <Field>

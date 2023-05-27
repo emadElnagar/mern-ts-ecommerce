@@ -95,6 +95,13 @@ export const DropDownItem = styled.li`
   }
 `
 export const Box = styled.div`
-  display: "block",
-  margin: "20px auto",
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  padding: 5px;
+  &.error {
+    color: #a02020;
+    background-color: #ffe0e0;
+    border: 1px solid currentColor;
+  }
 `

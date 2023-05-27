@@ -28,9 +28,11 @@ function LoginPage() {
       </Helmet>
       {
         loading ? <LoadingBox /> :
-        error ? <ErrorBox message={ error.message } /> :
         <Container>
           <Section>
+            {
+              error && <ErrorBox message={ `Email or password is incorrect` } />
+            }
             <Form method='post' onSubmit={handleLogin}>
               <HeaderCenter>login</HeaderCenter>
               <Field>

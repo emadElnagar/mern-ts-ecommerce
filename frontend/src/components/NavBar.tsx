@@ -46,7 +46,7 @@ function NavBar() {
               <DropDown>
                 <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
                   <DropDownItem>
-                    <Link to='/users/profile'>
+                    <Link to={`/users/profile/${user._id}`}>
                       <Button onClick={() => toggleIsDropDownActive(false)}>profile</Button>
                     </Link>
                   </DropDownItem>

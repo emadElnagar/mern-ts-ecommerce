@@ -21,7 +21,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/users/login' element={<LoginPage />} />
         <Route path='/users/register' element={<RegisterPage />} />
-        <Route path='/users/profile' element={<ProfilePage />} />
+        <Route path='/users/profile/:id' element={<ProfilePage />} />
         <Route path='*' element={<ErrorPage />} />
       </Routes>
       <Footer />

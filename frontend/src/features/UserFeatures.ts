@@ -50,7 +50,7 @@ export const Login: any = createAsyncThunk("users/login", async (login: object, 
 // User Logout Service
 export const Logout: any = createAsyncThunk("users/logout", async () => {
   sessionStorage.removeItem('userInfo');
-})
+});
 
 const userSlice = createSlice({
   name: 'user',
