@@ -71,3 +71,17 @@ export const userProfile: RequestHandler = async (req, res) => {
     });
   }
 }
+
+// UPDATE USER
+export const updateUserName: RequestHandler = async (req, _res) => {
+  const userId = await User.findById(req.params.id);
+  const newUser = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName
+  }
+  await User.findByIdAndUpdate(userId, newUser, (err: any, _docs: any) => {
+    if (err) {
+      console.log(err);
+    }
+  })
+}
