@@ -14,6 +14,7 @@ export interface User {
 interface UserState {
   users: User[],
   user: User | null,
+  profile: null,
   isLoading: boolean,
   error: object | null
 }
@@ -21,6 +22,7 @@ interface UserState {
 const initialState: UserState = {
   users: [],
   user: null,
+  profile: null,
   isLoading: false,
   error: null
 }
@@ -51,6 +53,16 @@ export const Login: any = createAsyncThunk("users/login", async (login: object, 
 export const Logout: any = createAsyncThunk("users/logout", async () => {
   sessionStorage.removeItem('userInfo');
 });
+
+// Get User Profile
+export const GetProfile: any = createAsyncThunk("users/profile",async (user: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/profile/${user._id}`);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message)
+  }
+})
 
 const userSlice = createSlice({
   name: 'user',
@@ -102,6 +114,18 @@ const userSlice = createSlice({
       // User logout extra reducers
       .addCase(Logout.fulfilled, (state) => {
         state.user = null;
+      })
+      // User profile extra reducers
+      .addCase(GetProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.profile = action.payload;
+      })
+      .addCase(GetProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
       })
   }
 });
