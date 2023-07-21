@@ -1,7 +1,6 @@
 import { RequestHandler } from "express";
 import User from "../models/user";
 import bcrypt from 'bcrypt';
-import { generateToken } from "../utils";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
@@ -30,7 +29,6 @@ export const userRegister: RequestHandler = async (req, res) => {
       isAdmin: user.isAdmin,
       image: user.image,
       phone: user.phone,
-      token: generateToken(user._id)
     });
   }).catch(err => {
     res.status(401).json({
@@ -52,7 +50,6 @@ export const userLogin: RequestHandler = async (req, res) => {
         isAdmin: user.isAdmin,
         image: user.image,
         phone: user.phone,
-        token: generateToken(user._id)
       });
       return;
     }
