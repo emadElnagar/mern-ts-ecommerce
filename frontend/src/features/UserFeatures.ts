@@ -9,6 +9,9 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
+  isAdming: boolean;
+  image?: string;
+  phone?: string;
 }
 
 interface UserState {
@@ -79,7 +82,8 @@ const userSlice = createSlice({
         firstName: action.payload.firstName,
         lastName: action.payload.lastName,
         email: action.payload.email,
-        password: action.payload.password
+        password: action.payload.password,
+        isAdming: false
       })
     }
   },
