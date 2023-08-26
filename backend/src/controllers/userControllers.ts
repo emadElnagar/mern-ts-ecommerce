@@ -57,6 +57,16 @@ export const userLogin: RequestHandler = async (req, res) => {
   res.status(401).send({message: 'invalid email or password'});
 }
 
+// GET ALL USERS
+export const getAllUsers: RequestHandler = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (error) {
+    res.send(error);
+  }
+}
+
 // GET USER PROFILE CONTROLLER
 export const userProfile: RequestHandler = async (req, res) => {
   const profile = await User.findById(req.params.id);
