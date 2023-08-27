@@ -77,6 +77,7 @@ const userSlice = createSlice({
       lastName: string;
       email: string;
       password: string;
+      isAdmin: boolean;
     }>) => {
       state.users.push({
         firstName: action.payload.firstName,

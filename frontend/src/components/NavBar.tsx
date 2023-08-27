@@ -50,6 +50,15 @@ function NavBar() {
                       <Button onClick={() => toggleIsDropDownActive(false)}>profile</Button>
                     </Link>
                   </DropDownItem>
+                  {
+                    user.isAdmin === true && (
+                      <DropDownItem>
+                        <Link to="#">
+                          <Button onClick={() => toggleIsDropDownActive(false)}>admin</Button>
+                        </Link>
+                      </DropDownItem>
+                    )
+                  }
                   <DropDownItem>
                     <Button onClick={() => handleLogOut()}>logout</Button>
                   </DropDownItem>
