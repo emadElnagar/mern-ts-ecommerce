@@ -53,7 +53,7 @@ function NavBar() {
                   {
                     user.isAdmin === true && (
                       <DropDownItem>
-                        <Link to="#">
+                        <Link to="/admin">
                           <Button onClick={() => toggleIsDropDownActive(false)}>admin</Button>
                         </Link>
                       </DropDownItem>

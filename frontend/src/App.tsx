@@ -8,6 +8,7 @@ import ErrorPage from './pages/ErrorPage';
 import LoginPage from './pages/user/login';
 import RegisterPage from './pages/user/register';
 import ProfilePage from './pages/user/Profile';
+import AdminMainPage from './pages/admin';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path='/users/login' element={<LoginPage />} />
         <Route path='/users/register' element={<RegisterPage />} />
         <Route path='/users/profile/:id' element={<ProfilePage />} />
+        <Route path='/admin' element={<AdminMainPage />} />
         <Route path='*' element={<ErrorPage />} />
       </Routes>
       <Footer />
