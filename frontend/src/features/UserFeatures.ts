@@ -57,15 +57,25 @@ export const Logout: any = createAsyncThunk("users/logout", async () => {
   sessionStorage.removeItem('userInfo');
 });
 
+// Get All Users
+export const GetAllUsers: any = createAsyncThunk("users/all", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/all`);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 // Get User Profile
 export const GetProfile: any = createAsyncThunk("users/profile",async (user: any, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${url}/profile/${user._id}`);
     return response.data;
   } catch (error: any) {
-    return rejectWithValue(error.message)
+    return rejectWithValue(error.message);
   }
-})
+});
 
 const userSlice = createSlice({
   name: 'user',
@@ -119,6 +129,18 @@ const userSlice = createSlice({
       // User logout extra reducers
       .addCase(Logout.fulfilled, (state) => {
         state.user = null;
+      })
+      // Get all users extra reducers
+      .addCase(GetAllUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetAllUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.users = action.payload;
+      })
+      .addCase(GetAllUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.users = action.payload;
       })
       // User profile extra reducers
       .addCase(GetProfile.pending, (state) => {
