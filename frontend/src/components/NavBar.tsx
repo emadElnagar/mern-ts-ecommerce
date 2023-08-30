@@ -12,12 +12,18 @@ function NavBar() {
   const [isSearch, toggleIsSearch] = useState(false);
   const [isDropDownActive, toggleIsDropDownActive] = useState(false);
   const toggleIsActiveHandler = () => {
+    toggleIsDropDownActive(false);
+    toggleIsSearch(false);
     isActive === false ? toggleIsActive(true) : toggleIsActive(false);
   }
   const toggleIsSearchHandler = () => {
+    toggleIsDropDownActive(false);
+    toggleIsActive(false);
     isSearch === false ? toggleIsSearch(true) : toggleIsSearch(false);
   }
   const handleDropDown = () => {
+    toggleIsActive(false);
+    toggleIsSearch(false);
     isDropDownActive === false ? toggleIsDropDownActive(true) : toggleIsDropDownActive(false);
   }
   const { user } = useSelector((state: any) => state.user);
