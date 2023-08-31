@@ -8,12 +8,9 @@ const productRouter = Router();
 productRouter.get('/', getAllProducts);
 
 // GET SINGLE PRODUCT
-productRouter.get('/:id', getSingleProduct);
+productRouter.get('/:slug', getSingleProduct);
 
 // CREATE NEW PRODUCT
 productRouter.post('/new', newProduct);
-
-// UPDATE USER FIRST AND LAST NAME
-productRouter.get('/:id/update/name', updateUserName);
 
 export default productRouter;
