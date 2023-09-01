@@ -13,7 +13,7 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
-  const product = Product.findById(req.params.id);
+  const product = Product.findOne({ slug: req.params.id });
   if (product) {
     res.send(product)
   } else {

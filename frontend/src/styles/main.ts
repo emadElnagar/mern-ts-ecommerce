@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import * as classes from './variables';
+import * as vars from './variables';
 
 export const Container = styled.div`
   margin: auto;
@@ -26,12 +26,24 @@ export const Section = styled.section`
 `
 
 export const Button = styled.button`
-  background: ${classes.primary};
+  background: ${vars.primary};
   text-transform: capitalize;
-  border: 1px solid ${classes.primary};
+  border: 1px solid ${vars.primary};
   padding: 10px 15px;
   cursor: pointer;
   width: 100%;
+`
+
+export const NavButton = styled.button`
+  background: transparent;
+  text-transform: capitalize;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 100%;
+  &:hover {
+    background: ${vars.primary};
+  }
 `
 
 export const Header = styled.h1`
@@ -55,7 +67,7 @@ export const DropDownButton = styled.button`
   border: none;
   cursor: pointer;
   &:hover, &.active {
-    color: ${classes.primary}
+    color: ${vars.primary}
   }
 `
 
@@ -67,7 +79,7 @@ export const DropDownContent = styled.ul`
   display: none;
   position: absolute;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  background: ${classes.light};
+  background: ${vars.light};
   margin-inline-start: -30px;
   &.active {
     display: flex;
@@ -81,7 +93,7 @@ export const DropDownItem = styled.li`
   transition: .3s all ease;
   position: relative;
   &:hover {
-    color: ${classes.primary};
+    color: ${vars.primary};
   }
   &:not(:last-child):before {
     content: '';
@@ -91,7 +103,7 @@ export const DropDownItem = styled.li`
     width: 90%;
     height: 1px;
     margin-inline-start: 5%;
-    background: ${classes.secondary};
+    background: ${vars.secondary};
   }
 `
 export const Box = styled.div`

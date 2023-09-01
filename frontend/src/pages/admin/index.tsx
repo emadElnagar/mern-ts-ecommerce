@@ -1,7 +1,9 @@
+import SideNav from "../../components/SideNav";
+
 const AdminMainPage = () => {
   return (
     <div>
-      Admin dashboard
+      <SideNav />
     </div>
   )
 }
