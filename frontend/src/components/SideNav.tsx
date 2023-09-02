@@ -5,15 +5,15 @@ import { Nav } from "../styles/admin";
 const SideNav = () => {
   return (
     <Nav>
-      <NavButton>
-        <Link to="/admin">dashboard</Link>
-      </NavButton>
-      <NavButton>
-        <Link to="#">users</Link>
-      </NavButton>
-      <NavButton>
-        <Link to="#">products</Link>
-      </NavButton>
+      <Link to="/admin">
+        <NavButton>dashboard</NavButton>
+      </Link>
+      <Link to="/admin/users/all">
+        <NavButton>users</NavButton>
+      </Link>
+      <Link to="#">
+        <NavButton>products</NavButton>
+      </Link>
     </Nav>
   )
 }

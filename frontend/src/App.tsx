@@ -1,4 +1,4 @@
-import React from 'react';
+import { Fragment } from 'react';
 import './App.css';
 import NavBar from './components/NavBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -10,6 +10,7 @@ import RegisterPage from './pages/user/register';
 import ProfilePage from './pages/user/Profile';
 import AdminMainPage from './pages/admin';
 import { useSelector } from 'react-redux';
+import AllUsers from './pages/admin/Users';
 
 function App() {
   const { user } = useSelector((state: any) => state.user);
@@ -27,7 +28,10 @@ function App() {
         <Route path='/users/profile/:id' element={<ProfilePage />} />
         {
           user !== null && user.isAdmin && 
-          <Route path='/admin' element={<AdminMainPage />} />
+          <Fragment>
+            <Route path='/admin' element={<AdminMainPage />} />
+            <Route path='/admin/users/all' element={<AllUsers />} />
+          </Fragment>
         }
         <Route path='*' element={<ErrorPage />} />
       </Routes>

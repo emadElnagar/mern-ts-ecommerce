@@ -1,10 +1,14 @@
+import { Fragment } from "react";
 import SideNav from "../../components/SideNav";
+import { Container } from "../../styles/main";
 
 const AdminMainPage = () => {
   return (
-    <div>
+    <Fragment>
       <SideNav />
-    </div>
+      <Container>
+      </Container>
+    </Fragment>
   )
 }
 
