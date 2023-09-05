@@ -17,7 +17,7 @@ export interface User {
 interface UserState {
   users: User[],
   user: User | null,
-  profile: null,
+  profile: User | null,
   isLoading: boolean,
   error: object | null
 }
