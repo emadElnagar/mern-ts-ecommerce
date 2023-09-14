@@ -2,7 +2,7 @@ import { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { Nav, Brand, ListContainer, ListContainerIcon,  ListItem, Humburger, HumburgerDiv, SearchForm, SearchInput, SearchButton } from '../styles/navbar'
-import { Button, Container, DropDown, DropDownButton, DropDownContent, DropDownItem } from '../styles/main';
+import { Container, DropDown, DropDownButton, DropDownContent, DropDownItem, NavButton } from '../styles/main';
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../features/UserFeatures';
 
@@ -53,20 +53,20 @@ function NavBar() {
                 <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
                   <DropDownItem>
                     <Link to={`/users/profile/${user._id}`}>
-                      <Button onClick={() => toggleIsDropDownActive(false)}>profile</Button>
+                      <NavButton onClick={() => toggleIsDropDownActive(false)}>profile</NavButton>
                     </Link>
                   </DropDownItem>
                   {
                     user.isAdmin === true && (
                       <DropDownItem>
                         <Link to="/admin">
-                          <Button onClick={() => toggleIsDropDownActive(false)}>admin</Button>
+                          <NavButton onClick={() => toggleIsDropDownActive(false)}>admin</NavButton>
                         </Link>
                       </DropDownItem>
                     )
                   }
                   <DropDownItem>
-                    <Button onClick={() => handleLogOut()}>logout</Button>
+                    <NavButton onClick={() => handleLogOut()}>logout</NavButton>
                   </DropDownItem>
                 </DropDownContent>
               </DropDown>
@@ -80,12 +80,12 @@ function NavBar() {
                 <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
                   <DropDownItem>
                     <Link to='/users/login'>
-                      <Button onClick={() => toggleIsDropDownActive(false)}>login</Button>
+                      <NavButton onClick={() => toggleIsDropDownActive(false)}>login</NavButton>
                     </Link>
                   </DropDownItem>
                   <DropDownItem>
                     <Link to='/users/register'>
-                      <Button onClick={() => toggleIsDropDownActive(false)}>register</Button>
+                      <NavButton onClick={() => toggleIsDropDownActive(false)}>register</NavButton>
                     </Link>
                   </DropDownItem>
                 </DropDownContent>

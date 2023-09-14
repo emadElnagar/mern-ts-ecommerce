@@ -89,21 +89,13 @@ export const DropDownContent = styled.ul`
 
 export const DropDownItem = styled.li`
   color: black;
-  padding: 10px 30px;
   transition: .3s all ease;
   position: relative;
   &:hover {
     color: ${vars.primary};
   }
-  &:not(:last-child):before {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 90%;
-    height: 1px;
-    margin-inline-start: 5%;
-    background: ${vars.secondary};
+  button {
+    padding: 10px 30px;
   }
 `
 export const Box = styled.div`
