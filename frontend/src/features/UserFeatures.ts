@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { PayloadAction } from '@reduxjs/toolkit';
 import axios from "axios";
 
 const url = 'http://localhost:5000/api/users';
 
 export interface User {
+  _id?: object;
   firstName: string;
   lastName: string;
   email: string;
@@ -68,9 +68,9 @@ export const GetAllUsers: any = createAsyncThunk("users/all", async (_, { reject
 });
 
 // Get User Profile
-export const GetProfile: any = createAsyncThunk("users/profile",async (user: any, { rejectWithValue }) => {
+export const GetProfile: any = createAsyncThunk("users/profile",async (id: any, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${url}/profile/${user._id}`);
+    const response = await axios.get(`${url}/profile/${id}`);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.message);
@@ -80,24 +80,7 @@ export const GetProfile: any = createAsyncThunk("users/profile",async (user: any
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    // User Register Reducer
-    UserRegister: (state, action: PayloadAction<{
-      firstName: string;
-      lastName: string;
-      email: string;
-      password: string;
-      isAdmin: boolean;
-    }>) => {
-      state.users.push({
-        firstName: action.payload.firstName,
-        lastName: action.payload.lastName,
-        email: action.payload.email,
-        password: action.payload.password,
-        isAdming: false
-      })
-    }
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       // User register extra reducers
@@ -106,7 +89,6 @@ const userSlice = createSlice({
       })
       .addCase(SignUp.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
         state.users.push(action.payload);
         state.user = action.payload;
       })
@@ -140,7 +122,7 @@ const userSlice = createSlice({
       })
       .addCase(GetAllUsers.rejected, (state, action) => {
         state.isLoading = false;
-        state.users = action.payload;
+        state.error = action.payload;
       })
       // User profile extra reducers
       .addCase(GetProfile.pending, (state) => {
@@ -157,5 +139,4 @@ const userSlice = createSlice({
   }
 });
 
-export const { UserRegister } = userSlice.actions;
 export default userSlice.reducer;
