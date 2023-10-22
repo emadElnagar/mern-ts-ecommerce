@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import userRouter from './routes/userRoutes';
 import productRouter from './routes/productRoutes';
+import categoryRouter from './routes/categoryRoutes';
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -19,6 +20,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/electronics', (err) => {
 
 app.use('/api/users', userRouter);
 app.use('/api/products', productRouter);
+app.use('/api/categories', categoryRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
