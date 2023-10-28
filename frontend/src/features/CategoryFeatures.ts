@@ -12,9 +12,13 @@ export interface Category {
 interface CategoryState {
   categories: Category[],
   category: Category | null,
+  isLoading: boolean,
+  error: object | null
 }
 
 const initialState: CategoryState = {
   categories: [],
   category: null,
+  isLoading: false,
+  error: null
 }
