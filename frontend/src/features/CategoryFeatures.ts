@@ -22,3 +22,35 @@ const initialState: CategoryState = {
   isLoading: false,
   error: null
 }
+
+export const NewCategory: any = createAsyncThunk("categories/new", async (category: object, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${url}/register`, category);
+    return response.data;
+  } catch (error: any) {    
+    return rejectWithValue(error.message);
+  }
+});
+
+// CATEGORY SLICE
+const categorySlice = createSlice({
+  name: 'category',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+    .addCase(NewCategory.pending, (state, _action) =>{
+      state.isLoading = true;
+    })
+    .addCase(NewCategory.fulfilled, (state, action) =>{
+      state.isLoading = false;
+      state.categories.push(action.payload);
+    })
+    .addCase(NewCategory.rejected, (state, action) =>{
+      state.isLoading = false;
+      state.error = action.error;
+    })
+  }
+});
+
+export default categorySlice.reducer;
