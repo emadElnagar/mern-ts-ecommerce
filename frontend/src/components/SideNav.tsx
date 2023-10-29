@@ -11,6 +11,9 @@ const SideNav = () => {
       <Link to="/admin/users/all">
         <NavButton>users</NavButton>
       </Link>
+      <Link to="/admin/categories">
+        <NavButton>users</NavButton>
+      </Link>
       <Link to="#">
         <NavButton>products</NavButton>
       </Link>
