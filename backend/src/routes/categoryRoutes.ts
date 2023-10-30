@@ -1,7 +1,9 @@
 import { Router } from 'express';
-import { newCategory } from '../controllers/categoryController';
+import { getAllCategories, newCategory } from '../controllers/categoryController';
 const categoryRouter  = Router();
 
 categoryRouter.post('/new', newCategory);
+
+categoryRouter.post('/all', getAllCategories);
 
 export default categoryRouter;

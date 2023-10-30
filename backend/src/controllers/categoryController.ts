@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import Category from "../models/category";
 
+// Create a new category
 export const newCategory: RequestHandler = async (req, res) => {
   const founcCategoryTitle = await Category.findOne({ title: req.params.title });
   if (founcCategoryTitle) {
@@ -25,4 +26,14 @@ export const newCategory: RequestHandler = async (req, res) => {
       message: err.message
     });
   });
+}
+
+// Get all categories
+export const getAllCategories: RequestHandler =async (req, res) => {
+  try {
+    const Categories = await Category.find({});
+    res.send(Categories);
+  } catch (error) {
+    res.send(error);
+  }
 }
