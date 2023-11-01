@@ -2,7 +2,7 @@ import { Fragment, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
-import { Container, Button, HeaderCenter, Section } from '../../styles/main';
+import { Container, HeaderCenter, Section, FullButton } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import Swal from 'sweetalert2';
 import { SignUp } from '../../features/UserFeatures';
@@ -105,7 +105,7 @@ function RegisterPage() {
                 <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPasswordConfirm(e.target.value)} type="password" id='passwordConfirm' required />
                 <label htmlFor="passwordConfirm">confirm password</label>
               </Field>
-              <Button type='submit'>signup</Button>
+              <FullButton type='submit'>signup</FullButton>
               <Paragraph>
                 have an account? <Link to='/users/login'>login</Link>
               </Paragraph>

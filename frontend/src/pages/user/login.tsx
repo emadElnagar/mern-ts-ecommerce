@@ -1,7 +1,7 @@
 import { Fragment, SetStateAction, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Field, Input, Paragraph } from '../../styles/form';
-import { Container, Section, Button, HeaderCenter } from '../../styles/main';
+import { Container, Section, HeaderCenter, FullButton } from '../../styles/main';
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from 'react-redux';
 import { Login } from '../../features/UserFeatures';
@@ -43,7 +43,7 @@ function LoginPage() {
                 <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" name="password" id='password' required />
                 <label htmlFor="password">password</label>
               </Field>
-              <Button type='submit'>login</Button>
+              <FullButton type='submit'>login</FullButton>
               <Paragraph>
                 don't have an account? <Link to='/users/register'>register</Link>
               </Paragraph>

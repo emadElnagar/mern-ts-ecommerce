@@ -12,7 +12,7 @@ const SideNav = () => {
         <NavButton>users</NavButton>
       </Link>
       <Link to="/admin/categories">
-        <NavButton>users</NavButton>
+        <NavButton>categories</NavButton>
       </Link>
       <Link to="#">
         <NavButton>products</NavButton>

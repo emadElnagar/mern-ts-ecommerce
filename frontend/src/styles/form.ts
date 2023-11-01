@@ -9,6 +9,15 @@ export const Form = styled.form`
   }
 `
 
+export const InlineForm = styled.form`
+  display: flex;
+  width: 700px;
+  padding: 30px 50px;
+  @media (max-width:991px) {
+    width: 100%;
+  }
+`
+
 export const Field = styled.div`
   display: flex;
   flex-direction: column-reverse;
@@ -31,6 +40,17 @@ export const Input = styled.input`
   }
   &:required + label:after {
     content: ' *'
+  }
+`
+
+export const BrdInput = styled.input`
+  border: none;
+  width: 100%;
+  border: 1px solid #888888;
+  padding: 25px 5px;
+  &:focus {
+    outline: none;
+    border: 1px solid #000;
   }
 `
 
