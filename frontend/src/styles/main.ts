@@ -117,3 +117,26 @@ export const Box = styled.div`
     border: 1px solid currentColor;
   }
 `
+
+export const Slide = styled.li`
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+`
+
+export const UpdateButton = styled.button`
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  color: #fff;
+  background: #39A7FF;
+`
+
+export const DeleteButton = styled.button`
+  cursor: pointer;
+  padding: 10px;
+  border: none;
+  color: #fff;
+  background: ${vars.danger};
+  margin-left: 5px;
+`

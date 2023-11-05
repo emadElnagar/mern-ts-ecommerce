@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import CategoryForm from "../../components/CategoryForm";
 import { Container, Section } from "../../styles/main";
 import { Helmet } from "react-helmet";
+import CategoryList from "../../components/CategoryList";
 
 const CategoriesPage = () => {
     return (
@@ -12,6 +13,9 @@ const CategoriesPage = () => {
         <Container>
           <Section>
             <CategoryForm />
+          </Section>
+          <Section>
+            <CategoryList />
           </Section>
         </Container>
       </Fragment>

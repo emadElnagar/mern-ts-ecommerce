@@ -7,3 +7,5 @@ export const fontClr = '#000'
 export const light = '#fff';
 
 export const shadow = '#aaaaaac4';
+
+export const danger = '#C70039';
