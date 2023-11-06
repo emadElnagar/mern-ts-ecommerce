@@ -25,7 +25,7 @@ const initialState: CategoryState = {
 
 export const NewCategory: any = createAsyncThunk("categories/new", async (category: object, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${url}/register`, category);
+    const response = await axios.post(`${url}/new`, category);
     return response.data;
   } catch (error: any) {    
     return rejectWithValue(error.message);
