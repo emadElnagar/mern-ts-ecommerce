@@ -8,12 +8,16 @@ const CategoryForm = () => {
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const { user } = useSelector((state: any) => state.user);
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: {
+    target: any; preventDefault: () => void; 
+}) => {
     e.preventDefault();
     dispatch(NewCategory({
       title,
       author: user._id
     }));
+    e.target.reset();
+    setTitle('');
   }
   return (
     <InlineForm method="POST" onSubmit={handleSubmit}>
