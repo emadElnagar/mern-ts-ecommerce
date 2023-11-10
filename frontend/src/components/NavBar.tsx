@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AiOutlineSearch, AiOutlineShoppingCart, AiOutlineHeart, AiOutlineUser } from "react-icons/ai";
 import { Nav, Brand, ListContainer, ListContainerIcon,  ListItem, Humburger, HumburgerDiv, SearchForm, SearchInput, SearchButton } from '../styles/navbar'
 import { Container, DropDown, DropDownButton, DropDownContent, DropDownItem, NavButton } from '../styles/main';
@@ -8,6 +8,7 @@ import { Logout } from '../features/UserFeatures';
 
 function NavBar() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isActive, toggleIsActive] = useState(false);
   const [isSearch, toggleIsSearch] = useState(false);
   const [isDropDownActive, toggleIsDropDownActive] = useState(false);
@@ -30,6 +31,7 @@ function NavBar() {
   const handleLogOut = () => {
     toggleIsDropDownActive(false);
     dispatch(Logout());
+    navigate('/');
   }
   return (
     <Fragment>
