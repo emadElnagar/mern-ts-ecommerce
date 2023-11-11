@@ -29,11 +29,24 @@ export const newCategory: RequestHandler = async (req, res) => {
 }
 
 // Get all categories
-export const getAllCategories: RequestHandler =async (req, res) => {
+export const getAllCategories: RequestHandler = async (_req, res) => {
   try {
     const Categories = await Category.find({});
     res.send(Categories);
   } catch (error) {
     res.send(error);
   }
+}
+
+// Update category
+export const updateCategory: RequestHandler = async (req, res) => {
+  const category = await Category.findByIdAndUpdate(req.params._id, { title: req.body.title }, (err, docs)=> {
+    if (err) {
+      res.status(401).json({
+        message: err.message
+      });
+    } else {
+      res.status(200).send(category);
+    }
+  }); 
 }
