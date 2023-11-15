@@ -40,7 +40,7 @@ export const getAllCategories: RequestHandler = async (_req, res) => {
 
 // Update category
 export const updateCategory: RequestHandler = async (req, res) => {
-  const category = await Category.findByIdAndUpdate(req.params._id, { title: req.body.title }, (err, docs)=> {
+  const category = await Category.findByIdAndUpdate(req.params.id, { title: req.body.title }, (err, _docs)=> {
     if (err) {
       res.status(401).json({
         message: err.message
@@ -49,4 +49,19 @@ export const updateCategory: RequestHandler = async (req, res) => {
       res.status(200).send(category);
     }
   }); 
+}
+
+// Delete category
+export const deleteCategory: RequestHandler =async (req, res) => {
+  const category = await Category.findByIdAndDelete(req.params.id, (err: { message: any; }, _docs: any) => {
+    if (err) {
+      res.status(401).json({
+        message: err.message
+      });
+    } else {
+      res.status(200).json({
+        message: "Category deleted successfully"
+      });
+    }
+  });
 }
