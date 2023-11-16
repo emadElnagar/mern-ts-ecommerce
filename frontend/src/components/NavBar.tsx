@@ -58,6 +58,11 @@ function NavBar() {
                       <NavButton onClick={() => toggleIsDropDownActive(false)}>profile</NavButton>
                     </Link>
                   </DropDownItem>
+                  <DropDownItem>
+                    <Link to={`/users/profile/settings`}>
+                      <NavButton onClick={() => toggleIsDropDownActive(false)}>settings</NavButton>
+                    </Link>
+                  </DropDownItem>
                   {
                     user.isAdmin === true && (
                       <DropDownItem>

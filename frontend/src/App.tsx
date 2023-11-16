@@ -12,6 +12,7 @@ import AdminMainPage from './pages/admin';
 import { useSelector } from 'react-redux';
 import AllUsers from './pages/admin/Users';
 import CategoriesPage from './pages/admin/Categories';
+import ProfileSettings from './pages/user/ProfileSettings';
 
 function App() {
   const { user } = useSelector((state: any) => state.user);
@@ -27,6 +28,10 @@ function App() {
         <Route path='/users/login' element={<LoginPage />} />
         <Route path='/users/register' element={<RegisterPage />} />
         <Route path='/users/profile/:id' element={<ProfilePage />} />
+        {
+          user !== null &&
+          <Route path='/users/profile/settings' element={<ProfileSettings />} />
+        }
         {
           user !== null && user.isAdmin && 
           <Fragment>
