@@ -121,7 +121,8 @@ export const Box = styled.div`
 export const Slide = styled.li`
   display: flex;
   justify-content: space-between;
-  padding: 20px 0;
+  padding: 0 20px;
+  margin-bottom: 5px;
 `
 
 export const UpdateButton = styled.button`
@@ -139,4 +140,8 @@ export const DeleteButton = styled.button`
   color: #fff;
   background: ${vars.danger};
   margin-left: 5px;
+`
+
+export const Main = styled.div`
+  display: flex;
 `

@@ -8,15 +8,15 @@ type categoryProps = {
 
 const CategoryList = (category: categoryProps) => {
   return (
-      <Slide>
-        <div>
-          <h4>{category.title}</h4>
-        </div>
-        <div>
-          <UpdateButton><HiPencil /></UpdateButton>
-          <DeleteButton><MdDelete /></DeleteButton>
-        </div>
-      </Slide>
+    <Slide>
+      <div>
+        <h4>{category.title}</h4>
+      </div>
+      <div>
+        <UpdateButton><HiPencil /></UpdateButton>
+        <DeleteButton><MdDelete /></DeleteButton>
+      </div>
+    </Slide>
   )
 }
 

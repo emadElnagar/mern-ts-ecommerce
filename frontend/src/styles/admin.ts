@@ -3,6 +3,10 @@ import { shadow } from "./variables";
 
 export const Nav = styled.div`
   border-right: 1px solid ${shadow};
-  height: 100vh;
   width: 250px;
+  height: 100vh
+`
+
+export const Content = styled.div`
+  width: calc(100% - 250px);
 `
