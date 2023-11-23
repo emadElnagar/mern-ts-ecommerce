@@ -8,10 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllCategories } from "../../features/CategoryFeatures";
 import { Content } from "../../styles/admin";
 import SideNav from "../../components/SideNav";
+import ErrorBox from "../../components/ErrorBox";
+import LoadingBox from "../../components/LoadingBox";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
-  const { categories } = useSelector((state: any) => state.category);
+  const { categories, error, loading } = useSelector((state: any) => state.category);
   useEffect(() => {
     dispatch(GetAllCategories());
   }, [dispatch]);
@@ -29,6 +31,8 @@ const CategoriesPage = () => {
           <Section>
             <h1 className="text-center">categories list</h1>
             {
+              loading ? <LoadingBox /> :
+              error ? <ErrorBox message={ `Error loading categories` } /> :
               categories.map((category: { _id: React.Key, title: string }) => (
                 <CategoryList key={ category._id } title={ category.title } />
                 ))

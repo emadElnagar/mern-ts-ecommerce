@@ -66,7 +66,7 @@ const categorySlice = createSlice({
     })
     .addCase(GetAllCategories.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.categories.concat(action.payload);
+      state.categories = action.payload;
     })
     .addCase(GetAllCategories.rejected, (state, action) => {
       state.isLoading = false;
