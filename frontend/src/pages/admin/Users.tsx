@@ -2,10 +2,12 @@ import { useDispatch, useSelector } from "react-redux";
 import SideNav from "../../components/SideNav";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
-import { Container } from "../../styles/main";
+import { DeleteButton, Main, Section, Slide } from "../../styles/main";
 import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { GetAllUsers } from "../../features/UserFeatures";
+import { Content } from "../../styles/admin";
+import { MdDelete } from "react-icons/md";
 
 const AllUsers = () => {
   const dispatch = useDispatch();
@@ -18,16 +20,20 @@ const AllUsers = () => {
       <Helmet>
         <title>Electronics-Admin</title>
       </Helmet>
-      <SideNav />
-      <Container>
-      {
-        error ? <ErrorBox /> :
-        loading ? <LoadingBox /> :
-        users.map((user: { _id: string, firstName: string }) => (
-          <div key={user._id}>{ user.firstName }</div>
-        ))
-      }
-      </Container>
+      <Main>
+        <SideNav />
+        <Content>
+          <Section>
+            <h1 className="text-center">all usres</h1>
+            <Slide>
+              <div>
+                <h4>Emad Elnagar</h4>
+              </div>
+              <DeleteButton title="delete user"><MdDelete /></DeleteButton>
+            </Slide>
+          </Section>
+        </Content>
+      </Main>
     </Fragment>
   )
 }
