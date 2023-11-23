@@ -50,6 +50,7 @@ const categorySlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+    // Create new category
     .addCase(NewCategory.pending, (state, _action) =>{
       state.isLoading = true;
     })
@@ -61,6 +62,7 @@ const categorySlice = createSlice({
       state.isLoading = false;
       state.error = action.error;
     })
+    // Get all categories
     .addCase(GetAllCategories.pending, (state, _) => {
       state.isLoading = true;
     })

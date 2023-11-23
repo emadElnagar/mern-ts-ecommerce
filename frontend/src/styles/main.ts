@@ -145,3 +145,8 @@ export const DeleteButton = styled.button`
 export const Main = styled.div`
   display: flex;
 `
+
+export const Note = styled.span`
+  font-weight: bold;
+  color: #09af00;
+`
