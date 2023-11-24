@@ -34,9 +34,19 @@ export const NewCategory: any = createAsyncThunk("categories/new", async (catego
 });
 
 // Get all categories
-export const GetAllCategories: any = createAsyncThunk("categories/all",async (_, { rejectWithValue }) => {
+export const GetAllCategories: any = createAsyncThunk("categories/all", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${url}/all`);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
+// Delete category
+export const DeleteCategory: any = createAsyncThunk("category/delete", async (id: any, {rejectWithValue}) => {
+  try {
+    const response = await axios.delete(`${url}/${id}/delete`);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.message);
@@ -71,6 +81,23 @@ const categorySlice = createSlice({
       state.categories = action.payload;
     })
     .addCase(GetAllCategories.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    })
+    // Delete category
+    .addCase(DeleteCategory.pending, (state, _) => {
+      state.isLoading = true;
+    })
+    .addCase(DeleteCategory.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const {
+        arg: { _id },
+      } = action.meta;
+      if (_id) {
+        state.categories = state.categories.filter((category) => category._id !== action.payload)
+      }
+    })
+    .addCase(DeleteCategory.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     })
