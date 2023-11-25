@@ -40,28 +40,29 @@ export const getAllCategories: RequestHandler = async (_req, res) => {
 
 // Update category
 export const updateCategory: RequestHandler = async (req, res) => {
-  const category = await Category.findByIdAndUpdate(req.params.id, { title: req.body.title }, (err, _docs)=> {
-    if (err) {
-      res.status(401).json({
-        message: err.message
-      });
-    } else {
-      res.status(200).send(category);
-    }
-  }); 
+  const newCategory = {
+    title: req.body.title 
+  }
+  Category.updateOne({ _id: req.params.id }, { $set: newCategory }).then(_result => {
+    res.status(202).json({
+      message: "Category updated successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error" + error.message
+    });
+  });
 }
 
 // Delete category
-export const deleteCategory: RequestHandler =async (req, res) => {
-  const category = await Category.findByIdAndDelete(req.params.id, (err: { message: any; }, _docs: any) => {
-    if (err) {
-      res.status(401).json({
-        message: err.message
-      });
-    } else {
-      res.status(200).json({
-        message: "Category deleted successfully"
-      });
-    }
+export const deleteCategory: RequestHandler = (req, res) => {
+  Category.deleteOne({ _id: req.params.id }).then(_result => {
+    res.status(202).json({
+      message: "Category Deleted Successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error Deleting Category" + error.message
+    });
   });
-}
+};
