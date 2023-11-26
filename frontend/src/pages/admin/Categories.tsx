@@ -34,7 +34,7 @@ const CategoriesPage = () => {
               loading ? <LoadingBox /> :
               error ? <ErrorBox message={ `Error loading categories` } /> :
               categories.map((category: { _id: React.Key, title: string }) => (
-                <CategoryList key={ category._id } title={ category.title } />
+                <CategoryList key={ category._id } title={ category.title } _id={ category._id } />
                 ))
               }
           </Section>
