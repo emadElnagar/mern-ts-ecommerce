@@ -13,6 +13,7 @@ type categoryProps = {
 
 const CategoryList = (category: categoryProps) => {
   const dispatch = useDispatch();
+  // Delete category
   const handleDelete = (id: Key) => {
     swal.fire({
       title: 'Are you sure?',

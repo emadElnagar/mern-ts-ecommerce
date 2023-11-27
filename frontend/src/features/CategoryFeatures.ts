@@ -43,8 +43,20 @@ export const GetAllCategories: any = createAsyncThunk("categories/all", async (_
   }
 });
 
+// Update category
+export const UpdateCategory: any = createAsyncThunk("category/update", async (category: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`${url}/${category._id}/update`, {
+      title: category.title
+    });
+    return response.data
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+})
+
 // Delete category
-export const DeleteCategory: any = createAsyncThunk("category/delete", async (id: any, {rejectWithValue}) => {
+export const DeleteCategory: any = createAsyncThunk("category/delete", async (id: any, { rejectWithValue }) => {
   try {
     const response = await axios.delete(`${url}/${id}/delete`);
     return response.data;
@@ -81,6 +93,25 @@ const categorySlice = createSlice({
       state.categories = action.payload;
     })
     .addCase(GetAllCategories.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error;
+    })
+    // Update category
+    .addCase(UpdateCategory.pending, (state) => {
+      state.isLoading = true;
+    })
+    .addCase(UpdateCategory.fulfilled, (state, action) => {
+      state.isLoading = false;
+      const {
+        arg: { _id },
+      } = action.meta;
+      if (_id) {
+        state.categories = state.categories.map((item) =>
+          item._id === _id ? action.payload : item
+        );
+      }
+    })
+    .addCase(UpdateCategory.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error;
     })

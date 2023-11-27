@@ -9,7 +9,7 @@ categoryRouter.post('/new', newCategory);
 categoryRouter.get('/all', getAllCategories);
 
 // Update category
-categoryRouter.put('/:id/update', updateCategory);
+categoryRouter.patch('/:id/update', updateCategory);
 
 // Delete category
 categoryRouter.delete('/:id/delete', deleteCategory);
