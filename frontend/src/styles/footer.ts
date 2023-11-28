@@ -29,7 +29,7 @@ export const Summary = styled.div `
 `
 
 export const CopyRight = styled.div `
-  background: ${vars.shadow};
+  background: ${vars.secondary};
   text-align: center;
   color: #fff;
   padding: 5px 0;
