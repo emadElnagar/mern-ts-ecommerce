@@ -150,3 +150,14 @@ export const Note = styled.span`
   font-weight: bold;
   color: #09af00;
 `
+
+export const Image = styled.img`
+  max-width: 100%;
+`
+
+export const ImgContainer = styled.div`
+  max-width: 250px;
+  margin: auto;
+  border-radius: 50%;
+  overflow: hidden;
+`

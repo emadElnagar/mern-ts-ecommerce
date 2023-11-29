@@ -7,6 +7,7 @@ This is an ecommerce app created by mern stack typescript
 * Node
 * Express
 * React
+* Styled components
 * MongoDB
 ## Features
 * Node provides the backend environment for this application
