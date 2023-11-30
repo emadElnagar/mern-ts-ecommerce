@@ -3,8 +3,8 @@ import Category from "../models/category";
 
 // Create a new category
 export const newCategory: RequestHandler = async (req, res) => {
-  const founcCategoryTitle = await Category.findOne({ title: req.params.title });
-  if (founcCategoryTitle) {
+  const foundCategoryTitle = await Category.findOne({ title: req.params.title });
+  if (foundCategoryTitle) {
     res.json({ message: 'This category already exists, Try another name' });
   }
   interface newCategory {
@@ -44,7 +44,7 @@ export const updateCategory: RequestHandler = async (req, res) => {
     title: req.body.title 
   }
   Category.updateOne({ _id: req.params.id }, { $set: newCategory }).then(_result => {
-    res.status(202).json({
+    res.status(200).json({
       message: "Category updated successfully"
     });
   }).catch(error => {
@@ -57,7 +57,7 @@ export const updateCategory: RequestHandler = async (req, res) => {
 // Delete category
 export const deleteCategory: RequestHandler = (req, res) => {
   Category.deleteOne({ _id: req.params.id }).then(_result => {
-    res.status(202).json({
+    res.status(200).json({
       message: "Category Deleted Successfully"
     });
   }).catch(error => {

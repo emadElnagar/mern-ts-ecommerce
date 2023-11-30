@@ -58,7 +58,7 @@ export const userLogin: RequestHandler = async (req, res) => {
 }
 
 // GET ALL USERS
-export const getAllUsers: RequestHandler = async (req, res) => {
+export const getAllUsers: RequestHandler = async (_req, res) => {
   try {
     const users = await User.find({});
     res.send(users);
@@ -80,7 +80,7 @@ export const userProfile: RequestHandler = async (req, res) => {
 }
 
 // UPDATE USER
-export const updateUserName: RequestHandler = async (req, _res) => {
+export const updateUserName: RequestHandler = async (req, res) => {
   const userId = await User.findById(req.params.id);
   const newUser = {
     firstName: req.body.firstName,
@@ -88,7 +88,22 @@ export const updateUserName: RequestHandler = async (req, _res) => {
   }
   await User.findByIdAndUpdate(userId, newUser, (err: any, _docs: any) => {
     if (err) {
-      console.log(err);
+      res.status(401).json({
+        message: err.message
+      })
     }
   })
+}
+
+// DELETE USER
+export const deleteUser: RequestHandler = async (req, res) => {
+  User.deleteOne({ _id: req.params.id }).then(_result => {
+    res.status(200).json({
+      message: "User Deleted Successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error Deleting User" + error.message
+    });
+  });
 }

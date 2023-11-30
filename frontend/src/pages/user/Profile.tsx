@@ -19,12 +19,15 @@ const ProfilePage = () => {
       <Helmet>
         <title>Electronics-profile</title>
       </Helmet>
-      <Container>
-        <ImgContainer>
-          <Image src={`${profile.image ? `${profile.image}` : `${process.env.PUBLIC_URL + '/user-icon-2098873_640.png'}`}`} />
-        </ImgContainer>
-        <h3 className="text-center">{ profile.firstName } { profile.lastName }</h3>
-      </Container>
+      {
+        profile !== null &&
+        <Container>
+          <ImgContainer>
+              <Image src={`${profile.image ? `${profile.image}` : `${process.env.PUBLIC_URL + '/user-icon-2098873_640.png'}`}`} />
+          </ImgContainer>
+          <h3 className="text-center">{ profile.firstName } { profile.lastName }</h3>
+        </Container>
+      }
     </Fragment>
   )
 }
