@@ -11,10 +11,9 @@ export const Form = styled.form`
 
 export const InlineForm = styled.form`
   display: flex;
-  width: 700px;
   padding: 30px 50px;
   @media (max-width:991px) {
-    width: 100%;
+    padding: 30px 5px;
   }
 `
 

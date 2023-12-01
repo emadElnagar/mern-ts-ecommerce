@@ -95,6 +95,22 @@ export const updateUserName: RequestHandler = async (req, res) => {
   })
 }
 
+// CHANGE USER EMAIL
+export const changeUserEmail: RequestHandler =async (req, res) => {
+  const newUser = {
+    email: req.body.email
+  }
+  User.updateOne({ _id: req.params._id }, { $set: newUser }).then(_result => {
+    res.status(200).json({
+      message: "user email updated successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error" + error.message
+    });
+  });
+}
+
 // DELETE USER
 export const deleteUser: RequestHandler = async (req, res) => {
   User.deleteOne({ _id: req.params.id }).then(_result => {

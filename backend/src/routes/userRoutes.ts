@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { deleteUser, getAllUsers, userLogin, userProfile, userRegister } from '../controllers/userControllers';
+import { changeUserEmail, deleteUser, getAllUsers, userLogin, userProfile, userRegister } from '../controllers/userControllers';
 
 const userRouter  = Router();
 
@@ -17,5 +17,8 @@ userRouter.get('/profile/:id', userProfile);
 
 // DELETE USER
 userRouter.delete('/:id/delete', deleteUser);
+
+// CHANGE USER EMAIL
+userRouter.patch('/:id/email/change', changeUserEmail);
 
 export default userRouter;
