@@ -1,5 +1,13 @@
 import { Router } from 'express';
-import { changeUserEmail, deleteUser, getAllUsers, userLogin, userProfile, userRegister } from '../controllers/userControllers';
+import { 
+  changePassword, 
+  changeUserEmail, 
+  deleteUser, 
+  getAllUsers, 
+  userLogin, 
+  userProfile, 
+  userRegister 
+} from '../controllers/userControllers';
 
 const userRouter  = Router();
 
@@ -20,5 +28,8 @@ userRouter.delete('/:id/delete', deleteUser);
 
 // CHANGE USER EMAIL
 userRouter.patch('/:id/email/change', changeUserEmail);
+
+// CHANGE PASSWORD
+userRouter.patch('/:id/password/change', changePassword);
 
 export default userRouter;

@@ -96,7 +96,7 @@ export const updateUserName: RequestHandler = async (req, res) => {
 }
 
 // CHANGE USER EMAIL
-export const changeUserEmail: RequestHandler =async (req, res) => {
+export const changeUserEmail: RequestHandler = async (req, res) => {
   const newUser = {
     email: req.body.email
   }
@@ -109,6 +109,29 @@ export const changeUserEmail: RequestHandler =async (req, res) => {
       message: "Error" + error.message
     });
   });
+}
+
+// CHANGE USER PASSWORD
+export const changePassword: RequestHandler = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    const validate = await bcrypt.compare(req.body.currentPassword, user.password);
+    if (!validate) {
+      res.status(401).json({
+        message: 'Current password is not correct'
+      });
+    }
+    const newUser = { password: await bcrypt.hash(req.body.password, 10) };
+    User.updateOne({ _id: req.params.id }, { $set: newUser }).then(result => {
+      res.status(200).json({
+        message: "Password changed successfully"
+      });
+    }).catch(error => {
+      res.status(401).json({
+        message: error.message
+      });
+    });
+  }
 }
 
 // DELETE USER
