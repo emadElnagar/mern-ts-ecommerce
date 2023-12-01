@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllUsers, userLogin, userProfile, userRegister } from '../controllers/userControllers';
+import { deleteUser, getAllUsers, userLogin, userProfile, userRegister } from '../controllers/userControllers';
 
 const userRouter  = Router();
 
@@ -14,5 +14,8 @@ userRouter.get('/all', getAllUsers);
 
 // GET USER PROFILE
 userRouter.get('/profile/:id', userProfile);
+
+// DELETE USER
+userRouter.delete('/:id/delete', deleteUser);
 
 export default userRouter;

@@ -3,11 +3,12 @@ import SideNav from "../../components/SideNav";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import { DeleteButton, Main, Note, Section, Slide } from "../../styles/main";
-import { Fragment, useEffect } from "react";
+import { Fragment, Key, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { GetAllUsers } from "../../features/UserFeatures";
+import { DeleteUser, GetAllUsers } from "../../features/UserFeatures";
 import { Content } from "../../styles/admin";
 import { MdDelete } from "react-icons/md";
+import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const dispatch = useDispatch();
@@ -15,6 +16,27 @@ const AllUsers = () => {
   useEffect(() => {
     dispatch(GetAllUsers());
   }, [dispatch]);
+  const handleDelete = (id: Key) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Delete'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(DeleteUser(id));
+        dispatch(GetAllUsers());
+        Swal.fire(
+          'Deleted!',
+          'User has been deleted.',
+          'success'
+        )
+      }
+    });
+  }
   return (
     <Fragment>
       <Helmet>
@@ -27,9 +49,9 @@ const AllUsers = () => {
             <h1 className="text-center">all usres</h1>
             {
               loading ? <LoadingBox /> :
-              error ? <ErrorBox /> :
+              error ? <ErrorBox message={ `Error loading users` } /> :
               users.map((user: {
-                isAdmin: boolean; firstName: string; lastName: string; 
+                isAdmin: boolean; firstName: string; lastName: string; _id: Key
               }) => (
                 <Slide>
                   <div>
@@ -40,7 +62,7 @@ const AllUsers = () => {
                       <Note>Admin</Note>
                     )
                   }
-                  <DeleteButton title="delete user"><MdDelete /></DeleteButton>
+                  <DeleteButton title="delete user" onClick={() => handleDelete(user._id)}><MdDelete /></DeleteButton>
                 </Slide>
               ))
             }

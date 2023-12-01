@@ -68,9 +68,19 @@ export const GetAllUsers: any = createAsyncThunk("users/all", async (_, { reject
 });
 
 // Get User Profile
-export const GetProfile: any = createAsyncThunk("users/profile",async (id: any, { rejectWithValue }) => {
+export const GetProfile: any = createAsyncThunk("users/profile", async (id: any, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${url}/profile/${id}`);
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
+// Delete User
+export const DeleteUser: any = createAsyncThunk("users/delete",async (id: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.delete(`${url}/${id}/delete`);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.message);
@@ -133,6 +143,23 @@ const userSlice = createSlice({
         state.profile = action.payload;
       })
       .addCase(GetProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Delete user extra reducers
+      .addCase(DeleteUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const {
+          arg: { _id },
+        } = action.meta;
+        if (_id) {
+          state.users = state.users.filter((user) => user._id !== action.payload)
+        }
+      })
+      .addCase(DeleteUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       })
