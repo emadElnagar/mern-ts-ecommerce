@@ -121,8 +121,8 @@ export const changePassword: RequestHandler = async (req, res) => {
         message: 'Current password is not correct'
       });
     }
-    const newUser = { password: await bcrypt.hash(req.body.password, 10) };
-    User.updateOne({ _id: req.params.id }, { $set: newUser }).then(result => {
+    const newUser = { password: await bcrypt.hash(req.body.newPassword, 10) };
+    User.updateOne({ _id: req.params.id }, { $set: newUser }).then(_result => {
       res.status(200).json({
         message: "Password changed successfully"
       });
