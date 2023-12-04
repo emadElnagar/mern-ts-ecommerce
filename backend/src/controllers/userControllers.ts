@@ -134,7 +134,29 @@ export const changePassword: RequestHandler = async (req, res) => {
   }
 }
 
-// DELETE USER
+// DELETE PROFILE (By User)
+export const deleteProfile: RequestHandler = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    const validate = await bcrypt.compare(req.body.currentPassword, user.password);
+    if (!validate) {
+      res.status(401).json({
+        message: 'Current password is not correct'
+      });
+    }
+    User.deleteOne({ _id: req.params.id }).then(_result => {
+      res.status(200).json({
+        message: "User Deleted Successfully"
+      });
+    }).catch(error => {
+      res.status(401).json({
+        message: "Error Deleting User" + error.message
+      });
+    });
+  }
+}
+
+// DELETE USER (By Admin)
 export const deleteUser: RequestHandler = async (req, res) => {
   User.deleteOne({ _id: req.params.id }).then(_result => {
     res.status(200).json({

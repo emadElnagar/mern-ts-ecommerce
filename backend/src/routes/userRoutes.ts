@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { 
   changePassword, 
   changeUserEmail, 
+  deleteProfile, 
   deleteUser, 
   getAllUsers, 
   userLogin, 
@@ -23,13 +24,16 @@ userRouter.get('/all', getAllUsers);
 // GET USER PROFILE
 userRouter.get('/profile/:id', userProfile);
 
-// DELETE USER
-userRouter.delete('/:id/delete', deleteUser);
-
 // CHANGE USER EMAIL
 userRouter.patch('/:id/email/change', changeUserEmail);
 
 // CHANGE PASSWORD
 userRouter.patch('/:id/password/change', changePassword);
+
+// DELETE MY PROFILE
+userRouter.delete('/profile/:id/delete', deleteProfile);
+
+// DELETE USER
+userRouter.delete('/:id/delete', deleteUser);
 
 export default userRouter;
