@@ -31,7 +31,7 @@ userRouter.patch('/:id/email/change', changeUserEmail);
 userRouter.patch('/:id/password/change', changePassword);
 
 // DELETE MY PROFILE
-userRouter.delete('/profile/:id/delete', deleteProfile);
+userRouter.post('/profile/:id/delete', deleteProfile);
 
 // DELETE USER
 userRouter.delete('/:id/delete', deleteUser);

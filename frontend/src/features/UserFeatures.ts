@@ -102,7 +102,7 @@ export const ChangePassword: any = createAsyncThunk("users/password/change", asy
   }
 });
 
-// Delete User
+// Delete User (By Admin)
 export const DeleteUser: any = createAsyncThunk("users/delete", async (id: any, { rejectWithValue }) => {
   try {
     const response = await axios.delete(`${url}/${id}/delete`);
@@ -111,6 +111,18 @@ export const DeleteUser: any = createAsyncThunk("users/delete", async (id: any, 
     return rejectWithValue(error.message);
   }
 });
+
+// Delete Profile (By User)
+export const DeleteProfile: any = createAsyncThunk("profile/delte", async (user: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${url}/profile/${user._id}/delete`, {
+      currentPassword: user.currentPassword
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+})
 
 const userSlice = createSlice({
   name: 'user',
@@ -209,7 +221,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.error;
       })
-      // Delete user extra reducers
+      // Delete user extra reducers (By Admin)
       .addCase(DeleteUser.pending, (state) => {
         state.isLoading = true;
       })
@@ -223,6 +235,23 @@ const userSlice = createSlice({
         }
       })
       .addCase(DeleteUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Delete user (By User)
+      .addCase(DeleteProfile.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(DeleteProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const {
+          arg: { _id },
+        } = action.meta;
+        if (_id) {
+          state.users = state.users.filter((user) => user._id !== action.payload)
+        }
+      })
+      .addCase(DeleteProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       })
