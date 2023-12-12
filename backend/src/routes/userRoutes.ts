@@ -5,6 +5,7 @@ import {
   deleteProfile, 
   deleteUser, 
   getAllUsers, 
+  updateUserName, 
   userLogin, 
   userProfile, 
   userRegister 
@@ -23,6 +24,9 @@ userRouter.get('/all', getAllUsers);
 
 // GET USER PROFILE
 userRouter.get('/profile/:id', userProfile);
+
+// UPDATE USER NAME
+userRouter.post('/:id/name/update', updateUserName);
 
 // CHANGE USER EMAIL
 userRouter.patch('/:id/email/change', changeUserEmail);

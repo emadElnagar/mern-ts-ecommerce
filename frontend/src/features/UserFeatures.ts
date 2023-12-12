@@ -77,6 +77,19 @@ export const GetProfile: any = createAsyncThunk("users/profile", async (id: any,
   }
 });
 
+// Update User Name
+export const updateUserName: any = createAsyncThunk("users/namechange", async (user: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${url}/${user._id}/name/update`, {
+      firstName: user.firstName,
+      lastName: user.lastName
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+})
+
 // Change Email
 export const changeEmail: any = createAsyncThunk("users/emailchange", async (user: any, { rejectWithValue }) => {
   try {
@@ -182,6 +195,25 @@ const userSlice = createSlice({
       .addCase(GetProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // Change user name
+      .addCase(updateUserName.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateUserName.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const {
+          arg: { _id },
+        } = action.meta;
+        if (_id) {
+          state.users = state.users.map((user) =>
+          user._id === _id ? action.payload : user
+          );
+        }
+      })
+      .addCase(updateUserName.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error
       })
       // Change user email
       .addCase(changeEmail.pending, (state) => {

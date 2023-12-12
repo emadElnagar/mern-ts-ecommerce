@@ -15,11 +15,11 @@ const ProfileSettings = () => {
         <Section>
           <h2 className="text-center">No one can see this page (only you)</h2>
           <Slide>
-            <LightedSpan>{user.firstName} {user.lastName}</LightedSpan>
+            <LightedSpan>{ user.firstName } { user.lastName }</LightedSpan>
             <UpdateButton title="Update name"><HiPencil /></UpdateButton>
           </Slide>
           <Slide>
-            <LightedSpan>{user.email}</LightedSpan>
+            <span><b>{ user.email }</b></span>
             <UpdateButton title="Change email"><HiPencil /></UpdateButton>
           </Slide>
           <Slide>
