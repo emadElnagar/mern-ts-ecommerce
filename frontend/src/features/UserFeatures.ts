@@ -206,7 +206,7 @@ const userSlice = createSlice({
       .addCase(ChangePassword.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(ChangePassword.pending, (state, action) => {
+      .addCase(ChangePassword.fulfilled, (state, action) => {
         state.isLoading = false;
         const {
           arg: { _id },
@@ -217,7 +217,7 @@ const userSlice = createSlice({
           );
         }
       })
-      .addCase(ChangePassword.pending, (state, action) => {
+      .addCase(ChangePassword.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       })

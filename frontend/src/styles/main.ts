@@ -4,16 +4,16 @@ import * as vars from './variables';
 export const Container = styled.div`
   margin: auto;
   @media (min-width:1200px) {
-    max-width: 1140px;
+    width: 1140px;
   }
   @media (max-width:1199px) {
-    max-width: 960px;
+    width: 960px;
   }
   @media (max-width:991px) {
-    max-width: 720px;
+    width: 720px;
   }
   @media (max-width:767px) {
-    max-width: 540px;
+    width: 540px;
   }
   @media (max-width:576px) {
     max-width: 100%;
@@ -31,6 +31,11 @@ export const Button = styled.button`
   border: 1px solid ${vars.primary};
   padding: 10px 15px;
   cursor: pointer;
+`
+
+export const LightedSpan = styled.span`
+  font-weight: bold;
+  text-transform: capitalize;
 `
 
 export const FullButton = styled.button`
