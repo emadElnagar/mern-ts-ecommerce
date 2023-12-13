@@ -4,6 +4,7 @@ export const Form = styled.form`
   width: 500px;
   box-shadow: 0 0 5px #888888;
   padding: 30px 50px;
+  margin: auto;
   @media (max-width:767px) {
     width: 100%;
   }

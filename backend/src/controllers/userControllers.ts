@@ -79,20 +79,21 @@ export const userProfile: RequestHandler = async (req, res) => {
   }
 }
 
-// UPDATE USER
+// UPDATE USER NAME
 export const updateUserName: RequestHandler = async (req, res) => {
-  const userId = await User.findById(req.params.id);
   const newUser = {
     firstName: req.body.firstName,
     lastName: req.body.lastName
   }
-  await User.findByIdAndUpdate(userId, newUser, (err: any, _docs: any) => {
-    if (err) {
-      res.status(401).json({
-        message: err.message
-      })
-    }
-  })
+  User.updateOne({ _id: req.params.id }, { $set: newUser }).then(_result => {
+    res.status(200).json({
+      message: "user email updated successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error" + error.message
+    });
+  });
 }
 
 // CHANGE USER EMAIL
