@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { HiPencil } from "react-icons/hi";
 import swal from 'sweetalert2';
 import { MdOutlineTimeToLeave } from "react-icons/md";
-import { updateUserName } from "../../features/UserFeatures";
+import { changeEmail, updateUserName } from "../../features/UserFeatures";
 
 type UpdateNameType = {
   firstName: string;
   lastName: string
+}
+
+type ChangeEmailType = {
+  email: string;
 }
 
 const ProfileSettings = () => {
@@ -17,6 +21,7 @@ const ProfileSettings = () => {
   const dispatch = useDispatch();
   let firstNameInput: HTMLInputElement;
   let lastNameInput: HTMLInputElement;
+  let emailInput: HTMLInputElement;
   // Update user name
   const handleUpdateName = (_id: Key) => {
     swal.fire<UpdateNameType>({
@@ -41,7 +46,7 @@ const ProfileSettings = () => {
         const firstName = firstNameInput.value;
         const lastName = lastNameInput.value;
         if (!MdOutlineTimeToLeave) {
-          swal.showValidationMessage(`Please enter title and password`)
+          swal.showValidationMessage(`Please enter first and last name`)
         }
         return { firstName, lastName }
       },
@@ -53,6 +58,40 @@ const ProfileSettings = () => {
           _id,
           firstName,
           lastName
+        }));
+      }
+    });
+  }
+  // Change email
+  const handleChangeEmail = (_id: Key) => {
+    swal.fire<ChangeEmailType>({
+      title: 'Update YourName',
+      html: `
+        <input type="email" id="email" class="swal2-input" value="${user.email}">
+      `,
+      showCancelButton: true,
+      confirmButtonText: 'Confirm',
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      focusConfirm: false,
+      didOpen: () => {
+        const popup = swal.getPopup()!
+        emailInput = popup.querySelector('#email') as HTMLInputElement;
+        emailInput.onkeyup = (event) => event.key === 'Enter' && swal.clickConfirm();
+      },
+      preConfirm: () => {
+        const email = emailInput.value;
+        if (!MdOutlineTimeToLeave) {
+          swal.showValidationMessage(`Please enter title and password`)
+        }
+        return { email }
+      },
+    }).then((result) => {
+      const  email  = result.value?.email;
+      if (result.isConfirmed) {
+        dispatch(changeEmail({
+          _id,
+          email
         }));
       }
     });
@@ -71,7 +110,7 @@ const ProfileSettings = () => {
           </Slide>
           <Slide>
             <span><b>{ user.email }</b></span>
-            <UpdateButton title="Change email"><HiPencil /></UpdateButton>
+            <UpdateButton onClick={() => handleChangeEmail(user._id)} title="Change email"><HiPencil /></UpdateButton>
           </Slide>
           <Slide>
             <Button>Change my password</Button>
