@@ -5,9 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { HiPencil } from "react-icons/hi";
 import swal from 'sweetalert2';
 import { MdOutlineTimeToLeave } from "react-icons/md";
-import { ChangePassword, DeleteProfile, changeEmail, updateUserName } from "../../features/UserFeatures";
+import { ChangePassword, DeleteProfile, Logout, changeEmail, updateUserName } from "../../features/UserFeatures";
 import { Field, Form, Input } from "../../styles/form";
-import { useNavigate } from "react-router-dom";
 
 type UpdateNameType = {
   firstName: string;
@@ -21,7 +20,6 @@ type ChangeEmailType = {
 const ProfileSettings = () => {
   const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [isUpdatingPass, setIsUpdatingPass] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -156,7 +154,7 @@ const ProfileSettings = () => {
       _id: user._id,
       password
     })).then((_result: any) => {
-      navigate('/');
+      dispatch(Logout());
     });
   }
   return (
