@@ -5,8 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { HiPencil } from "react-icons/hi";
 import swal from 'sweetalert2';
 import { MdOutlineTimeToLeave } from "react-icons/md";
-import { ChangePassword, changeEmail, updateUserName } from "../../features/UserFeatures";
+import { ChangePassword, DeleteProfile, changeEmail, updateUserName } from "../../features/UserFeatures";
 import { Field, Form, Input } from "../../styles/form";
+import { useNavigate } from "react-router-dom";
 
 type UpdateNameType = {
   firstName: string;
@@ -20,10 +21,13 @@ type ChangeEmailType = {
 const ProfileSettings = () => {
   const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isUpdatingPass, setIsUpdatingPass] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [deletingAccount, setDeletingAccount] = useState(false);
+  const [password, setPassword] = useState('');
   let firstNameInput: HTMLInputElement;
   let lastNameInput: HTMLInputElement;
   let emailInput: HTMLInputElement;
@@ -145,6 +149,16 @@ const ProfileSettings = () => {
       })
     }
   }
+  // Dlete user account
+  const handleDeleteAccount = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(DeleteProfile({
+      _id: user._id,
+      password
+    })).then((_result: any) => {
+      navigate('/');
+    });
+  }
   return (
     <Fragment>
       <Helmet>
@@ -163,7 +177,7 @@ const ProfileSettings = () => {
           </Slide>
           <Slide>
             <Button onClick={() => swapUpdatingForm()}>Change my password</Button>
-            <DeleteButton>delete my account</DeleteButton>
+            <DeleteButton onClick={() => setDeletingAccount(true)}>Delete my account</DeleteButton>
           </Slide>
         </Section>
         {
@@ -182,6 +196,19 @@ const ProfileSettings = () => {
               </Field>
               <Button type="submit">Confirm</Button>
               <DeleteButton onClick={() => setIsUpdatingPass(false)}>Cancel</DeleteButton>
+            </Form>
+          </Section>
+        }
+        {
+          deletingAccount === true &&
+          <Section>
+            <Form method="POST" onSubmit={handleDeleteAccount}>
+              <HeaderCenter>delete your account</HeaderCenter>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setPassword(e.target.value)} type="password" placeholder="Enter your password" />
+              </Field>
+              <Button type="submit">Confirm</Button>
+              <DeleteButton onClick={() => setDeletingAccount(false)}>Cancel</DeleteButton>
             </Form>
           </Section>
         }

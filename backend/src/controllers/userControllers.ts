@@ -139,10 +139,10 @@ export const changePassword: RequestHandler = async (req, res) => {
 export const deleteProfile: RequestHandler = async (req, res) => {
   const user = await User.findById(req.params.id);
   if (user) {
-    const validate = await bcrypt.compare(req.body.currentPassword, user.password);
+    const validate = await bcrypt.compare(req.body.password, user.password);
     if (!validate) {
       res.status(401).json({
-        message: 'Current password is not correct'
+        message: 'Password is not correct'
       });
     }
     User.deleteOne({ _id: req.params.id }).then(_result => {

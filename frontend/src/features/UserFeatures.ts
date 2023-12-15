@@ -129,13 +129,14 @@ export const DeleteUser: any = createAsyncThunk("users/delete", async (id: any, 
 export const DeleteProfile: any = createAsyncThunk("profile/delte", async (user: any, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${url}/profile/${user._id}/delete`, {
-      currentPassword: user.currentPassword
+      password: user.password
     });
+    sessionStorage.removeItem('userInfo');
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
-})
+});
 
 const userSlice = createSlice({
   name: 'user',
