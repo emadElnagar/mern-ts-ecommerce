@@ -1,11 +1,12 @@
-import { Fragment, Key } from "react";
+import { Fragment, Key, SetStateAction, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Button, Container, DeleteButton, LightedSpan, Section, Slide, UpdateButton } from "../../styles/main";
+import { Button, Container, DeleteButton, HeaderCenter, LightedSpan, Section, Slide, UpdateButton } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { HiPencil } from "react-icons/hi";
 import swal from 'sweetalert2';
 import { MdOutlineTimeToLeave } from "react-icons/md";
-import { changeEmail, updateUserName } from "../../features/UserFeatures";
+import { ChangePassword, changeEmail, updateUserName } from "../../features/UserFeatures";
+import { Field, Form, Input } from "../../styles/form";
 
 type UpdateNameType = {
   firstName: string;
@@ -19,6 +20,10 @@ type ChangeEmailType = {
 const ProfileSettings = () => {
   const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
+  const [isUpdatingPass, setIsUpdatingPass] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
   let firstNameInput: HTMLInputElement;
   let lastNameInput: HTMLInputElement;
   let emailInput: HTMLInputElement;
@@ -96,6 +101,50 @@ const ProfileSettings = () => {
       }
     });
   }
+  // Swap updating password form
+  const swapUpdatingForm = () => {
+    if (isUpdatingPass === false) {
+      setIsUpdatingPass(true);
+    } else {
+      setIsUpdatingPass(false);
+    }
+  }
+  // Change user password
+  const handleChangePassword = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (newPassword.length < 8) {
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'password must be at least 8 characters',
+      });
+    } else if (currentPassword === newPassword) {
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please change new password to confirm',
+      });
+    } else if (newPassword !== confirmNewPassword) {
+      swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `password and confirm password doesn't match`,
+      });
+    } else {
+      dispatch(ChangePassword({
+        _id: user._id,
+        currentPassword,
+        newPassword
+      })).then((_result: any) => {
+        swal.fire({
+          icon: 'success',
+          title: 'Successed',
+          text: `password changed successfully`,
+        });
+        setIsUpdatingPass(false);
+      })
+    }
+  }
   return (
     <Fragment>
       <Helmet>
@@ -113,10 +162,29 @@ const ProfileSettings = () => {
             <UpdateButton onClick={() => handleChangeEmail(user._id)} title="Change email"><HiPencil /></UpdateButton>
           </Slide>
           <Slide>
-            <Button>Change my password</Button>
+            <Button onClick={() => swapUpdatingForm()}>Change my password</Button>
             <DeleteButton>delete my account</DeleteButton>
           </Slide>
         </Section>
+        {
+          isUpdatingPass === true &&
+          <Section>
+            <Form method="POST" onSubmit={handleChangePassword}>
+              <HeaderCenter>change my password</HeaderCenter>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setCurrentPassword(e.target.value)} type="password" placeholder="Current passowrd" required />
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setNewPassword(e.target.value)} type="password" placeholder="New passowrd" required />
+              </Field>
+              <Field>
+                <Input onChange={(e: { target: { value: SetStateAction<string>; }; }) => setConfirmNewPassword(e.target.value)} type="password" placeholder="Confirm new passowrd" required />
+              </Field>
+              <Button type="submit">Confirm</Button>
+              <DeleteButton onClick={() => setIsUpdatingPass(false)}>Cancel</DeleteButton>
+            </Form>
+          </Section>
+        }
       </Container>
     </Fragment>
   )
