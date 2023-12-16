@@ -54,9 +54,24 @@ export const BrdInput = styled.input`
   }
 `
 
+export const Textarea = styled.textarea`
+  width: 100%;
+  padding: 25px 5px;
+  resize: none;
+  height: 100px;
+  &:focus {
+    outline: none;
+    border: 1px solid #000;
+  }
+`
+
 export const Paragraph = styled.p`
   margin-top: 15px;
   a {
     color: #00B7FF;
   }
+`
+
+export const Select = styled.select`
+  padding: 5px;
 `

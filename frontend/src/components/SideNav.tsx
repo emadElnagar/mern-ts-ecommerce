@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { NavButton } from "../styles/main";
 import { Nav } from "../styles/admin";
+import { IoAdd } from "react-icons/io5";
 
 const SideNav = () => {
   return (
@@ -14,8 +15,8 @@ const SideNav = () => {
       <Link to="/admin/categories">
         <NavButton>categories</NavButton>
       </Link>
-      <Link to="#">
-        <NavButton>products</NavButton>
+      <Link to="/admin/products/new">
+        <NavButton><IoAdd /> new product</NavButton>
       </Link>
     </Nav>
   )

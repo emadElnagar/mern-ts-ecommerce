@@ -37,3 +37,8 @@ a {
 .text-center {
   text-align: center;
 }
+
+.product-form {
+  max-width: 700px;
+  margin: auto;
+}
