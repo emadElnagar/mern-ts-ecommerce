@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import Product from "../models/product";
+import slugify from "slugify";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
@@ -26,12 +27,13 @@ export const getSingleProduct: RequestHandler = async (req, res) => {
 // CREATE A NEW PRODUCT
 export const newProduct: RequestHandler = async (req, res) => {
   // Unique product name
-  const foundProductName = await Product.findOne({productName: req.body.productName});
+  const foundProductName = await Product.findOne({name: req.body.name});
   if (foundProductName) {
     res.json({ message: 'This product already exists, Try another name' });
   }
   interface newProduct {
-    productName: string;
+    name: string;
+    slug: string;
     description: string;
     brand: string;
     price: number;
@@ -42,7 +44,12 @@ export const newProduct: RequestHandler = async (req, res) => {
     seller: object
   }
   const product = new Product<newProduct>({
-    productName: req.body.productName,
+    name: req.body.name,
+    slug: slugify(req.body.name, {
+      replacement: '-',
+      lower: true,
+      strict: true,
+    }),
     description: req.body.description,
     brand: req.body.brand,
     price: req.body.price,
@@ -52,7 +59,7 @@ export const newProduct: RequestHandler = async (req, res) => {
     category: req.body.category,
     seller: req.body.seller
   });
-  product.save().then(product => {
+  product.save().then(_product => {
     res.status(200).json({
       message: "Product Created Successfully"
     });
