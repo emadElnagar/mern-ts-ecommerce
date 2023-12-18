@@ -6,10 +6,22 @@ const url = 'http://localhost:5000/api/products';
 export interface Product {
   _id?: object;
   name: string;
+  slug?: string;
   description: string;
   brand: string;
   price: number;
   discount: number;
+  countInStock?: number;
+  sold?: number;
+  images: string[];
+  category: object;
+  seller: object;
+  reviews?: [
+    user: object,
+    rating: number,
+    comment: string,
+    createdAt: Date
+  ];
 }
 
 interface ProductState {
