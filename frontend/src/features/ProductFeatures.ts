@@ -39,7 +39,7 @@ const initialState: ProductState = {
 }
 
 // Create new product
-export const NewProduct: any = createAsyncThunk("products/new",async (product: any, { rejectWithValue }) => {
+export const NewProduct: any = createAsyncThunk("products/new", async (product: any, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${url}/new`, {
       name: product.name,
@@ -52,6 +52,16 @@ export const NewProduct: any = createAsyncThunk("products/new",async (product: a
       category: product.category,
       seller: product.seller
     });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
+// Get all products
+export const GetAllProducts: any = createAsyncThunk("products/all", async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${url}/all`);
     return response.data;
   } catch (error: any) {
     return rejectWithValue(error.message);
@@ -73,6 +83,18 @@ const productSlice = createSlice({
         state.products.push(action.payload);
       })
       .addCase(NewProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Get all products
+      .addCase(GetAllProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetAllProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.products = action.payload;
+      })
+      .addCase(GetAllProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       })

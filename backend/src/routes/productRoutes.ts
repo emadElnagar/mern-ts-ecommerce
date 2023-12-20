@@ -5,7 +5,7 @@ import { updateUserName } from "../controllers/userControllers";
 const productRouter = Router();
 
 // GET ALL PRODUCTS
-productRouter.get('/', getAllProducts);
+productRouter.get('/all', getAllProducts);
 
 // GET SINGLE PRODUCT
 productRouter.get('/:slug', getSingleProduct);
