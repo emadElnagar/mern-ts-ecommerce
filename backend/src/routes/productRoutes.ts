@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { getAllProducts, getSingleProduct, newProduct } from '../controllers/productController';
-import { updateUserName } from "../controllers/userControllers";
 
 const productRouter = Router();
 
