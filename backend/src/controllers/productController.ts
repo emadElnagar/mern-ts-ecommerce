@@ -3,7 +3,7 @@ import Product from "../models/product";
 import slugify from "slugify";
 
 // GET ALL PRODUCTS
-export const getAllProducts: RequestHandler = async (req, res) => {
+export const getAllProducts: RequestHandler = async (_req, res) => {
   try {
     const products = await Product.find({});
     res.send(products);
@@ -66,6 +66,19 @@ export const newProduct: RequestHandler = async (req, res) => {
   }).catch(err => {
     res.status(401).json({
       message: err.message
+    });
+  });
+}
+
+// Delete product
+export const deleteProduct: RequestHandler = async (req, res) => {
+  Product.deleteOne({ _id: req.params.id }).then(_result => {
+    res.status(200).json({
+      message: "Product Deleted Successfully"
+    });
+  }).catch(error => {
+    res.status(401).json({
+      message: "Error deleting product" + error.message
     });
   });
 }

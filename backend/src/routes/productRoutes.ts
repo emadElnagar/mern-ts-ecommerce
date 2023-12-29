@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllProducts, getSingleProduct, newProduct } from '../controllers/productController';
+import { deleteProduct, getAllProducts, getSingleProduct, newProduct } from '../controllers/productController';
 
 const productRouter = Router();
 
@@ -11,5 +11,8 @@ productRouter.get('/:slug', getSingleProduct);
 
 // CREATE NEW PRODUCT
 productRouter.post('/new', newProduct);
+
+// DELETE PRODUCT
+productRouter.post('/:id/delete', deleteProduct);
 
 export default productRouter;
