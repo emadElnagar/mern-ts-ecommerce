@@ -13,6 +13,6 @@ productRouter.get('/:slug', getSingleProduct);
 productRouter.post('/new', newProduct);
 
 // DELETE PRODUCT
-productRouter.post('/:id/delete', deleteProduct);
+productRouter.delete('/:id/delete', deleteProduct);
 
 export default productRouter;
