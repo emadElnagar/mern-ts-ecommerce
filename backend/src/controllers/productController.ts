@@ -39,7 +39,6 @@ export const newProduct: RequestHandler = async (req, res) => {
     price: number;
     countInStock: number;
     images: string;
-    rating: number;
     category: object;
     seller: object
   }
@@ -55,7 +54,6 @@ export const newProduct: RequestHandler = async (req, res) => {
     price: req.body.price,
     countInStock: req.body.countInStock,
     images: req.body.images,
-    rating: req.body.rating,
     category: req.body.category,
     seller: req.body.seller
   });
@@ -68,6 +66,34 @@ export const newProduct: RequestHandler = async (req, res) => {
       message: err.message
     });
   });
+}
+
+// Update product
+export const updateProduct: RequestHandler =async (req, res) => {
+  const newProduct = {
+    name: req.body.name,
+    slug: slugify(req.body.name, {
+      replacement: '-',
+      lower: true,
+      strict: true,
+    }),
+    description: req.body.description,
+    brand: req.body.brand,
+    price: req.body.price,
+    countInStock: req.body.countInStock,
+    images: req.body.images,
+    rating: req.body.rating,
+    category: req.body.category
+  }
+  Product.updateOne({ _id: req.params.id }, { $set: newProduct }).then(_result => {
+    res.status(200).json({
+      message: 'Product updated successfully'
+    })
+  }).catch(error => {
+    res.status(401).json({
+      message: error.message
+    })
+  })
 }
 
 // Delete product
