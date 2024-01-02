@@ -78,6 +78,25 @@ export const GetSingleProduct: any = createAsyncThunk("producsts/single", async 
   }
 });
 
+// Update product
+export const UpdateProduct: any = createAsyncThunk("products/update",async (product: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.put(`${url}/${product._id}/update`, {
+      name: product.name,
+      description: product.description,
+      brand: product.brand,
+      price: product.price,
+      discount: product.discount,
+      countInStock: product.countInStock,
+      images: product.images,
+      category: product.category
+    })
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+})
+
 // Delete product
 export const DeleteProduct: any = createAsyncThunk("products/delete", async (product: any, { rejectWithValue }) => {
   try {
@@ -129,6 +148,25 @@ const productSlice = createSlice({
       .addCase(GetSingleProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // Update product
+      .addCase(UpdateProduct.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(UpdateProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const {
+          args: { _id },
+        } = action.meta;
+        if (_id) {
+          state.products = state.products.map((product) =>
+            product._id === _id ? action.payload : product
+          );
+        }
+      })
+      .addCase(UpdateProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error
       })
       // Delete product
       .addCase(DeleteProduct.pending, (state) => {

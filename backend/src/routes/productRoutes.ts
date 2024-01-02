@@ -13,7 +13,7 @@ productRouter.get('/:slug', getSingleProduct);
 productRouter.post('/new', newProduct);
 
 // UPDATE PRODUCT
-productRouter.post('/:id/update', updateProduct);
+productRouter.put('/:id/update', updateProduct);
 
 // DELETE PRODUCT
 productRouter.delete('/:id/delete', deleteProduct);
