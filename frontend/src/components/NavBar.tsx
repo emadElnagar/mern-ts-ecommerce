@@ -5,6 +5,7 @@ import { Nav, Brand, ListContainer, ListContainerIcon,  ListItem, Humburger, Hum
 import { Container, DropDown, DropDownButton, DropDownContent, DropDownItem, NavButton } from '../styles/main';
 import { useDispatch, useSelector } from 'react-redux';
 import { Logout } from '../features/UserFeatures';
+import { Image } from '../styles/main';
 
 function NavBar() {
   const dispatch = useDispatch();
@@ -49,7 +50,9 @@ function NavBar() {
             user ?
             <ListItem>
               <DropDownButton className={`${isDropDownActive === true ? 'active' : ''}`} onClick={handleDropDown}>
-                <AiOutlineUser />
+                {
+                  <Image className='user-img-i' src={`${user.image ? `${user.image}` : `${process.env.PUBLIC_URL + '/user-icon-2098873_640.png'}`}`} />
+                }
               </DropDownButton>
               <DropDown>
                 <DropDownContent className={`${isDropDownActive === true ? 'active' : ''}`}>
