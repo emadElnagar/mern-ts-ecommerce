@@ -15,7 +15,7 @@ const NewProduct = () => {
   const [discount, setDiscount] = useState<number|null>(null);
   const [countInStock, setCountInStock] = useState<number|null>(null);
   const [category, setCategory] = useState('');
-  const [images, setImages] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
   // Change price
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = !Number.isNaN(e.target.valueAsNumber) ? e.target.valueAsNumber : null;
@@ -31,7 +31,16 @@ const NewProduct = () => {
     const value = !Number.isNaN(e.target.valueAsNumber) ? e.target.valueAsNumber : null;
     setCountInStock(value);
   }
-  // handle form submit
+  // Handle images
+  const onImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files){
+      for (let i = 0; i < files.length; i++) {
+        images.push(files[i]);
+      }
+    }
+  }
+  // Handle form submit
   const handleSbmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   }
@@ -81,7 +90,7 @@ const NewProduct = () => {
                 <label htmlFor="category">category</label>
               </Field>
               <Field>
-                <Input type="file" id="images" accept="image/*" multiple/>
+                <Input onChange={onImagesChange} type="file" id="images" accept="image/*" multiple/>
                 <label htmlFor="images">images</label>
               </Field>
               <Button type="submit">submit</Button>
