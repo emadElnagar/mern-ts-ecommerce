@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux';
 import AllUsers from './pages/admin/Users';
 import CategoriesPage from './pages/admin/Categories';
 import ProfileSettings from './pages/user/ProfileSettings';
-import NewProduct from './pages/admin/NewProduct';
+import NewProductPage from './pages/admin/NewProduct';
 
 function App() {
   const { user } = useSelector((state: any) => state.user);
@@ -39,7 +39,7 @@ function App() {
             <Route path='/admin' element={<AdminMainPage />} />
             <Route path='/admin/categories' element={<CategoriesPage />} />
             <Route path='/admin/users/all' element={<AllUsers />} />
-            <Route path='/admin/products/new' element={<NewProduct />} />
+            <Route path='/admin/products/new' element={<NewProductPage />} />
           </Fragment>
         }
         <Route path='*' element={<ErrorPage />} />

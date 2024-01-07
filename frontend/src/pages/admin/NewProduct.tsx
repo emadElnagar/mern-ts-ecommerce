@@ -5,8 +5,9 @@ import SideNav from "../../components/SideNav";
 import { Content } from "../../styles/admin";
 import { Field, Input, Select, Textarea } from "../../styles/form";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
-const NewProduct = () => {
+const NewProductPage = () => {
   const { categories } = useSelector((state: any) => state.category);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -43,6 +44,20 @@ const NewProduct = () => {
   // Handle form submit
   const handleSbmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!name || !description || !brand || !price || !countInStock || !category) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please enter all required fields'
+      });
+    }
+    else if (discount !== null && discount > price) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `Discount can't be greater than price`
+      });
+    }
   }
   return (
     <Fragment>
@@ -102,4 +117,4 @@ const NewProduct = () => {
   )
 }
 
-export default NewProduct;
+export default NewProductPage;
