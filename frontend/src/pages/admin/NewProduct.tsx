@@ -4,10 +4,12 @@ import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import SideNav from "../../components/SideNav";
 import { Content } from "../../styles/admin";
 import { Field, Input, Select, Textarea } from "../../styles/form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { NewProduct } from "../../features/ProductFeatures";
 
 const NewProductPage = () => {
+  const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -58,6 +60,16 @@ const NewProductPage = () => {
         text: `Discount can't be greater than price`
       });
     }
+    dispatch(NewProduct({
+      name,
+      description,
+      brand,
+      price,
+      discount,
+      countInStock,
+      category,
+      images
+    }));
   }
   return (
     <Fragment>
