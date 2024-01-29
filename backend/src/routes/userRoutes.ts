@@ -6,10 +6,12 @@ import {
   deleteUser, 
   getAllUsers, 
   updateUserName, 
+  uploadImage, 
   userLogin, 
   userProfile, 
   userRegister 
 } from '../controllers/userControllers';
+import { upload } from '../middlewares/multer';
 
 const userRouter  = Router();
 
@@ -30,6 +32,9 @@ userRouter.post('/:id/name/update', updateUserName);
 
 // CHANGE USER EMAIL
 userRouter.patch('/:id/email/change', changeUserEmail);
+
+// CHANGE USER IMAGE
+userRouter.patch('/profile/:id/image', upload.single('usrimg'), uploadImage);
 
 // CHANGE PASSWORD
 userRouter.patch('/:id/password/change', changePassword);

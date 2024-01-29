@@ -135,6 +135,23 @@ export const changePassword: RequestHandler = async (req, res) => {
   }
 }
 
+// CHANGE USER IMAGE
+export const uploadImage: RequestHandler = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (user) {
+    const newUser = { image: req.file?.filename };
+    User.updateOne({ _id: req.params.id }, { $set: newUser }).then(_result => {
+      res.status(200).json({
+        message: "Image uploaded successfully"
+      });
+    }).catch(error => {
+      res.status(401).json({
+        message: error.message
+      });
+    });
+  }
+}
+
 // DELETE PROFILE (By User)
 export const deleteProfile: RequestHandler = async (req, res) => {
   const user = await User.findById(req.params.id);
