@@ -266,6 +266,25 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.error = action.error;
       })
+      // Change user image
+      .addCase(changeUserImage.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(changeUserImage.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const {
+          arg: { _id }
+        } = action.meta;
+        if (_id) {
+          state.users = state.users.map((user) =>
+          user._id === _id ? action.payload : user
+          );
+        }
+      })
+      .addCase(changeUserImage.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
       // Delete user extra reducers (By Admin)
       .addCase(DeleteUser.pending, (state) => {
         state.isLoading = true;
