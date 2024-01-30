@@ -102,6 +102,18 @@ export const changeEmail: any = createAsyncThunk("users/emailchange", async (use
   }
 })
 
+// Change User Image
+export const changeUserImage: any = createAsyncThunk("users/image", async (data: any, { rejectWithValue }) => {
+  try {
+    const response = await axios.patch(`${url}/profile/${data._id}/image`, {
+      form: data.form
+    });
+    return response.data;
+  } catch (error: any) {
+    return rejectWithValue(error.message);
+  }
+});
+
 // Change User Password
 export const ChangePassword: any = createAsyncThunk("users/password/change", async (user: any, { rejectWithValue }) => {
   try {
