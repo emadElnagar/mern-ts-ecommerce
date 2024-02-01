@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { deleteProduct, getAllProducts, getSingleProduct, newProduct, updateProduct } from '../controllers/productController';
+import { upload } from "../middlewares/multer";
 
 const productRouter = Router();
 
@@ -10,7 +11,7 @@ productRouter.get('/all', getAllProducts);
 productRouter.get('/:slug', getSingleProduct);
 
 // CREATE NEW PRODUCT
-productRouter.post('/new', newProduct);
+productRouter.post('/new', upload.array('product'),newProduct);
 
 // UPDATE PRODUCT
 productRouter.put('/:id/update', updateProduct);
