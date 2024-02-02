@@ -160,9 +160,26 @@ export const Image = styled.img`
   max-width: 100%;
 `
 
+export const UserForm = styled.form`
+  position: absolute;
+  background: #ffffff9;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.5s ease;
+`
+
 export const ImgContainer = styled.div`
   max-width: 250px;
   margin: auto;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
+  &:hover .full-height {
+    height: 100%;
+  }
 `
