@@ -9,6 +9,7 @@ import { Input } from "../../styles/form";
 const ProfilePage = () => {
   const { id } = useParams();
   const { profile } = useSelector((state: any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(GetProfile(id));
@@ -24,9 +25,12 @@ const ProfilePage = () => {
         <Container>
           <ImgContainer>
               <Image src={`${profile.image ? `${profile.image}` : `${process.env.PUBLIC_URL + '/user-icon-2098873_640.png'}`}`} />
-              <UserForm className="full-height">
-                <Input type='file' />
-              </UserForm>
+              {
+                user._id === profile ._id &&
+                <UserForm className="full-height">
+                  <Input type='file' />
+                </UserForm>
+              }
           </ImgContainer>
           <h3 className="text-center">{ profile.firstName } { profile.lastName }</h3>
         </Container>
