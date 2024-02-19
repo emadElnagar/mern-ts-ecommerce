@@ -31,9 +31,9 @@ const initialState: UserState = {
 }
 
 // User Sign Up Service
-export const SignUp: any = createAsyncThunk("users/register", async (register: object, { rejectWithValue }) => {
+export const SignUp: any = createAsyncThunk("users/register", async (user: object, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${url}/register`, register);
+    const response = await axios.post(`${url}/register`, user);
     sessionStorage.setItem('userInfo', JSON.stringify(response.data));
     return response.data;
   } catch (error: any) {    
@@ -42,9 +42,9 @@ export const SignUp: any = createAsyncThunk("users/register", async (register: o
 });
 
 // User Login Service
-export const Login: any = createAsyncThunk("users/login", async (login: object, { rejectWithValue }) => {
+export const Login: any = createAsyncThunk("users/login", async (user: object, { rejectWithValue }) => {
   try {
-    const response = await axios.post(`${url}/login`, login);
+    const response = await axios.post(`${url}/login`, user);
     sessionStorage.setItem('userInfo', JSON.stringify(response.data));
     return response.data;
   } catch (error: any) {
@@ -88,7 +88,7 @@ export const updateUserName: any = createAsyncThunk("users/namechange", async (u
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
-})
+});
 
 // Change Email
 export const changeEmail: any = createAsyncThunk("users/emailchange", async (user: any, { rejectWithValue }) => {
@@ -100,7 +100,7 @@ export const changeEmail: any = createAsyncThunk("users/emailchange", async (use
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
-})
+});
 
 // Change User Image
 export const changeUserImage: any = createAsyncThunk("users/image", async (data: any, { rejectWithValue }) => {
@@ -308,6 +308,7 @@ const userSlice = createSlice({
       })
       .addCase(DeleteProfile.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.user = null;
         const {
           arg: { _id },
         } = action.meta;
