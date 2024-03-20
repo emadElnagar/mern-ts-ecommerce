@@ -5,7 +5,7 @@ interface User {
   lastName: string;
   email: string;
   password: string;
-  isAdmin: boolean;
+  role: string;
   image?: string;
   phone?: string;
 }
@@ -15,7 +15,11 @@ const userSchema = new Schema<User>({
   lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  isAdmin: { type: Boolean, default: false },
+  role: {
+    type: String,
+    enum: ['user', 'admin', 'moderator'],
+    default: 'user'
+  },
   image: String,
   phone: String,
 }, {
