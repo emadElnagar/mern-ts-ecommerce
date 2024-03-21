@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 const url = 'http://localhost:5000/api/users';
@@ -9,7 +10,7 @@ export interface User {
   lastName: string;
   email: string;
   password: string;
-  isAdming: boolean;
+  role: string;
   image?: string;
   phone?: string;
 }
@@ -34,8 +35,9 @@ const initialState: UserState = {
 export const SignUp: any = createAsyncThunk("users/register", async (user: object, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${url}/register`, user);
-    sessionStorage.setItem('userInfo', JSON.stringify(response.data));
-    return response.data;
+    const data = jwtDecode<JwtPayload>(response.data.token);
+    sessionStorage.setItem('userInfo', JSON.stringify(data));
+    return data;
   } catch (error: any) {    
     return rejectWithValue(error.message);
   }
@@ -45,8 +47,9 @@ export const SignUp: any = createAsyncThunk("users/register", async (user: objec
 export const Login: any = createAsyncThunk("users/login", async (user: object, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${url}/login`, user);
-    sessionStorage.setItem('userInfo', JSON.stringify(response.data));
-    return response.data;
+    const data = jwtDecode<JwtPayload>(response.data.token);
+    sessionStorage.setItem('userInfo', JSON.stringify(data));
+    return data;
   } catch (error: any) {
     return rejectWithValue(error.message);
   }
