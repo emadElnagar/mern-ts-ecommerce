@@ -34,7 +34,7 @@ function App() {
           <Route path='/users/profile/settings' element={<ProfileSettings />} />
         }
         {
-          user !== null && user.isAdmin && 
+          user !== null && user.role === 'admin' && 
           <Fragment>
             <Route path='/admin' element={<AdminMainPage />} />
             <Route path='/admin/categories' element={<CategoriesPage />} />
