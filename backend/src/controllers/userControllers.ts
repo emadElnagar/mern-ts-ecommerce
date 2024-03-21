@@ -1,6 +1,7 @@
 import { RequestHandler } from "express";
 import User from "../models/user";
 import bcrypt from 'bcrypt';
+import { generateToken } from "../middlewares/auth";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
@@ -20,15 +21,10 @@ export const userRegister: RequestHandler = async (req, res) => {
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, 10),
   });
+  const token = generateToken(user);
   user.save().then(user => {
-    res.send({
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      isAdmin: user.isAdmin,
-      image: user.image,
-      phone: user.phone,
+    res.status(200).json({
+      token
     });
   }).catch(err => {
     res.status(401).json({
@@ -40,16 +36,11 @@ export const userRegister: RequestHandler = async (req, res) => {
 // USER LOGIN CONTROLLER
 export const userLogin: RequestHandler = async (req, res) => {
   const user = await User.findOne({email: req.body.email});
-  if(user){
-    if(bcrypt.compareSync(req.body.password, user.password)){
-      res.send({
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        isAdmin: user.isAdmin,
-        image: user.image,
-        phone: user.phone,
+  if (user){
+    if (bcrypt.compareSync(req.body.password, user.password)){
+      const token = generateToken(user);
+      res.status(200).json({
+        token
       });
       return;
     }
