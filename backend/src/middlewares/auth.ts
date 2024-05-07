@@ -25,7 +25,7 @@ export const isAdmin = async (req: { user: { _id: any; }; }, res: { status: (arg
   try {
     const user = await User.findById(req.user._id);
     if (user) {
-      if (user.isAdmin !== true) {
+      if (user.role === 'admin') {
         return res.status(401).send({
           success: false,
           message: "UnAuthorized Access",
