@@ -7,7 +7,7 @@ import { Container, Image, ImgContainer, UserForm } from "../../styles/main";
 import { Input } from "../../styles/form";
 
 const ProfilePage = () => {
-  const [userImg, setUserImg] = useState<File>();
+  const [userImg, setUserImg] = useState<File | undefined>();
   const { id } = useParams();
   const { profile } = useSelector((state: any) => state.user);
   const { user } = useSelector((state: any) => state.user);
@@ -24,17 +24,19 @@ const ProfilePage = () => {
     setUserImg(target.files[0]);
   };
   // Change user image
-  const handleSubmit = () => {
+  const handleSubmit = (e: React.SyntheticEvent) => {
+    e.preventDefault();
+    if (typeof userImg === "undefined") return;
     const formData = new FormData();
-    if (userImg) {
-      formData.append("usrimg", userImg);
-      dispatch(
-        changeUserImage({
-          _id: profile._id,
-          form: formData,
-        })
-      );
-    }
+    formData.append("profile", userImg);
+    dispatch(
+      changeUserImage({
+        _id: user._id,
+        formData,
+      })
+    );
+    setUserImg(undefined);
+    dispatch(GetProfile(id));
   };
   return (
     <Fragment>
