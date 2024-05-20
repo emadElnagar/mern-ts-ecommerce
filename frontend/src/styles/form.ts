@@ -1,22 +1,22 @@
-import styled from "styled-components"
+import styled from "styled-components";
 
 export const Form = styled.form`
   width: 500px;
   box-shadow: 0 0 5px #888888;
   padding: 30px 50px;
   margin: auto;
-  @media (max-width:767px) {
+  @media (max-width: 767px) {
     width: 100%;
   }
-`
+`;
 
 export const InlineForm = styled.form`
   display: flex;
   padding: 30px 50px;
-  @media (max-width:991px) {
+  @media (max-width: 991px) {
     padding: 30px 5px;
   }
-`
+`;
 
 export const Field = styled.div`
   display: flex;
@@ -25,7 +25,7 @@ export const Field = styled.div`
   &:last-of-type {
     margin-bottom: 15px;
   }
-`
+`;
 
 export const Input = styled.input`
   border: none;
@@ -39,9 +39,9 @@ export const Input = styled.input`
     border-bottom: 1px solid #000;
   }
   &:required + label:after {
-    content: ' *'
+    content: " *";
   }
-`
+`;
 
 export const BrdInput = styled.input`
   border: none;
@@ -52,7 +52,11 @@ export const BrdInput = styled.input`
     outline: none;
     border: 1px solid #000;
   }
-`
+`;
+
+export const FileInput = styled.input`
+  display: none;
+`;
 
 export const Textarea = styled.textarea`
   width: 100%;
@@ -63,15 +67,23 @@ export const Textarea = styled.textarea`
     outline: none;
     border: 1px solid #000;
   }
-`
+`;
+
+export const Label = styled.label`
+  .icon {
+    color: #fff;
+    font-size: 20px;
+    cursor: pointer;
+  }
+`;
 
 export const Paragraph = styled.p`
   margin-top: 15px;
   a {
-    color: #00B7FF;
+    color: #00b7ff;
   }
-`
+`;
 
 export const Select = styled.select`
   padding: 5px;
-`
+`;

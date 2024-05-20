@@ -4,7 +4,8 @@ import { useParams } from "react-router-dom";
 import { GetProfile, changeUserImage } from "../../features/UserFeatures";
 import { Helmet } from "react-helmet";
 import { Container, Image, ImgContainer, UserForm } from "../../styles/main";
-import { Input } from "../../styles/form";
+import { FileInput, Label } from "../../styles/form";
+import { FaCamera } from "react-icons/fa";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -53,9 +54,17 @@ const ProfilePage = () => {
                   : `${process.env.PUBLIC_URL + "/user-icon-2098873_640.png"}`
               }`}
             />
-            {user._id === profile._id && (
-              <UserForm onSubmit={handleSubmit} className="full-height">
-                <Input type="file" onChange={hangelImageUpload} />
+            {user && user._id === profile._id && (
+              <UserForm onSubmit={handleSubmit}>
+                <FileInput
+                  type="file"
+                  id="img"
+                  accept="*/images"
+                  onChange={hangelImageUpload}
+                />
+                <Label htmlFor="img">
+                  <FaCamera className="icon" />
+                </Label>
               </UserForm>
             )}
           </ImgContainer>
