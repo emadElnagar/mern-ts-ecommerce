@@ -48,3 +48,7 @@ a {
   border-radius: 50%;
   border: 1px solid #000;
 }
+
+.mi-5 {
+  margin-inline-end: 5px;
+}

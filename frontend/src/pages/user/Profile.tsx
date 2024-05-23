@@ -3,9 +3,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { GetProfile, changeUserImage } from "../../features/UserFeatures";
 import { Helmet } from "react-helmet";
-import { Container, Image, ImgContainer, UserForm } from "../../styles/main";
+import {
+  Button,
+  Container,
+  Image,
+  ImgContainer,
+  UserForm,
+} from "../../styles/main";
 import { FileInput, Label } from "../../styles/form";
 import { FaCamera } from "react-icons/fa";
+import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -39,6 +46,10 @@ const ProfilePage = () => {
     setUserImg(undefined);
     dispatch(GetProfile(id));
   };
+  // Close form
+  const close = () => {
+    setUserImg(undefined);
+  };
   return (
     <Fragment>
       <Helmet>
@@ -58,15 +69,28 @@ const ProfilePage = () => {
             />
             {user && user._id === profile._id && (
               <UserForm onSubmit={handleSubmit}>
-                <FileInput
-                  type="file"
-                  id="img"
-                  accept="*/images"
-                  onChange={hangelImageUpload}
-                />
-                <Label htmlFor="img">
-                  <FaCamera className="icon" />
-                </Label>
+                {userImg ? (
+                  <div>
+                    <Button className="mi-5" type="submit">
+                      <IoMdCheckmark />
+                    </Button>
+                    <Button onClick={close}>
+                      <IoMdClose />
+                    </Button>
+                  </div>
+                ) : (
+                  <>
+                    <FileInput
+                      type="file"
+                      id="img"
+                      accept="*/images"
+                      onChange={hangelImageUpload}
+                    />
+                    <Label htmlFor="img">
+                      <FaCamera className="icon" />
+                    </Label>
+                  </>
+                )}
               </UserForm>
             )}
           </ImgContainer>
