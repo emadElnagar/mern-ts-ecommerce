@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import axios from "axios";
 
-const url = 'http://localhost:5000/api/users';
+const url = "http://localhost:5000/api/users";
 
 export interface User {
   _id?: object;
@@ -16,11 +16,11 @@ export interface User {
 }
 
 interface UserState {
-  users: User[],
-  user: User | null,
-  profile: User | null,
-  isLoading: boolean,
-  error: object | null
+  users: User[];
+  user: User | null;
+  profile: User | null;
+  isLoading: boolean;
+  error: object | null;
 }
 
 const initialState: UserState = {
@@ -28,133 +28,164 @@ const initialState: UserState = {
   user: null,
   profile: null,
   isLoading: false,
-  error: null
-}
+  error: null,
+};
 
 // User Sign Up Service
-export const SignUp: any = createAsyncThunk("users/register", async (user: object, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/register`, user);
-    const data = jwtDecode<JwtPayload>(response.data.token);
-    sessionStorage.setItem('userInfo', JSON.stringify(data));
-    return data;
-  } catch (error: any) {    
-    return rejectWithValue(error.message);
+export const SignUp: any = createAsyncThunk(
+  "users/register",
+  async (user: object, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/register`, user);
+      const data = jwtDecode<JwtPayload>(response.data.token);
+      sessionStorage.setItem("userInfo", JSON.stringify(data));
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // User Login Service
-export const Login: any = createAsyncThunk("users/login", async (user: object, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/login`, user);
-    const data = jwtDecode<JwtPayload>(response.data.token);
-    sessionStorage.setItem('userInfo', JSON.stringify(data));
-    return data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const Login: any = createAsyncThunk(
+  "users/login",
+  async (user: object, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/login`, user);
+      const data = jwtDecode<JwtPayload>(response.data.token);
+      sessionStorage.setItem("userInfo", JSON.stringify(data));
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // User Logout Service
 export const Logout: any = createAsyncThunk("users/logout", async () => {
-  sessionStorage.removeItem('userInfo');
+  sessionStorage.removeItem("userInfo");
 });
 
 // Get All Users
-export const GetAllUsers: any = createAsyncThunk("users/all", async (_, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/all`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const GetAllUsers: any = createAsyncThunk(
+  "users/all",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/all`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Get User Profile
-export const GetProfile: any = createAsyncThunk("users/profile", async (id: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/profile/${id}`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const GetProfile: any = createAsyncThunk(
+  "users/profile",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/profile/${id}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Update User Name
-export const updateUserName: any = createAsyncThunk("users/namechange", async (user: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/${user._id}/name/update`, {
-      firstName: user.firstName,
-      lastName: user.lastName
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const updateUserName: any = createAsyncThunk(
+  "users/namechange",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/${user._id}/name/update`, {
+        firstName: user.firstName,
+        lastName: user.lastName,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Change Email
-export const changeEmail: any = createAsyncThunk("users/emailchange", async (user: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.patch(`${url}/${user._id}/email/change`, {
-      email: user.email
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const changeEmail: any = createAsyncThunk(
+  "users/emailchange",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${url}/${user._id}/email/change`, {
+        email: user.email,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Change User Image
-export const changeUserImage: any = createAsyncThunk("users/image", async (data: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.patch(`${url}/profile/${data._id}/image`, {
-      form: data.form
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const changeUserImage: any = createAsyncThunk(
+  "users/image",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(
+        `${url}/profile/${data._id}/image`,
+        data.formData
+      );
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Change User Password
-export const ChangePassword: any = createAsyncThunk("users/password/change", async (user: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.patch(`${url}/${user._id}/password/change`, {
-      currentPassword: user.currentPassword,
-      newPassword: user.newPassword
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const ChangePassword: any = createAsyncThunk(
+  "users/password/change",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${url}/${user._id}/password/change`, {
+        currentPassword: user.currentPassword,
+        newPassword: user.newPassword,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Delete User (By Admin)
-export const DeleteUser: any = createAsyncThunk("users/delete", async (id: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.delete(`${url}/${id}/delete`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const DeleteUser: any = createAsyncThunk(
+  "users/delete",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${url}/${id}/delete`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Delete Profile (By User)
-export const DeleteProfile: any = createAsyncThunk("profile/delte", async (user: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/profile/${user._id}/delete`, {
-      password: user.password
-    });
-    sessionStorage.removeItem('userInfo');
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const DeleteProfile: any = createAsyncThunk(
+  "profile/delte",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/profile/${user._id}/delete`, {
+        password: user.password,
+      });
+      sessionStorage.removeItem("userInfo");
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -223,13 +254,13 @@ const userSlice = createSlice({
         } = action.meta;
         if (_id) {
           state.users = state.users.map((user) =>
-          user._id === _id ? action.payload : user
+            user._id === _id ? action.payload : user
           );
         }
       })
       .addCase(updateUserName.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error
+        state.error = action.error;
       })
       // Change user email
       .addCase(changeEmail.pending, (state) => {
@@ -242,8 +273,8 @@ const userSlice = createSlice({
         } = action.meta;
         if (_id) {
           state.users = state.users.map((user) =>
-          user._id === _id ? action.payload : user
-        );
+            user._id === _id ? action.payload : user
+          );
         }
       })
       .addCase(changeEmail.rejected, (state, action) => {
@@ -261,7 +292,7 @@ const userSlice = createSlice({
         } = action.meta;
         if (_id) {
           state.users = state.users.map((user) =>
-          user._id === _id ? action.payload : user
+            user._id === _id ? action.payload : user
           );
         }
       })
@@ -276,11 +307,11 @@ const userSlice = createSlice({
       .addCase(changeUserImage.fulfilled, (state, action) => {
         state.isLoading = false;
         const {
-          arg: { _id }
+          arg: { _id },
         } = action.meta;
         if (_id) {
           state.users = state.users.map((user) =>
-          user._id === _id ? action.payload : user
+            user._id === _id ? action.payload : user
           );
         }
       })
@@ -298,7 +329,9 @@ const userSlice = createSlice({
           arg: { _id },
         } = action.meta;
         if (_id) {
-          state.users = state.users.filter((user) => user._id !== action.payload)
+          state.users = state.users.filter(
+            (user) => user._id !== action.payload
+          );
         }
       })
       .addCase(DeleteUser.rejected, (state, action) => {
@@ -316,14 +349,16 @@ const userSlice = createSlice({
           arg: { _id },
         } = action.meta;
         if (_id) {
-          state.users = state.users.filter((user) => user._id !== action.payload)
+          state.users = state.users.filter(
+            (user) => user._id !== action.payload
+          );
         }
       })
       .addCase(DeleteProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
-      })
-  }
+      });
+  },
 });
 
 export default userSlice.reducer;

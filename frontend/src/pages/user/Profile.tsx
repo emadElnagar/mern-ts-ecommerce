@@ -36,7 +36,7 @@ const ProfilePage = () => {
     e.preventDefault();
     if (typeof userImg === "undefined") return;
     const formData = new FormData();
-    formData.append("profile", userImg);
+    formData.append("usrimg", userImg);
     dispatch(
       changeUserImage({
         _id: user._id,
