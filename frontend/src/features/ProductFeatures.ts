@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const url = 'http://localhost:5000/api/products';
+const url = "http://localhost:5000/api/products";
 
 export interface Product {
   _id?: object;
@@ -16,99 +16,109 @@ export interface Product {
   images: string[];
   category: object;
   seller: object;
-  reviews?: [
-    user: object,
-    rating: number,
-    comment: string,
-    createdAt: Date
-  ];
+  reviews?: [user: object, rating: number, comment: string, createdAt: Date];
 }
 
 interface ProductState {
-  products: Product[],
-  product: Product | null,
-  isLoading: boolean,
-  error: object | null
+  products: Product[];
+  product: Product | null;
+  isLoading: boolean;
+  error: object | null;
 }
 
 const initialState: ProductState = {
   products: [],
   product: null,
   isLoading: false,
-  error: null
-}
+  error: null,
+};
 
 // Create new product
-export const NewProduct: any = createAsyncThunk("products/new", async (product: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.post(`${url}/new`, {
-      name: product.name,
-      description: product.description,
-      brand: product.brand,
-      price: product.price,
-      discount: product.discount,
-      countInStock: product.countInStock,
-      images: product.images,
-      category: product.category,
-      seller: product.seller
-    });
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const NewProduct: any = createAsyncThunk(
+  "products/new",
+  async (product: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`${url}/new`, {
+        name: product.name,
+        description: product.description,
+        brand: product.brand,
+        price: product.price,
+        discount: product.discount,
+        countInStock: product.countInStock,
+        images: product.images,
+        category: product.category,
+        seller: product.seller,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Get all products
-export const GetAllProducts: any = createAsyncThunk("products/all", async (_, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/all`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const GetAllProducts: any = createAsyncThunk(
+  "products/all",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/all`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Get single product
-export const GetSingleProduct: any = createAsyncThunk("producsts/single", async (product: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.get(`${url}/${product.slug}`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const GetSingleProduct: any = createAsyncThunk(
+  "producsts/single",
+  async (product: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/${product.slug}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 // Update product
-export const UpdateProduct: any = createAsyncThunk("products/update",async (product: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.put(`${url}/${product._id}/update`, {
-      name: product.name,
-      description: product.description,
-      brand: product.brand,
-      price: product.price,
-      discount: product.discount,
-      countInStock: product.countInStock,
-      images: product.images,
-      category: product.category
-    })
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const UpdateProduct: any = createAsyncThunk(
+  "products/update",
+  async (product: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${url}/${product._id}/update`, {
+        name: product.name,
+        description: product.description,
+        brand: product.brand,
+        price: product.price,
+        discount: product.discount,
+        countInStock: product.countInStock,
+        images: product.images,
+        category: product.category,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-})
+);
 
 // Delete product
-export const DeleteProduct: any = createAsyncThunk("products/delete", async (product: any, { rejectWithValue }) => {
-  try {
-    const response = await axios.delete(`${url}/${product._id}/delete`);
-    return response.data;
-  } catch (error: any) {
-    return rejectWithValue(error.message);
+export const DeleteProduct: any = createAsyncThunk(
+  "products/delete",
+  async (product: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`${url}/${product._id}/delete`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
   }
-});
+);
 
 const productSlice = createSlice({
-  name: 'user',
+  name: "product",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -166,7 +176,7 @@ const productSlice = createSlice({
       })
       .addCase(UpdateProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error
+        state.error = action.error;
       })
       // Delete product
       .addCase(DeleteProduct.pending, (state) => {
@@ -178,14 +188,16 @@ const productSlice = createSlice({
           arg: { _id },
         } = action.meta;
         if (_id) {
-          state.products = state.products.filter((product) => product._id !== action.payload);
+          state.products = state.products.filter(
+            (product) => product._id !== action.payload
+          );
         }
       })
       .addCase(DeleteProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
-      })
-  }
+      });
+  },
 });
 
 export default productSlice.reducer;
