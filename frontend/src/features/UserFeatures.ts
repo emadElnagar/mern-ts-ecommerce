@@ -196,6 +196,7 @@ const userSlice = createSlice({
       })
       .addCase(SignUp.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.users.push(action.payload);
         state.user = action.payload;
       })
@@ -209,6 +210,7 @@ const userSlice = createSlice({
       })
       .addCase(Login.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.user = action.payload;
       })
       .addCase(Login.rejected, (state, action) => {
@@ -218,6 +220,7 @@ const userSlice = createSlice({
       // User logout extra reducers
       .addCase(Logout.fulfilled, (state) => {
         state.user = null;
+        state.error = null;
       })
       // Get all users extra reducers
       .addCase(GetAllUsers.pending, (state) => {
@@ -225,6 +228,7 @@ const userSlice = createSlice({
       })
       .addCase(GetAllUsers.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.users = action.payload;
       })
       .addCase(GetAllUsers.rejected, (state, action) => {
@@ -237,6 +241,7 @@ const userSlice = createSlice({
       })
       .addCase(GetProfile.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.profile = action.payload;
       })
       .addCase(GetProfile.rejected, (state, action) => {
@@ -249,6 +254,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserName.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -268,6 +274,7 @@ const userSlice = createSlice({
       })
       .addCase(changeEmail.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -287,6 +294,7 @@ const userSlice = createSlice({
       })
       .addCase(ChangePassword.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -306,6 +314,7 @@ const userSlice = createSlice({
       })
       .addCase(changeUserImage.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -325,6 +334,7 @@ const userSlice = createSlice({
       })
       .addCase(DeleteUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -344,6 +354,7 @@ const userSlice = createSlice({
       })
       .addCase(DeleteProfile.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.user = null;
         const {
           arg: { _id },

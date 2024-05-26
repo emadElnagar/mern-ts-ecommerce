@@ -129,6 +129,7 @@ const productSlice = createSlice({
       })
       .addCase(NewProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.products.push(action.payload);
       })
       .addCase(NewProduct.rejected, (state, action) => {
@@ -141,6 +142,7 @@ const productSlice = createSlice({
       })
       .addCase(GetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.products = action.payload;
       })
       .addCase(GetAllProducts.rejected, (state, action) => {
@@ -153,6 +155,7 @@ const productSlice = createSlice({
       })
       .addCase(GetSingleProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.product = action.payload;
       })
       .addCase(GetSingleProduct.rejected, (state, action) => {
@@ -165,6 +168,7 @@ const productSlice = createSlice({
       })
       .addCase(UpdateProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           args: { _id },
         } = action.meta;
@@ -184,6 +188,7 @@ const productSlice = createSlice({
       })
       .addCase(DeleteProduct.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;

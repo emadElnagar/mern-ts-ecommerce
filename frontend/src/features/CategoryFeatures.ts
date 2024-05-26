@@ -90,6 +90,7 @@ const categorySlice = createSlice({
       })
       .addCase(NewCategory.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.categories.push(action.payload);
       })
       .addCase(NewCategory.rejected, (state, action) => {
@@ -102,6 +103,7 @@ const categorySlice = createSlice({
       })
       .addCase(GetAllCategories.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         state.categories = action.payload;
       })
       .addCase(GetAllCategories.rejected, (state, action) => {
@@ -114,6 +116,7 @@ const categorySlice = createSlice({
       })
       .addCase(UpdateCategory.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
@@ -133,6 +136,7 @@ const categorySlice = createSlice({
       })
       .addCase(DeleteCategory.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.error = null;
         const {
           arg: { _id },
         } = action.meta;
