@@ -76,6 +76,9 @@ const NewProductPage = () => {
     formData.append("name", name);
     formData.append("description", description);
     formData.append("brand", brand);
+    formData.append("price", price!.toString());
+    formData.append("discount", discount!.toString());
+    formData.append("countInStock", countInStock!.toString());
     formData.append("category", category);
   };
   return (
