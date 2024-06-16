@@ -38,7 +38,7 @@ export const newProduct: RequestHandler = async (req, res) => {
     brand: string;
     price: number;
     countInStock: number;
-    images: string;
+    images: string | undefined;
     category: object;
     seller: object;
   }
@@ -53,7 +53,7 @@ export const newProduct: RequestHandler = async (req, res) => {
     brand: req.body.brand,
     price: req.body.price,
     countInStock: req.body.countInStock,
-    images: req.body.images,
+    images: req.file?.filename,
     category: req.body.category,
     seller: req.body.seller,
   });
