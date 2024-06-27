@@ -18,12 +18,18 @@ import { MdDelete } from "react-icons/md";
 import { IoPencil } from "react-icons/io5";
 import Swal from "sweetalert2";
 
+type UpdateUser = {
+  role: string;
+};
+
 const AllUsers = () => {
   const dispatch = useDispatch();
   const { users, error, loading } = useSelector((state: any) => state.user);
+  // Get all users
   useEffect(() => {
     dispatch(GetAllUsers());
   }, [dispatch]);
+  // Delete user
   const handleDelete = (id: Key) => {
     Swal.fire({
       title: "Are you sure?",
@@ -39,6 +45,31 @@ const AllUsers = () => {
         dispatch(GetAllUsers());
         Swal.fire("Deleted!", "User has been deleted.", "success");
       }
+    });
+  };
+  // Update user
+  let userRoleInput: HTMLInputElement;
+  const handleUpdate = (id: Key) => {
+    Swal.fire<UpdateUser>({
+      title: "Update user",
+      html: `
+        <input type="text" id="role" class="swal2-input" placeholder="role">
+      `,
+      confirmButtonText: "Confirm",
+      focusConfirm: false,
+      didOpen: () => {
+        const popup = Swal.getPopup()!;
+        userRoleInput = popup.querySelector("#role") as HTMLInputElement;
+        userRoleInput.onkeyup = (event) =>
+          event.key === "Enter" && Swal.clickConfirm();
+      },
+      preConfirm: () => {
+        const userRole = userRoleInput.value;
+        if (!userRole) {
+          Swal.showValidationMessage(`Please Choose user role`);
+        }
+        return { userRole };
+      },
     });
   };
   return (
@@ -71,7 +102,10 @@ const AllUsers = () => {
                     </div>
                     {user.role === "admin" && <Note>Admin</Note>}
                     <div>
-                      <UpdateButton title="Update user">
+                      <UpdateButton
+                        title="Update user"
+                        onClick={() => handleUpdate(user._id)}
+                      >
                         <IoPencil />
                       </UpdateButton>
                       <DeleteButton
