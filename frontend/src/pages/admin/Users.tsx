@@ -64,11 +64,11 @@ const AllUsers = () => {
           event.key === "Enter" && Swal.clickConfirm();
       },
       preConfirm: () => {
-        const userRole = userRoleInput.value;
-        if (!userRole) {
+        const role = userRoleInput.value;
+        if (!role) {
           Swal.showValidationMessage(`Please Choose user role`);
         }
-        return { userRole };
+        return { role };
       },
     });
   };
