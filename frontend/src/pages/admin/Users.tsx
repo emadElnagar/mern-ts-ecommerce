@@ -53,7 +53,10 @@ const AllUsers = () => {
     Swal.fire<UpdateUser>({
       title: "Update user",
       html: `
-        <input type="text" id="role" class="swal2-input" placeholder="role">
+        <select name="role" id="role">
+          <option value="user">user</option>
+          <option value="admin">admin</option>
+        </select>
       `,
       confirmButtonText: "Confirm",
       focusConfirm: false,
