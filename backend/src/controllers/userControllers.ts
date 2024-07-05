@@ -157,6 +157,28 @@ export const uploadImage: RequestHandler = async (req, res) => {
   }
 };
 
+// CHANGE USER ROLE
+export const changeRole: RequestHandler = async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) {
+    res.status(404).json({
+      message: "User not found",
+    });
+  }
+  const newUser = { role: req.body.role };
+  User.updateOne({ _id: req.params.id }, { $set: newUser })
+    .then((_result) => {
+      res.status(200).json({
+        message: "User role updated successfully",
+      });
+    })
+    .catch((error) => {
+      res.status(401).json({
+        message: error.message,
+      });
+    });
+};
+
 // DELETE PROFILE (By User)
 export const deleteProfile: RequestHandler = async (req, res) => {
   const user = await User.findById(req.params.id);
