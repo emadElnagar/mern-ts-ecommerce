@@ -49,13 +49,17 @@ const AllUsers = () => {
   };
   // Update user
   let userRoleInput: HTMLInputElement;
-  const handleUpdate = (id: Key) => {
+  const handleUpdate = (id: Key, userRole: string) => {
     Swal.fire<UpdateUser>({
       title: "Update user",
       html: `
         <select name="role" id="role">
-          <option value="user">user</option>
-          <option value="admin">admin</option>
+          <option value="user" ${
+            userRole === "user" && "selected"
+          }>user</option>
+          <option value="admin" ${
+            userRole === "admin" && "selected"
+          }>admin</option>
         </select>
       `,
       confirmButtonText: "Confirm",
@@ -107,7 +111,7 @@ const AllUsers = () => {
                     <div>
                       <UpdateButton
                         title="Update user"
-                        onClick={() => handleUpdate(user._id)}
+                        onClick={() => handleUpdate(user._id, user.role)}
                       >
                         <IoPencil />
                       </UpdateButton>
