@@ -12,7 +12,11 @@ import {
 } from "../../styles/main";
 import { Fragment, Key, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { DeleteUser, GetAllUsers } from "../../features/UserFeatures";
+import {
+  DeleteUser,
+  GetAllUsers,
+  UpdateRole,
+} from "../../features/UserFeatures";
 import { Content } from "../../styles/admin";
 import { MdDelete } from "react-icons/md";
 import { IoPencil } from "react-icons/io5";
@@ -79,6 +83,17 @@ const AllUsers = () => {
         }
         return { role };
       },
+    }).then((result) => {
+      const role = result.value?.role;
+      if (result.isConfirmed) {
+        dispatch(
+          UpdateRole({
+            id,
+            role,
+          })
+        );
+        dispatch(GetAllUsers());
+      }
     });
   };
   return (
