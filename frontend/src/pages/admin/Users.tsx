@@ -53,14 +53,16 @@ const AllUsers = () => {
     Swal.fire<UpdateUser>({
       title: "Update user",
       html: `
-        <select name="role" id="role">
-          <option value="user" ${
-            userRole === "user" && "selected"
-          }>user</option>
-          <option value="admin" ${
-            userRole === "admin" && "selected"
-          }>admin</option>
-        </select>
+        <div class="select">
+          <select name="role" id="role">
+            <option value="user" ${
+              userRole === "user" && "selected"
+            }>user</option>
+            <option value="admin" ${
+              userRole === "admin" && "selected"
+            }>admin</option>
+          </select>
+        </div>
       `,
       confirmButtonText: "Confirm",
       focusConfirm: false,
