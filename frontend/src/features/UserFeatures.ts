@@ -155,6 +155,21 @@ export const ChangePassword: any = createAsyncThunk(
   }
 );
 
+// Change User Role
+export const UpdateRole: any = createAsyncThunk(
+  "users/role",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.patch(`${url}/${user._id}/update/role`, {
+        role: user.role,
+      });
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Delete User (By Admin)
 export const DeleteUser: any = createAsyncThunk(
   "users/delete",
@@ -327,6 +342,26 @@ const userSlice = createSlice({
       .addCase(changeUserImage.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
+      })
+      // Update user role
+      .addCase(UpdateRole.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(UpdateRole.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      .addCase(UpdateRole.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const {
+          arg: { _id },
+        } = action.meta;
+        if (_id) {
+          state.users = state.users.map((user) =>
+            user._id === _id ? action.payload : user
+          );
+        }
       })
       // Delete user extra reducers (By Admin)
       .addCase(DeleteUser.pending, (state) => {
