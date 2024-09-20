@@ -63,11 +63,15 @@ const AllUsers = () => {
               userRole === "user" && "selected"
             }>user</option>
             <option value="admin" ${
+              userRole === "moderator" && "selected"
+            }>moderator</option>
+            <option value="admin" ${
               userRole === "admin" && "selected"
             }>admin</option>
           </select>
         </div>
       `,
+      showCancelButton: true,
       confirmButtonText: "Confirm",
       focusConfirm: false,
       didOpen: () => {
@@ -118,7 +122,7 @@ const AllUsers = () => {
                   lastName: string;
                   _id: Key;
                 }) => (
-                  <Slide>
+                  <Slide key={user._id}>
                     <div>
                       <h4>
                         {user.firstName} {user.lastName}
