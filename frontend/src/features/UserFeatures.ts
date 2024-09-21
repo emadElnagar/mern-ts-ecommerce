@@ -160,7 +160,7 @@ export const UpdateRole: any = createAsyncThunk(
   "users/role",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${url}/${user._id}/update/role`, {
+      const response = await axios.patch(`${url}/${user.id}/update/role`, {
         role: user.role,
       });
       return response.data;

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   changePassword,
+  changeRole,
   changeUserEmail,
   deleteProfile,
   deleteUser,
@@ -40,7 +41,7 @@ userRouter.patch("/profile/:id/image", upload.single("usrimg"), uploadImage);
 userRouter.patch("/:id/password/change", changePassword);
 
 // CHANGE USER ROLE
-userRouter.patch("/:id/update/role");
+userRouter.patch("/:id/update/role", changeRole);
 
 // DELETE MY PROFILE
 userRouter.post("/profile/:id/delete", deleteProfile);

@@ -62,7 +62,7 @@ const AllUsers = () => {
             <option value="user" ${
               userRole === "user" && "selected"
             }>user</option>
-            <option value="admin" ${
+            <option value="moderator" ${
               userRole === "moderator" && "selected"
             }>moderator</option>
             <option value="admin" ${
@@ -96,7 +96,6 @@ const AllUsers = () => {
             role,
           })
         );
-        dispatch(GetAllUsers());
       }
     });
   };
