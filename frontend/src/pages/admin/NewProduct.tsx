@@ -17,7 +17,7 @@ const NewProductPage = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
   const [countInStock, setCountInStock] = useState<number | null>(null);
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState(categories[0].title);
   const [images, setImages] = useState<File[]>([]);
   // Change price
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
