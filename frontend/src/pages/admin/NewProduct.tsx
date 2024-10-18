@@ -11,6 +11,7 @@ import { NewProduct } from "../../features/ProductFeatures";
 const NewProductPage = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
+  const { user } = useSelector((state: any) => state.user);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [brand, setBrand] = useState("");
@@ -80,6 +81,8 @@ const NewProductPage = () => {
     formData.append("discount", discount!.toString());
     formData.append("countInStock", countInStock!.toString());
     formData.append("category", category);
+    formData.append("seller", user._id);
+    dispatch(NewProduct(formData));
   };
   return (
     <Fragment>
