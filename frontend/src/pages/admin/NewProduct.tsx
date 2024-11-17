@@ -18,7 +18,7 @@ const NewProductPage = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
   const [countInStock, setCountInStock] = useState<number | null>(null);
-  const [category, setCategory] = useState(categories[0].title);
+  const [category, setCategory] = useState(categories[0]._id);
   const [images, setImages] = useState<File[]>([]);
   // Change price
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -43,7 +43,10 @@ const NewProductPage = () => {
   };
   // Handle images
   const onImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+    const target = e.target as HTMLInputElement & {
+      files: FileList;
+    };
+    const files = target.files;
     if (files) {
       for (let i = 0; i < files.length; i++) {
         images.push(files[i]);
@@ -54,6 +57,7 @@ const NewProductPage = () => {
   const handleSbmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData();
+    if (typeof images === "undefined") return;
     if (
       !name ||
       !description ||
@@ -67,22 +71,31 @@ const NewProductPage = () => {
         title: "Oops...",
         text: "Please enter all required fields",
       });
+    } else if (images.length < 1) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please upload at least 1 image",
+      });
     } else if (discount !== null && discount > price) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: `Discount can't be greater than price`,
       });
+    } else {
+      formData.append("name", name);
+      formData.append("description", description);
+      formData.append("brand", brand);
+      formData.append("price", price!.toString());
+      formData.append("discount", discount!.toString());
+      formData.append("countInStock", countInStock!.toString());
+      formData.append("category", category);
+      formData.append("images", JSON.stringify(images));
+      formData.append("seller", user._id);
+      dispatch(NewProduct(formData));
     }
-    formData.append("name", name);
-    formData.append("description", description);
-    formData.append("brand", brand);
-    formData.append("price", price!.toString());
-    formData.append("discount", discount!.toString());
-    formData.append("countInStock", countInStock!.toString());
-    formData.append("category", category);
-    formData.append("seller", user._id);
-    dispatch(NewProduct(formData));
+    setImages([]);
   };
   return (
     <Fragment>
@@ -166,7 +179,7 @@ const NewProductPage = () => {
                   id="category"
                 >
                   {categories.map((category: { _id: Key; title: string }) => (
-                    <option key={category._id} value={`${category.title}`}>
+                    <option key={category._id} value={`${category._id}`}>
                       {category.title}
                     </option>
                   ))}
