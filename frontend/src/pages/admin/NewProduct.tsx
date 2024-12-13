@@ -84,6 +84,11 @@ const NewProductPage = () => {
         text: `Discount can't be greater than price`,
       });
     } else {
+      images.forEach(function (item, index, arr) {
+        arr[index] = item;
+        formData.append(`imgnames`, item.name);
+        formData.append(`images`, item);
+      });
       formData.append("name", name);
       formData.append("description", description);
       formData.append("brand", brand);
@@ -91,7 +96,6 @@ const NewProductPage = () => {
       formData.append("discount", discount!.toString());
       formData.append("countInStock", countInStock!.toString());
       formData.append("category", category);
-      formData.append("images", JSON.stringify(images));
       formData.append("seller", user._id);
       dispatch(NewProduct(formData));
     }
@@ -191,6 +195,7 @@ const NewProductPage = () => {
                   onChange={onImagesChange}
                   type="file"
                   id="images"
+                  name="images"
                   accept="image/*"
                   multiple
                 />
