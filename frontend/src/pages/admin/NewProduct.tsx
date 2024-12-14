@@ -7,9 +7,11 @@ import { Field, Input, Select, Textarea } from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { NewProduct } from "../../features/ProductFeatures";
+import { useNavigate } from "react-router-dom";
 
 const NewProductPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { categories } = useSelector((state: any) => state.category);
   const { user } = useSelector((state: any) => state.user);
   const [name, setName] = useState("");
@@ -100,6 +102,7 @@ const NewProductPage = () => {
       dispatch(NewProduct(formData));
     }
     setImages([]);
+    navigate("/");
   };
   return (
     <Fragment>
