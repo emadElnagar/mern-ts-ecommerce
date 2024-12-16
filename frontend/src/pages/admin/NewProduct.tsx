@@ -99,10 +99,8 @@ const NewProductPage = () => {
       formData.append("countInStock", countInStock!.toString());
       formData.append("category", category);
       formData.append("seller", user._id);
-      dispatch(NewProduct(formData));
+      dispatch(NewProduct(formData)).then(setImages([])).then(navigate("/"));
     }
-    setImages([]);
-    navigate("/");
   };
   return (
     <Fragment>
