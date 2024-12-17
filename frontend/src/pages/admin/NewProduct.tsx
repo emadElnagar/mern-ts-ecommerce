@@ -95,10 +95,10 @@ const NewProductPage = () => {
       formData.append("description", description);
       formData.append("brand", brand);
       formData.append("price", price!.toString());
-      formData.append("discount", discount!.toString());
       formData.append("countInStock", countInStock!.toString());
       formData.append("category", category);
       formData.append("seller", user._id);
+      discount !== null && formData.append("discount", discount!.toString());
       dispatch(NewProduct(formData)).then(setImages([])).then(navigate("/"));
     }
   };
