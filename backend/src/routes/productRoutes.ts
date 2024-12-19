@@ -17,7 +17,7 @@ productRouter.get("/all", getAllProducts);
 productRouter.get("/:slug", getSingleProduct);
 
 // CREATE NEW PRODUCT
-productRouter.post("/new", upload.array("product", 6), newProduct);
+productRouter.post("/new", upload.array("images", 6), newProduct);
 
 // UPDATE PRODUCT
 productRouter.put("/:id/update", updateProduct);
