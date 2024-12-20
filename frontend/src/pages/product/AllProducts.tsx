@@ -1,6 +1,6 @@
 import { Fragment, Key, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Main, Section } from "../../styles/main";
+import { Container, Grid, Main, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllProducts } from "../../features/ProductFeatures";
 import ErrorBox from "../../components/ErrorBox";
@@ -28,9 +28,11 @@ const AllProducts = () => {
             ) : loading ? (
               <LoadingBox />
             ) : (
-              products.map((product: { _id: Key }) => (
-                <Product key={product._id} />
-              ))
+              <Grid>
+                {products.map((product: { _id: Key }) => (
+                  <Product key={product._id} />
+                ))}
+              </Grid>
             )}
           </Section>
         </Container>
