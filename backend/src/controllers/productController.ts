@@ -5,7 +5,7 @@ import slugify from "slugify";
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (_req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).sort({ createdAt: -1 });
     res.send(products);
   } catch (error) {
     res.send(error);
