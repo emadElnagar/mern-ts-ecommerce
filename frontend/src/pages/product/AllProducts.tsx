@@ -29,9 +29,24 @@ const AllProducts = () => {
               <LoadingBox />
             ) : (
               <Grid>
-                {products.map((product: { _id: Key }) => (
-                  <Product key={product._id} />
-                ))}
+                {products.map(
+                  (product: {
+                    _id: Key;
+                    name: string;
+                    images: string[];
+                    price: number;
+                    discount: number;
+                  }) => (
+                    <Product
+                      key={product._id}
+                      _id={product._id}
+                      name={product.name}
+                      image={product.images[0]}
+                      price={product.price}
+                      discount={product.discount}
+                    />
+                  )
+                )}
               </Grid>
             )}
           </Section>

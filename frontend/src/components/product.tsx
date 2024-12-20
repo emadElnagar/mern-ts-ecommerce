@@ -10,24 +10,41 @@ import {
 import { FaCartArrowDown } from "react-icons/fa";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
+import { Key } from "react";
 
-function Product() {
+type productProps = {
+  _id: Key;
+  name: string;
+  image: string;
+  price: number;
+  discount: number;
+};
+
+function Product(product: productProps) {
+  const realPrice = product.price - product.discount;
   return (
     <ProductDiv>
       <Link to="#">
         <ProductHeader>
-          <ProductTitle>tablet</ProductTitle>
+          <ProductTitle>{product.name}</ProductTitle>
         </ProductHeader>
         <ProductImg
-          src="https://electro.madrasthemes.com/wp-content/uploads/2016/03/apptablet-300x300.png"
+          src={`http://localhost:5000/${product.image}`}
           alt="There is a problem showing your photos"
         />
-        <FlexBetweenRow>
-          <span>$1000</span>
-          <small>
-            <OriginalPrice>$1200</OriginalPrice>
-          </small>
-        </FlexBetweenRow>
+        {product.discount ? (
+          <FlexBetweenRow>
+            <span>{realPrice}$</span>
+            <small>
+              <OriginalPrice>{product.price}$</OriginalPrice>
+            </small>
+          </FlexBetweenRow>
+        ) : (
+          <FlexBetweenRow>
+            <span>{product.price}$</span>
+          </FlexBetweenRow>
+        )}
+
         <FlexBetweenRow>
           <IconButton>
             <FaCartArrowDown /> add to cart
