@@ -14,7 +14,7 @@ export const getAllProducts: RequestHandler = async (_req, res) => {
 
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
-  const product = Product.findOne({ slug: req.params.id });
+  const product = Product.findOne({ slug: req.params.slug });
   if (product) {
     res.send(product);
   } else {
