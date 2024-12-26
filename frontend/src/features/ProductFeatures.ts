@@ -10,13 +10,15 @@ export interface Product {
   description: string;
   brand: string;
   price: number;
-  discount: number;
+  discount?: number;
   countInStock?: number;
   sold?: number;
   images: string[];
   category: object;
   seller: object;
-  reviews?: [user: object, rating: number, comment: string, createdAt: Date];
+  reviews?: [
+    { user: object; rating: number; comment: string; createdAt: Date }
+  ];
 }
 
 interface ProductState {

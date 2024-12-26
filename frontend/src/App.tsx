@@ -15,6 +15,7 @@ import CategoriesPage from "./pages/admin/Categories";
 import ProfileSettings from "./pages/user/ProfileSettings";
 import NewProductPage from "./pages/admin/NewProduct";
 import AllProducts from "./pages/product/AllProducts";
+import SingleProduct from "./pages/product/SingleProduct";
 
 function App() {
   const { user } = useSelector((state: any) => state.user);
@@ -31,6 +32,7 @@ function App() {
         <Route path="/users/register" element={<RegisterPage />} />
         <Route path="/users/profile/:id" element={<ProfilePage />} />
         <Route path="/products" element={<AllProducts />} />
+        <Route path="/products/:slug" element={<SingleProduct />} />
         {user !== null && (
           <Route path="/users/profile/settings" element={<ProfileSettings />} />
         )}
