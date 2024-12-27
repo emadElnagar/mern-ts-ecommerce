@@ -15,6 +15,7 @@ import { Key } from "react";
 type productProps = {
   _id: Key;
   name: string;
+  slug: string;
   image: string;
   price: number;
   discount: number;
@@ -24,7 +25,7 @@ function Product(product: productProps) {
   const realPrice = product.price - product.discount;
   return (
     <ProductDiv>
-      <Link to="#">
+      <Link to={`/products/${product.slug}`}>
         <ProductHeader>
           <ProductTitle>{product.name}</ProductTitle>
         </ProductHeader>

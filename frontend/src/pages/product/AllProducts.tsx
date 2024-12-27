@@ -33,6 +33,7 @@ const AllProducts = () => {
                   (product: {
                     _id: Key;
                     name: string;
+                    slug: string;
                     images: string[];
                     price: number;
                     discount: number;
@@ -41,6 +42,7 @@ const AllProducts = () => {
                       key={product._id}
                       _id={product._id}
                       name={product.name}
+                      slug={product.slug}
                       image={product.images[0]}
                       price={product.price}
                       discount={product.discount}
