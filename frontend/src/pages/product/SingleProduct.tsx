@@ -1,12 +1,19 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Main } from "../../styles/main";
-import { useSelector } from "react-redux";
+import { Container, Image, Main } from "../../styles/main";
+import { useDispatch, useSelector } from "react-redux";
+import { GetSingleProduct } from "../../features/ProductFeatures";
+import { useParams } from "react-router-dom";
 
 const SingleProduct = () => {
+  const dispatch = useDispatch();
+  const { slug } = useParams();
   const { error, loading, product } = useSelector(
     (state: any) => state.product
   );
+  useEffect(() => {
+    dispatch(GetSingleProduct(slug));
+  }, [dispatch, slug]);
   return (
     <Fragment>
       <Helmet>

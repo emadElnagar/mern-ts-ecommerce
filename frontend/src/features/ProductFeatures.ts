@@ -64,9 +64,9 @@ export const GetAllProducts: any = createAsyncThunk(
 // Get single product
 export const GetSingleProduct: any = createAsyncThunk(
   "producsts/single",
-  async (product: any, { rejectWithValue }) => {
+  async (slug: any, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}/${product.slug}`);
+      const response = await axios.get(`${url}/${slug}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
