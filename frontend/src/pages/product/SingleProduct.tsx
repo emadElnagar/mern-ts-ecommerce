@@ -4,6 +4,8 @@ import { Container, Image, Main } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { GetSingleProduct } from "../../features/ProductFeatures";
 import { useParams } from "react-router-dom";
+import LoadingBox from "../../components/LoadingBox";
+import ErrorBox from "../../components/ErrorBox";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -21,7 +23,36 @@ const SingleProduct = () => {
       </Helmet>
       <Main>
         <Container>
-          <h1>single product page</h1>
+          {loading ? (
+            <LoadingBox />
+          ) : error ? (
+            <ErrorBox message="error loading product" />
+          ) : (
+            product !== null && (
+              <div className="product-summary">
+                <div className="images">
+                  <div className="thumbnail">
+                    <Image
+                      src={`http://localhost:5000/${product.images[0]}`}
+                      alt="problem loading image"
+                    />
+                  </div>
+                  <div className="images-min">
+                    {product.images.map((image: string) => (
+                      <Image
+                        src={`http://localhost:5000/${image}`}
+                        alt="problem loading images"
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="porduct-desc">
+                  <h2>{product.name}</h2>
+                  <p>{product.description}</p>
+                </div>
+              </div>
+            )
+          )}
         </Container>
       </Main>
     </Fragment>
