@@ -80,3 +80,16 @@ select {
   justify-self: end;
   transform: translate(-1em, 30px)
 }
+
+.product-summary {
+  display: flex;
+  .images-min {
+    display: flex;
+    img {
+      max-width: calc(100% /6);
+    }
+  }
+  .porduct-desc {
+    padding: 1rem;
+  }
+}
