@@ -49,6 +49,9 @@ const SingleProduct = () => {
                 <div className="porduct-desc">
                   <h2>{product.name}</h2>
                   <p>{product.description}</p>
+                  <div>
+                    <span>{product.price}$</span>
+                  </div>
                 </div>
               </div>
             )
