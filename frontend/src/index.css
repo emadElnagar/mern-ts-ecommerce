@@ -4,8 +4,8 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
 }
 
@@ -16,11 +16,17 @@ body {
   min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   text-transform: capitalize;
 }
 
-h1, h2 {
+h1,
+h2 {
   margin-bottom: 40px;
 }
 
@@ -36,6 +42,10 @@ a {
 
 .text-center {
   text-align: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 
 .product-form {
@@ -78,7 +88,7 @@ select {
   clip-path: polygon(100% 0%, 0 0%, 50% 100%);
   grid-area: select;
   justify-self: end;
-  transform: translate(-1em, 30px)
+  transform: translate(-1em, 30px);
 }
 
 .product-summary {
@@ -86,7 +96,7 @@ select {
   .images-min {
     display: flex;
     img {
-      max-width: calc(100% /6);
+      max-width: calc(100% / 6);
     }
   }
   .porduct-desc {
