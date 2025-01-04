@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   deleteProduct,
   getAllProducts,
+  getSimilarProducts,
   getSingleProduct,
   newProduct,
   updateProduct,
@@ -15,6 +16,9 @@ productRouter.get("/all", getAllProducts);
 
 // GET SINGLE PRODUCT
 productRouter.get("/:slug", getSingleProduct);
+
+// GET SIMILAR PRODUCTS
+productRouter.get("/:slug/similar", getSimilarProducts);
 
 // CREATE NEW PRODUCT
 productRouter.post("/new", upload.array("images", 6), newProduct);

@@ -24,6 +24,18 @@ export const getSingleProduct: RequestHandler = async (req, res) => {
   }
 };
 
+// Get similar products
+export const getSimilarProducts: RequestHandler = async (req, res) => {
+  const product = await Product.findOne({ slug: req.params.slug });
+  const similarProducts = (
+    await Product.find({ category: product?.category })
+      .sort({ createdAt: -1 })
+      .limit(3)
+  ).filter((item) => item.slug !== product?.slug);
+  if (!similarProducts) return;
+  res.send(similarProducts);
+};
+
 // CREATE A NEW PRODUCT
 export const newProduct: RequestHandler = async (req, res) => {
   // Unique product name
