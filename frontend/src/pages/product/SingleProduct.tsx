@@ -43,7 +43,9 @@ const SingleProduct = () => {
                       <Image
                         src={`http://localhost:5000/${image}`}
                         alt="problem loading images"
-                        className="cursor-pointer"
+                        className={`cursor-pointer ${
+                          imgIndex === index && "selected"
+                        }`}
                         onClick={() => setImgIndex(index)}
                       />
                     ))}
