@@ -23,6 +23,7 @@ export interface Product {
 
 interface ProductState {
   products: Product[];
+  similarProducts: Product[];
   product: Product | null;
   isLoading: boolean;
   error: object | null;
@@ -30,6 +31,7 @@ interface ProductState {
 
 const initialState: ProductState = {
   products: [],
+  similarProducts: [],
   product: null,
   isLoading: false,
   error: null,
@@ -67,6 +69,19 @@ export const GetSingleProduct: any = createAsyncThunk(
   async (slug: any, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${url}/${slug}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Get similar products
+export const GetSimilarProducts: any = createAsyncThunk(
+  "products/similar",
+  async (slug: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}/${slug}/similar`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -151,6 +166,19 @@ const productSlice = createSlice({
         state.product = action.payload;
       })
       .addCase(GetSingleProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Get similar products
+      .addCase(GetSimilarProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(GetSingleProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.similarProducts = action.payload;
+      })
+      .addCase(GetSimilarProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       })
