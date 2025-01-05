@@ -173,7 +173,7 @@ const productSlice = createSlice({
       .addCase(GetSimilarProducts.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(GetSingleProduct.fulfilled, (state, action) => {
+      .addCase(GetSimilarProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
         state.similarProducts = action.payload;
