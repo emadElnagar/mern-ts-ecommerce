@@ -6,6 +6,7 @@ import { GetSingleProduct } from "../../features/ProductFeatures";
 import { useParams } from "react-router-dom";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
+import RelatedProducts from "../../components/RelatedProducts";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -14,9 +15,11 @@ const SingleProduct = () => {
   const { error, loading, product } = useSelector(
     (state: any) => state.product
   );
+  // Get single product
   useEffect(() => {
     dispatch(GetSingleProduct(slug));
   }, [dispatch, slug]);
+  // Get similar products
   return (
     <Fragment>
       <Helmet>
@@ -61,6 +64,7 @@ const SingleProduct = () => {
               </div>
             )
           )}
+          <RelatedProducts slug={product.slug} />
         </Container>
       </Main>
     </Fragment>
