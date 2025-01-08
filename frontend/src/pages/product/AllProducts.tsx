@@ -37,6 +37,7 @@ const AllProducts = () => {
                     images: string[];
                     price: number;
                     discount: number;
+                    myClass: string;
                   }) => (
                     <Product
                       key={product._id}
@@ -46,6 +47,7 @@ const AllProducts = () => {
                       image={product.images[0]}
                       price={product.price}
                       discount={product.discount}
+                      myClass={""}
                     />
                   )
                 )}

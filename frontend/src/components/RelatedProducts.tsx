@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetSimilarProducts } from "../features/ProductFeatures";
 import ErrorBox from "./ErrorBox";
 import LoadingBox from "./LoadingBox";
+import { Grid, Section } from "../styles/main";
+import Product from "./product";
 
 type propsType = {
   slug: string;
@@ -19,22 +21,41 @@ const RelatedProducts = (props: propsType) => {
   }, [dispatch, slug]);
   return (
     <Fragment>
-      <div>
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <ErrorBox message="Error getting similar products" />
-        ) : (
-          similarProducts.length > 0 && (
-            <div>
-              <h2 className="text-center">related products</h2>
-              {similarProducts.map((product: { _id: Key }) => (
-                <div key={product._id}>{product._id}</div>
-              ))}
-            </div>
-          )
-        )}
-      </div>
+      {loading ? (
+        <LoadingBox />
+      ) : error ? (
+        <ErrorBox message="Error getting similar products" />
+      ) : (
+        similarProducts.length > 0 && (
+          <Section>
+            <h2 className="text-center">related products</h2>
+            <Grid>
+              {similarProducts.map(
+                (product: {
+                  _id: Key;
+                  name: string;
+                  slug: string;
+                  images: string[];
+                  price: number;
+                  discount: number;
+                  myClass: string;
+                }) => (
+                  <Product
+                    key={product._id}
+                    _id={product._id}
+                    name={product.name}
+                    slug={product.slug}
+                    image={product.images[0]}
+                    price={product.price}
+                    discount={product.discount}
+                    myClass="similar"
+                  />
+                )
+              )}
+            </Grid>
+          </Section>
+        )
+      )}
     </Fragment>
   );
 };
