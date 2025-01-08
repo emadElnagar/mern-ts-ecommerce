@@ -64,7 +64,7 @@ const SingleProduct = () => {
               </div>
             )
           )}
-          <RelatedProducts slug={product.slug} />
+          {product !== null && <RelatedProducts slug={product.slug} />}
         </Container>
       </Main>
     </Fragment>
