@@ -97,9 +97,11 @@ select {
     display: flex;
     img {
       max-width: calc(100% / 6);
+      border: 2px solid #caced1;
+      margin-inline-start: 4px;
     }
     img.selected {
-      border-bottom: 2px solid #fed700;
+      border: 2px solid #fed700;
     }
   }
   .porduct-desc {
