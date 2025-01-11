@@ -3,9 +3,15 @@ import Product from "../models/product";
 import slugify from "slugify";
 
 // GET ALL PRODUCTS
-export const getAllProducts: RequestHandler = async (_req, res) => {
+export const getAllProducts: RequestHandler = async (req, res) => {
   try {
-    const products = await Product.find({}).sort({ createdAt: -1 });
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = 12;
+    const skip = (page - 1) * limit;
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
     res.send(products);
   } catch (error) {
     res.send(error);
