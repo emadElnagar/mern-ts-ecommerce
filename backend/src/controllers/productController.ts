@@ -135,3 +135,17 @@ export const deleteProduct: RequestHandler = async (req, res) => {
       });
     });
 };
+
+// Search product
+export const SearchProduct: RequestHandler = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { name: { $regex: req.query.search, $options: "i" } },
+          { category: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const products = await Product.find(keyword);
+  res.status(200).json({ products });
+};

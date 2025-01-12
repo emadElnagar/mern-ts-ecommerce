@@ -5,6 +5,7 @@ import {
   getSimilarProducts,
   getSingleProduct,
   newProduct,
+  SearchProduct,
   updateProduct,
 } from "../controllers/productController";
 import { upload } from "../middlewares/multer";
@@ -28,5 +29,8 @@ productRouter.put("/:id/update", updateProduct);
 
 // DELETE PRODUCT
 productRouter.delete("/:id/delete", deleteProduct);
+
+// SEARCH PRODUCT
+productRouter.get("/", SearchProduct);
 
 export default productRouter;
