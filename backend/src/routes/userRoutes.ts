@@ -6,6 +6,7 @@ import {
   deleteProfile,
   deleteUser,
   getAllUsers,
+  SearchUser,
   updateUserName,
   uploadImage,
   userLogin,
@@ -48,5 +49,8 @@ userRouter.post("/profile/:id/delete", deleteProfile);
 
 // DELETE USER
 userRouter.delete("/:id/delete", deleteUser);
+
+// SEARCH USER
+userRouter.get("/", SearchUser);
 
 export default userRouter;

@@ -217,3 +217,18 @@ export const deleteUser: RequestHandler = async (req, res) => {
       });
     });
 };
+
+// SEARCH USER
+export const SearchUser: RequestHandler = async (req, res) => {
+  const keyword = req.query.search
+    ? {
+        $or: [
+          { firstName: { $regex: req.query.search, $options: "i" } },
+          { lastName: { $regex: req.query.search, $options: "i" } },
+          { email: { $regex: req.query.search, $options: "i" } },
+        ],
+      }
+    : {};
+  const users = await User.find(keyword);
+  res.status(200).json({ users });
+};
