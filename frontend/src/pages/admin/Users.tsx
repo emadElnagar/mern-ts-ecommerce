@@ -3,6 +3,7 @@ import SideNav from "../../components/SideNav";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import {
+  Button,
   DeleteButton,
   Main,
   Note,
@@ -21,6 +22,7 @@ import { Content } from "../../styles/admin";
 import { MdDelete } from "react-icons/md";
 import { IoPencil } from "react-icons/io5";
 import Swal from "sweetalert2";
+import { BrdInput, InlineForm } from "../../styles/form";
 
 type UpdateUser = {
   role: string;
@@ -107,6 +109,16 @@ const AllUsers = () => {
       <Main>
         <SideNav />
         <Content>
+          <Section>
+            <InlineForm method="POST">
+              <BrdInput
+                type="text"
+                name="text"
+                placeholder="Enter the category title here"
+              />
+              <Button type="submit">Add</Button>
+            </InlineForm>
+          </Section>
           <Section>
             <h1 className="text-center">all usres</h1>
             {loading ? (
