@@ -1,0 +1,81 @@
+import { Fragment, Key, useState } from "react";
+import { Helmet } from "react-helmet";
+import { Button, Main, Section } from "../../styles/main";
+import { Content } from "../../styles/admin";
+import SideNav from "../../components/SideNav";
+import { Field, Input, Select, Textarea } from "../../styles/form";
+import { useSelector } from "react-redux";
+
+const UpdatePage = () => {
+  const { categories } = useSelector((state: any) => state.category);
+  const [category, setCategory] = useState("");
+  return (
+    <Fragment>
+      <Helmet>
+        <title>update product page</title>
+      </Helmet>
+      <Main>
+        <SideNav />
+        <Content>
+          <Section>
+            <h1>update product</h1>
+            <form
+              method="POST"
+              className="product-form"
+              encType="multipart/form-data"
+              acceptCharset="*/images"
+            >
+              <Field>
+                <Input type="text" id="name" />
+                <label htmlFor="name">name</label>
+              </Field>
+              <Field>
+                <Textarea id="description"></Textarea>
+                <label htmlFor="description">description</label>
+              </Field>
+              <Field>
+                <Input type="text" id="brand" />
+                <label htmlFor="brand">brand</label>
+              </Field>
+              <Field>
+                <Input type="number" min="0" id="price" />
+                <label htmlFor="price">price</label>
+              </Field>
+              <Field>
+                <Input type="number" min="0" id="discount" />
+                <label htmlFor="discount">discount</label>
+              </Field>
+              <Field>
+                <Input type="number" min="0" id="countinstock" />
+                <label htmlFor="countinstock">count in stock</label>
+              </Field>
+              <Field>
+                <Select name="category" id="category">
+                  {categories.map((category: { _id: Key; title: string }) => (
+                    <option key={category._id} value={`${category._id}`}>
+                      {category.title}
+                    </option>
+                  ))}
+                </Select>
+                <label htmlFor="category">category</label>
+              </Field>
+              <Field>
+                <Input
+                  type="file"
+                  id="images"
+                  name="images"
+                  accept="image/*"
+                  multiple
+                />
+                <label htmlFor="images">images</label>
+              </Field>
+              <Button type="submit">submit</Button>
+            </form>
+          </Section>
+        </Content>
+      </Main>
+    </Fragment>
+  );
+};
+
+export default UpdatePage;
