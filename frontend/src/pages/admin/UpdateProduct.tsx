@@ -12,7 +12,7 @@ const UpdatePage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>update product page</title>
+        <title>update product</title>
       </Helmet>
       <Main>
         <SideNav />
