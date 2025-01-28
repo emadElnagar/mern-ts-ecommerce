@@ -198,6 +198,18 @@ export const DeleteProfile: any = createAsyncThunk(
     }
   }
 );
+// Search user
+export const SearchUser: any = createAsyncThunk(
+  "users/search",
+  async (user: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}?search=${user.search}`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -401,6 +413,19 @@ const userSlice = createSlice({
         }
       })
       .addCase(DeleteProfile.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Search user
+      .addCase(SearchUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SearchUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.users = action.payload;
+      })
+      .addCase(SearchUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       });
