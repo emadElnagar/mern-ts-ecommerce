@@ -11,11 +11,12 @@ import {
   Slide,
   UpdateButton,
 } from "../../styles/main";
-import { Fragment, Key, useEffect } from "react";
+import { Fragment, Key, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import {
   DeleteUser,
   GetAllUsers,
+  SearchUser,
   UpdateRole,
 } from "../../features/UserFeatures";
 import { Content } from "../../styles/admin";
@@ -23,6 +24,7 @@ import { MdDelete } from "react-icons/md";
 import { IoPencil } from "react-icons/io5";
 import Swal from "sweetalert2";
 import { BrdInput, InlineForm } from "../../styles/form";
+import { IoIosSearch } from "react-icons/io";
 
 type UpdateUser = {
   role: string;
@@ -30,7 +32,10 @@ type UpdateUser = {
 
 const AllUsers = () => {
   const dispatch = useDispatch();
-  const { users, error, loading } = useSelector((state: any) => state.user);
+  const [search, setSearch] = useState("");
+  const { users, searchedUsers, error, loading } = useSelector(
+    (state: any) => state.user
+  );
   // Get all users
   useEffect(() => {
     dispatch(GetAllUsers());
@@ -101,6 +106,12 @@ const AllUsers = () => {
       }
     });
   };
+  // Search user
+  const handleSearch = (search: string) => {
+    setSearch(search);
+    dispatch(SearchUser(search));
+    console.log(searchedUsers);
+  };
   return (
     <Fragment>
       <Helmet>
@@ -110,13 +121,18 @@ const AllUsers = () => {
         <SideNav />
         <Content>
           <Section>
-            <InlineForm method="POST">
+            <InlineForm method="get">
               <BrdInput
                 type="text"
                 name="text"
-                placeholder="Enter the category title here"
+                placeholder="Search user"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleSearch(e.target.value)
+                }
               />
-              <Button type="submit">Add</Button>
+              <Button type="submit">
+                <IoIosSearch />
+              </Button>
             </InlineForm>
           </Section>
           <Section>
@@ -125,6 +141,38 @@ const AllUsers = () => {
               <LoadingBox />
             ) : error ? (
               <ErrorBox message={`Error loading users`} />
+            ) : search ? (
+              searchedUsers.users.map(
+                (user: {
+                  role: string;
+                  firstName: string;
+                  lastName: string;
+                  _id: Key;
+                }) => (
+                  <Slide key={user._id}>
+                    <div>
+                      <h4>
+                        {user.firstName} {user.lastName}
+                      </h4>
+                    </div>
+                    {user.role === "admin" && <Note>Admin</Note>}
+                    <div>
+                      <UpdateButton
+                        title="Update user"
+                        onClick={() => handleUpdate(user._id, user.role)}
+                      >
+                        <IoPencil />
+                      </UpdateButton>
+                      <DeleteButton
+                        title="delete user"
+                        onClick={() => handleDelete(user._id)}
+                      >
+                        <MdDelete />
+                      </DeleteButton>
+                    </div>
+                  </Slide>
+                )
+              )
             ) : (
               users.map(
                 (user: {

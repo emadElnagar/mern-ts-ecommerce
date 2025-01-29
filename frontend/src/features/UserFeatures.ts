@@ -17,6 +17,7 @@ export interface User {
 
 interface UserState {
   users: User[];
+  searchedUsers: User[];
   user: User | null;
   profile: User | null;
   isLoading: boolean;
@@ -25,6 +26,7 @@ interface UserState {
 
 const initialState: UserState = {
   users: [],
+  searchedUsers: [],
   user: null,
   profile: null,
   isLoading: false,
@@ -201,9 +203,9 @@ export const DeleteProfile: any = createAsyncThunk(
 // Search user
 export const SearchUser: any = createAsyncThunk(
   "users/search",
-  async (user: any, { rejectWithValue }) => {
+  async (search: any, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}?search=${user.search}`);
+      const response = await axios.get(`${url}?search=${search}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -423,7 +425,7 @@ const userSlice = createSlice({
       .addCase(SearchUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.users = action.payload;
+        state.searchedUsers = action.payload;
       })
       .addCase(SearchUser.rejected, (state, action) => {
         state.isLoading = false;
