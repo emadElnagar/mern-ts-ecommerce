@@ -110,7 +110,6 @@ const AllUsers = () => {
   const handleSearch = (search: string) => {
     setSearch(search);
     dispatch(SearchUser(search));
-    console.log(searchedUsers);
   };
   return (
     <Fragment>
@@ -142,36 +141,40 @@ const AllUsers = () => {
             ) : error ? (
               <ErrorBox message={`Error loading users`} />
             ) : search ? (
-              searchedUsers.users.map(
-                (user: {
-                  role: string;
-                  firstName: string;
-                  lastName: string;
-                  _id: Key;
-                }) => (
-                  <Slide key={user._id}>
-                    <div>
-                      <h4>
-                        {user.firstName} {user.lastName}
-                      </h4>
-                    </div>
-                    {user.role === "admin" && <Note>Admin</Note>}
-                    <div>
-                      <UpdateButton
-                        title="Update user"
-                        onClick={() => handleUpdate(user._id, user.role)}
-                      >
-                        <IoPencil />
-                      </UpdateButton>
-                      <DeleteButton
-                        title="delete user"
-                        onClick={() => handleDelete(user._id)}
-                      >
-                        <MdDelete />
-                      </DeleteButton>
-                    </div>
-                  </Slide>
+              searchedUsers.users.length >= 1 ? (
+                searchedUsers.users.map(
+                  (user: {
+                    role: string;
+                    firstName: string;
+                    lastName: string;
+                    _id: Key;
+                  }) => (
+                    <Slide key={user._id}>
+                      <div>
+                        <h4>
+                          {user.firstName} {user.lastName}
+                        </h4>
+                      </div>
+                      {user.role === "admin" && <Note>Admin</Note>}
+                      <div>
+                        <UpdateButton
+                          title="Update user"
+                          onClick={() => handleUpdate(user._id, user.role)}
+                        >
+                          <IoPencil />
+                        </UpdateButton>
+                        <DeleteButton
+                          title="delete user"
+                          onClick={() => handleDelete(user._id)}
+                        >
+                          <MdDelete />
+                        </DeleteButton>
+                      </div>
+                    </Slide>
+                  )
                 )
+              ) : (
+                <ErrorBox message={`No user found`} />
               )
             ) : (
               users.map(
