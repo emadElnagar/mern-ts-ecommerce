@@ -1,6 +1,8 @@
 import { RequestHandler } from "express";
 import Product from "../models/product";
 import slugify from "slugify";
+import mongoose from "mongoose";
+import Category from "../models/category";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
@@ -138,14 +140,26 @@ export const deleteProduct: RequestHandler = async (req, res) => {
 
 // Search product
 export const SearchProduct: RequestHandler = async (req, res) => {
-  const keyword = req.query.search
-    ? {
-        $or: [
-          { name: { $regex: req.query.search, $options: "i" } },
-          { category: { $regex: req.query.search, $options: "i" } },
-        ],
+  try {
+    const { search } = req.query;
+    let filter: any = {};
+    if (search) {
+      const categoryDoc = await Category.findOne({
+        title: { $regex: search, $options: "i" },
+      });
+
+      if (categoryDoc) {
+        filter.category = categoryDoc._id;
+      } else {
+        filter.$or = [
+          { name: { $regex: search, $options: "i" } },
+          { brand: { $regex: search, $options: "i" } },
+        ];
       }
-    : {};
-  const products = await Product.find(keyword);
-  res.status(200).json({ products });
+    }
+    const products = await Product.find(filter).populate("category");
+    res.status(200).json({ products });
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching products", error });
+  }
 };
