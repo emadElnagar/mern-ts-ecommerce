@@ -23,6 +23,7 @@ export interface Product {
 
 interface ProductState {
   products: Product[];
+  searchedProducts: Product[];
   similarProducts: Product[];
   product: Product | null;
   isLoading: boolean;
@@ -31,6 +32,7 @@ interface ProductState {
 
 const initialState: ProductState = {
   products: [],
+  searchedProducts: [],
   similarProducts: [],
   product: null,
   isLoading: false,
@@ -82,6 +84,19 @@ export const GetSimilarProducts: any = createAsyncThunk(
   async (slug: any, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${url}/${slug}/similar`);
+      return response.data;
+    } catch (error: any) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+// Search products
+export const SearchProducts: any = createAsyncThunk(
+  "products/search",
+  async (keyword: any, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}?search=${keyword}`);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -219,6 +234,19 @@ const productSlice = createSlice({
         }
       })
       .addCase(DeleteProduct.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error;
+      })
+      // Search products
+      .addCase(SearchProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(SearchProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.searchedProducts = action.payload;
+      })
+      .addCase(SearchProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error;
       });
