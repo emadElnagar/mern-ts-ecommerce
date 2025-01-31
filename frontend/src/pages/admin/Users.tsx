@@ -141,7 +141,7 @@ const AllUsers = () => {
             ) : error ? (
               <ErrorBox message={`Error loading users`} />
             ) : search ? (
-              searchedUsers.users.length >= 1 ? (
+              searchedUsers.users && searchedUsers.users.length >= 1 ? (
                 searchedUsers.users.map(
                   (user: {
                     role: string;
