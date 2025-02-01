@@ -120,7 +120,12 @@ const AllUsers = () => {
         <SideNav />
         <Content>
           <Section>
-            <InlineForm method="get">
+            <InlineForm
+              method="get"
+              onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+                e.preventDefault()
+              }
+            >
               <BrdInput
                 type="text"
                 name="text"
