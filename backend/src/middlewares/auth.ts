@@ -1,18 +1,16 @@
 import JWT from "jsonwebtoken";
 import User from "../models/user";
 
-const JWT_SECRET = process.env.JWT_SECRET || 'secretcode';
+const JWT_SECRET = process.env.JWT_SECRET || "secretcode";
 
 //Protected Routes token base
 export const isSignIn = async (
-  req: { headers: { authorization: string; }; user: string | JWT.JwtPayload; }, 
-  _res: any, 
-  next: () => void) => {
+  req: { headers: { authorization: string }; user: string | JWT.JwtPayload },
+  _res: any,
+  next: () => void
+) => {
   try {
-    const decode = JWT.verify(
-      req.headers.authorization,
-      JWT_SECRET
-    );
+    const decode = JWT.verify(req.headers.authorization, JWT_SECRET);
     req.user = decode;
     next();
   } catch (error) {
@@ -21,11 +19,24 @@ export const isSignIn = async (
 };
 
 //admin acceess
-export const isAdmin = async (req: { user: { _id: any; }; }, res: { status: (arg0: number) => { (): any; new(): any; send: { (arg0: { success: boolean; message: string; error?: unknown; }): void; new(): any; }; }; }, next: () => void) => {
+export const isAdmin = async (
+  req: { user: { _id: any } },
+  res: {
+    status: (arg0: number) => {
+      (): any;
+      new (): any;
+      send: {
+        (arg0: { success: boolean; message: string; error?: unknown }): void;
+        new (): any;
+      };
+    };
+  },
+  next: () => void
+) => {
   try {
     const user = await User.findById(req.user._id);
     if (user) {
-      if (user.role === 'admin') {
+      if (user.role === "admin") {
         return res.status(401).send({
           success: false,
           message: "UnAuthorized Access",
@@ -49,15 +60,21 @@ export const generateToken = (user: {
   firstName: string;
   lastName: string;
   email: string;
-  role: string; 
+  role: string;
+  image: string;
 }) => {
-  return JWT.sign({
-    _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    role: user.role
-  }, process.env.JWT_SECRET!, {
-    expiresIn: '3d',
-  });
+  return JWT.sign(
+    {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      image: user.image,
+    },
+    process.env.JWT_SECRET!,
+    {
+      expiresIn: "3d",
+    }
+  );
 };
