@@ -21,10 +21,17 @@ export const userRegister: RequestHandler = async (req, res) => {
     email: req.body.email,
     password: await bcrypt.hash(req.body.password, 10),
   });
-  const token = generateToken(user);
+  const token = generateToken({
+    _id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    role: user.role,
+    image: user.image ?? "",
+  });
   user
     .save()
-    .then((user) => {
+    .then((_user) => {
       res.status(200).json({
         token,
       });
@@ -41,7 +48,14 @@ export const userLogin: RequestHandler = async (req, res) => {
   const user = await User.findOne({ email: req.body.email });
   if (user) {
     if (bcrypt.compareSync(req.body.password, user.password)) {
-      const token = generateToken(user);
+      const token = generateToken({
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role,
+        image: user.image ?? "",
+      });
       res.status(200).json({
         token,
       });
