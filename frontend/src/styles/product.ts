@@ -7,7 +7,7 @@ export const ProductDiv = styled.div`
     box-shadow: 0 0 2px ${vars.secondary};
     transform: translatey(-10px);
   }
-  &.similar {
+  &.stable {
     border: 1px solid ${vars.shadow};
     &:hover {
       box-shadow: none;
