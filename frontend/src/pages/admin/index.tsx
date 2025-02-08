@@ -1,8 +1,8 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, Key, useEffect } from "react";
 import SideNav from "../../components/SideNav";
 import { Grid, Main, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllProducts } from "../../features/ProductFeatures";
+import { DeleteProduct, GetAllProducts } from "../../features/ProductFeatures";
 import { Helmet } from "react-helmet";
 import { Content } from "../../styles/admin";
 import ErrorBox from "../../components/ErrorBox";
@@ -18,6 +18,7 @@ import {
 import { FlexBetweenRow } from "../../styles/main";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi2";
+import swal from "sweetalert2";
 
 const AdminMainPage = () => {
   const dispatch = useDispatch();
@@ -27,6 +28,25 @@ const AdminMainPage = () => {
   useEffect(() => {
     dispatch(GetAllProducts());
   }, [dispatch]);
+  // Delete product
+  const handleDelete = (id: Key) => {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Delete",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          dispatch(DeleteProduct({ id }));
+          swal.fire("Deleted!", "Product has been deleted.", "success");
+        }
+      });
+  };
   return (
     <Fragment>
       <Helmet>
@@ -74,7 +94,7 @@ const AdminMainPage = () => {
                         <IconButton>
                           update <HiPencil />
                         </IconButton>
-                        <IconButton>
+                        <IconButton onClick={() => handleDelete(product._id)}>
                           delete <MdDelete />
                         </IconButton>
                       </FlexBetweenRow>
