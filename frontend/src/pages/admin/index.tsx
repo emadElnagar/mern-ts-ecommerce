@@ -19,8 +19,10 @@ import { FlexBetweenRow } from "../../styles/main";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi2";
 import swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const AdminMainPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { products, error, loading } = useSelector(
     (state: any) => state.product
@@ -46,6 +48,10 @@ const AdminMainPage = () => {
           swal.fire("Deleted!", "Product has been deleted.", "success");
         }
       });
+  };
+  // Update product
+  const handleUpdate = (id: Key) => {
+    navigate(`/admin/products/update/${id}`);
   };
   return (
     <Fragment>
@@ -91,7 +97,7 @@ const AdminMainPage = () => {
                       )}
 
                       <FlexBetweenRow>
-                        <IconButton>
+                        <IconButton onClick={() => handleUpdate(product._id)}>
                           update <HiPencil />
                         </IconButton>
                         <IconButton onClick={() => handleDelete(product._id)}>
