@@ -31,7 +31,7 @@ const AdminMainPage = () => {
     dispatch(GetAllProducts());
   }, [dispatch]);
   // Delete product
-  const handleDelete = (id: Key) => {
+  const handleDelete = (_id: Key) => {
     swal
       .fire({
         title: "Are you sure?",
@@ -44,9 +44,12 @@ const AdminMainPage = () => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          dispatch(DeleteProduct({ id }));
+          dispatch(DeleteProduct({ _id }));
           swal.fire("Deleted!", "Product has been deleted.", "success");
         }
+      })
+      .then(() => {
+        dispatch(GetAllProducts());
       });
   };
   // Update product

@@ -1,6 +1,6 @@
 import { Fragment, Key, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Button, Main, Section } from "../../styles/main";
+import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
 import SideNav from "../../components/SideNav";
 import { Field, Input, Select, Textarea } from "../../styles/form";
@@ -18,7 +18,7 @@ const UpdatePage = () => {
         <SideNav />
         <Content>
           <Section>
-            <h1>update product</h1>
+            <HeaderCenter>update product</HeaderCenter>
             <form
               method="POST"
               className="product-form"

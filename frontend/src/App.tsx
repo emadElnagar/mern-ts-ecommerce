@@ -43,7 +43,7 @@ function App() {
             <Route path="/admin/categories" element={<CategoriesPage />} />
             <Route path="/admin/users/all" element={<AllUsers />} />
             <Route path="/admin/products/new" element={<NewProductPage />} />
-            <Route path="/admin/products/:id/update" element={<UpdatePage />} />
+            <Route path="/admin/products/update/:id" element={<UpdatePage />} />
           </Fragment>
         )}
         <Route path="*" element={<ErrorPage />} />
