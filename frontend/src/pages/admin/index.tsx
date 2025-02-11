@@ -53,8 +53,8 @@ const AdminMainPage = () => {
       });
   };
   // Update product
-  const handleUpdate = (id: Key) => {
-    navigate(`/admin/products/update/${id}`);
+  const handleUpdate = (slug: string) => {
+    navigate(`/admin/products/update/${slug}`);
   };
   return (
     <Fragment>
@@ -73,7 +73,8 @@ const AdminMainPage = () => {
               <Grid>
                 {products.map(
                   (product: {
-                    _id: string;
+                    _id: Key;
+                    slug: string;
                     name: string;
                     images: string[];
                     price: number;
@@ -100,7 +101,7 @@ const AdminMainPage = () => {
                       )}
 
                       <FlexBetweenRow>
-                        <IconButton onClick={() => handleUpdate(product._id)}>
+                        <IconButton onClick={() => handleUpdate(product.slug)}>
                           update <HiPencil />
                         </IconButton>
                         <IconButton onClick={() => handleDelete(product._id)}>

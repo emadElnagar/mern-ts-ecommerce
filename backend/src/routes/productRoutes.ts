@@ -25,7 +25,7 @@ productRouter.get("/:slug/similar", getSimilarProducts);
 productRouter.post("/new", upload.array("images", 6), newProduct);
 
 // UPDATE PRODUCT
-productRouter.put("/:id/update", updateProduct);
+productRouter.put("/slug/update", updateProduct);
 
 // DELETE PRODUCT
 productRouter.delete("/:id/delete", deleteProduct);

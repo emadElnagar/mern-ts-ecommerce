@@ -109,7 +109,7 @@ export const UpdateProduct: any = createAsyncThunk(
   "products/update",
   async (product: any, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${url}/${product._id}/update`, {
+      const response = await axios.put(`${url}/${product.slug}/update`, {
         name: product.name,
         description: product.description,
         brand: product.brand,
@@ -205,11 +205,11 @@ const productSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         const {
-          args: { _id },
+          args: { slug },
         } = action.meta;
-        if (_id) {
+        if (slug) {
           state.products = state.products.map((product) =>
-            product._id === _id ? action.payload : product
+            product.slug === slug ? action.payload : product
           );
         }
       })
