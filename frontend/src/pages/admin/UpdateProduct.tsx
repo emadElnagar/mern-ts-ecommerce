@@ -1,14 +1,23 @@
-import { Fragment, Key, useState } from "react";
+import { Fragment, useEffect, Key } from "react";
 import { Helmet } from "react-helmet";
 import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
 import SideNav from "../../components/SideNav";
 import { Field, Input, Select, Textarea } from "../../styles/form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { GetSingleProduct } from "../../features/ProductFeatures";
 
 const UpdatePage = () => {
+  const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
-  const [category, setCategory] = useState("");
+  const { slug } = useParams();
+  const { error, loading, product } = useSelector(
+    (state: any) => state.product
+  );
+  useEffect(() => {
+    dispatch(GetSingleProduct(slug));
+  }, [dispatch, slug]);
   return (
     <Fragment>
       <Helmet>
