@@ -106,7 +106,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
     brand: req.body.brand,
     price: req.body.price,
     countInStock: req.body.countInStock,
-    images: req.body.images,
+    images: req.body.imgnames,
     rating: req.body.rating,
     category: req.body.category,
   };
