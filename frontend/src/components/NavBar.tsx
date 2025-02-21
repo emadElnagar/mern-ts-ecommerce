@@ -33,6 +33,7 @@ import { Image } from "../styles/main";
 function NavBar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [keyword, setKeyword] = useState("");
   const [isActive, toggleIsActive] = useState(false);
   const [isSearch, toggleIsSearch] = useState(false);
   const [isDropDownActive, toggleIsDropDownActive] = useState(false);
@@ -58,6 +59,13 @@ function NavBar() {
     toggleIsDropDownActive(false);
     dispatch(Logout());
     navigate("/");
+  };
+  // Handle search
+  const searchHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    navigate(`/search/${keyword}`);
+    e.currentTarget.reset();
+    toggleIsSearch(false);
   };
   return (
     <Fragment>
@@ -186,8 +194,16 @@ function NavBar() {
         </ListContainerIcon>
       </Nav>
       <Container>
-        <SearchForm className={`${isSearch === true ? "active" : ""}`}>
-          <SearchInput placeholder="search" />
+        <SearchForm
+          className={`${isSearch === true ? "active" : ""}`}
+          onSubmit={searchHandler}
+        >
+          <SearchInput
+            placeholder="search"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setKeyword(e.target.value)
+            }
+          />
           <SearchButton type="submit">
             <AiOutlineSearch />
           </SearchButton>
