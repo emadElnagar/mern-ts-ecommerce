@@ -35,7 +35,7 @@ function App() {
         <Route path="/users/profile/:id" element={<ProfilePage />} />
         <Route path="/products" element={<AllProducts />} />
         <Route path="/products/:slug" element={<SingleProduct />} />
-        <Route path="/products/search" element={<SearchProductsPage />} />
+        <Route path="/search/:keyword" element={<SearchProductsPage />} />
         {user !== null && (
           <Route path="/users/profile/settings" element={<ProfileSettings />} />
         )}
