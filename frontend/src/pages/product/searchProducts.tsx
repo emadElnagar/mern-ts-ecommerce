@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { SearchProducts } from "../../features/ProductFeatures";
-import { Container, Grid, Main } from "../../styles/main";
+import { Container, Grid, Main, Section } from "../../styles/main";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import Product from "../../components/product";
@@ -31,7 +31,7 @@ const SearchProductsPage = () => {
           ) : searchedProducts &&
             searchedProducts.products &&
             searchedProducts.products.length > 0 ? (
-            <>
+            <Section>
               <Grid>
                 {searchedProducts.products.map(
                   (product: {
@@ -56,7 +56,7 @@ const SearchProductsPage = () => {
                   )
                 )}
               </Grid>
-            </>
+            </Section>
           ) : (
             <h1>No products found</h1>
           )}
