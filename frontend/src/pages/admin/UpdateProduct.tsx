@@ -1,4 +1,11 @@
-import { Fragment, useEffect, Key } from "react";
+import {
+  Fragment,
+  useEffect,
+  Key,
+  useState,
+  SetStateAction,
+  ChangeEvent,
+} from "react";
 import { Helmet } from "react-helmet";
 import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
@@ -20,6 +27,49 @@ const UpdatePage = () => {
   useEffect(() => {
     dispatch(GetSingleProduct(slug));
   }, [dispatch, slug]);
+  const [name, setName] = useState(product.name);
+  const [description, setDescription] = useState(product.description);
+  const [brand, setBrand] = useState(product.brand);
+  const [price, setPrice] = useState<number | null>(product.price);
+  const [discount, setDiscount] = useState<number | null>(product.discount);
+  const [countInStock, setCountInStock] = useState<number | null>(
+    product.countInStock
+  );
+  const [category, setCategory] = useState(product.category);
+  const [images, setImages] = useState<File[]>([product.image]);
+  // Change price
+  const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = !Number.isNaN(e.target.valueAsNumber)
+      ? e.target.valueAsNumber
+      : null;
+    setPrice(value);
+  };
+  // Change discount
+  const onDiscountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = !Number.isNaN(e.target.valueAsNumber)
+      ? e.target.valueAsNumber
+      : null;
+    setDiscount(value);
+  };
+  // Change count in stock
+  const onCountInStockChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = !Number.isNaN(e.target.valueAsNumber)
+      ? e.target.valueAsNumber
+      : null;
+    setCountInStock(value);
+  };
+  // Handle images
+  const onImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement & {
+      files: FileList;
+    };
+    const files = target.files;
+    if (files) {
+      for (let i = 0; i < files.length; i++) {
+        images.push(files[i]);
+      }
+    }
+  };
   return (
     <Fragment>
       <Helmet>
@@ -43,13 +93,23 @@ const UpdatePage = () => {
                   acceptCharset="*/images"
                 >
                   <Field>
-                    <Input type="text" id="name" defaultValue={product.name} />
+                    <Input
+                      type="text"
+                      id="name"
+                      defaultValue={product.name}
+                      onChange={(e: {
+                        target: { value: SetStateAction<string> };
+                      }) => setName(e.target.value)}
+                    />
                     <label htmlFor="name">name</label>
                   </Field>
                   <Field>
                     <Textarea
                       id="description"
                       defaultValue={product.description}
+                      onChange={(e: {
+                        target: { value: SetStateAction<string> };
+                      }) => setDescription(e.target.value)}
                     ></Textarea>
                     <label htmlFor="description">description</label>
                   </Field>
@@ -58,6 +118,9 @@ const UpdatePage = () => {
                       type="text"
                       id="brand"
                       defaultValue={product.brand}
+                      onChange={(e: {
+                        target: { value: SetStateAction<string> };
+                      }) => setBrand(e.target.value)}
                     />
                     <label htmlFor="brand">brand</label>
                   </Field>
@@ -67,6 +130,7 @@ const UpdatePage = () => {
                       min="0"
                       id="price"
                       defaultValue={product.price}
+                      onChange={onPriceChange}
                     />
                     <label htmlFor="price">price</label>
                   </Field>
@@ -76,6 +140,7 @@ const UpdatePage = () => {
                       min="0"
                       id="discount"
                       defaultValue={product.discount}
+                      onChange={onDiscountChange}
                     />
                     <label htmlFor="discount">discount</label>
                   </Field>
@@ -85,11 +150,18 @@ const UpdatePage = () => {
                       min="0"
                       id="countinstock"
                       defaultValue={product.countInStock}
+                      onChange={onCountInStockChange}
                     />
                     <label htmlFor="countinstock">count in stock</label>
                   </Field>
                   <Field>
-                    <Select name="category" id="category">
+                    <Select
+                      name="category"
+                      id="category"
+                      onChange={(e: {
+                        target: { value: SetStateAction<string> };
+                      }) => setCategory(e.target.value)}
+                    >
                       {categories.map(
                         (category: { _id: Key; title: string }) => (
                           <option
@@ -106,6 +178,7 @@ const UpdatePage = () => {
                   </Field>
                   <Field>
                     <Input
+                      onChange={onImagesChange}
                       type="file"
                       id="images"
                       name="images"
