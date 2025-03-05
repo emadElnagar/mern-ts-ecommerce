@@ -110,7 +110,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
     rating: req.body.rating,
     category: req.body.category,
   };
-  Product.updateOne({ _id: req.params.slug }, { $set: newProduct })
+  Product.updateOne({ slug: req.params.slug }, { $set: newProduct })
     .then((_result) => {
       res.status(200).json({
         message: "Product updated successfully",
