@@ -26,7 +26,7 @@ export const getSingleProduct: RequestHandler = async (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       message: "Product Not Found",
     });
   }
@@ -49,7 +49,7 @@ export const newProduct: RequestHandler = async (req, res) => {
   // Unique product name
   const foundProductName = await Product.findOne({ name: req.body.name });
   if (foundProductName) {
-    res.json({ message: "This product already exists, Try another name" });
+    return res.json({ message: "This product already exists, Try another name" });
   }
   interface newProduct {
     name: string;
