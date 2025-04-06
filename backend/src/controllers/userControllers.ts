@@ -7,7 +7,7 @@ import { generateToken } from "../middlewares/auth";
 export const userRegister: RequestHandler = async (req, res) => {
   const takenEmail = await User.findOne({ email: req.body.email });
   if (takenEmail) {
-    res.json({ message: "This email is already registered" });
+    return res.json({ message: "This email is already registered" });
   }
   interface NewUser {
     firstName: string;
@@ -81,7 +81,7 @@ export const userProfile: RequestHandler = async (req, res) => {
   if (profile) {
     res.send(profile);
   } else {
-    res.status(404).json({
+    return res.status(404).json({
       message: "User Not Found",
     });
   }
@@ -133,7 +133,7 @@ export const changePassword: RequestHandler = async (req, res) => {
       user.password
     );
     if (!validate) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "Current password is not correct",
       });
     }
@@ -175,7 +175,7 @@ export const uploadImage: RequestHandler = async (req, res) => {
 export const changeRole: RequestHandler = async (req, res) => {
   const user = await User.findById(req.params.id);
   if (!user) {
-    res.status(404).json({
+    return res.status(404).json({
       message: "User not found",
     });
   }
@@ -199,7 +199,7 @@ export const deleteProfile: RequestHandler = async (req, res) => {
   if (user) {
     const validate = await bcrypt.compare(req.body.password, user.password);
     if (!validate) {
-      res.status(401).json({
+      return res.status(401).json({
         message: "Password is not correct",
       });
     }
