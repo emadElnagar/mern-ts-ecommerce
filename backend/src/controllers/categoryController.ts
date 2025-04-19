@@ -7,7 +7,9 @@ export const newCategory: RequestHandler = async (req, res) => {
     title: req.params.title,
   });
   if (foundCategoryTitle) {
-    res.json({ message: "This category already exists, Try another name" });
+    return res.json({
+      message: "This category already exists, Try another name",
+    });
   }
   interface newCategory {
     title: string;
