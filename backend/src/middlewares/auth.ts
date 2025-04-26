@@ -1,20 +1,44 @@
-import JWT from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 import User from "../models/user";
 
-const JWT_SECRET = process.env.JWT_SECRET || "secretcode";
+interface AuthRequest extends Request {
+  user?: any;
+}
 
-//Protected Routes token base
-export const isSignIn = async (
-  req: { headers: { authorization: string }; user: string | JWT.JwtPayload },
-  _res: any,
-  next: () => void
-) => {
-  try {
-    const decode = JWT.verify(req.headers.authorization, JWT_SECRET);
-    req.user = decode;
-    next();
-  } catch (error) {
-    console.log(error);
+interface DecodedToken extends JwtPayload {
+  _id: string;
+}
+
+export const isAuth = async (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(
+        token,
+        process.env.JWT_SECRET!
+      ) as DecodedToken;
+
+      req.user = await User.findById(decoded._id).select("-password");
+      return next();
+    } catch (error) {
+      res.status(401);
+      throw new Error("Not authorized, token failed");
+    }
+  }
+
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
   }
 };
 
@@ -63,7 +87,7 @@ export const generateToken = (user: {
   role: string;
   image: string;
 }) => {
-  return JWT.sign(
+  return jwt.sign(
     {
       _id: user._id,
       firstName: user.firstName,
