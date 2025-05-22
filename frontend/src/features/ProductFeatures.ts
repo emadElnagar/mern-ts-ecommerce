@@ -109,16 +109,10 @@ export const UpdateProduct: any = createAsyncThunk(
   "products/update",
   async (product: any, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${url}/${product.slug}/update`, {
-        name: product.name,
-        description: product.description,
-        brand: product.brand,
-        price: product.price,
-        discount: product.discount,
-        countInStock: product.countInStock,
-        images: product.images,
-        category: product.category,
-      });
+      const response = await axios.put(
+        `${url}/${product.slug}/update`,
+        product.data
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
