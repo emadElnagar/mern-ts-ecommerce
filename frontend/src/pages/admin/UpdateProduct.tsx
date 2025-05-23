@@ -24,6 +24,7 @@ import Swal from "sweetalert2";
 const UpdatePage = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
+  const { user } = useSelector((state: any) => state.user);
   const { slug } = useParams();
   const { error, loading, product } = useSelector(
     (state: any) => state.product
@@ -127,8 +128,9 @@ const UpdatePage = () => {
       formData.append("price", price!.toString());
       formData.append("countInStock", countInStock!.toString());
       formData.append("category", category);
+      formData.append("seller", user._id);
       discount !== null && formData.append("discount", discount!.toString());
-      dispatch(UpdateProduct(formData, product.slug))
+      dispatch(UpdateProduct({ data: formData, slug }))
         .then(setImages([]))
         .then(navigate("/"));
     }
