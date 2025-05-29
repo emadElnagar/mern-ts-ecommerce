@@ -10,6 +10,7 @@ interface DecodedToken extends JwtPayload {
   _id: string;
 }
 
+// Middleware to check if the user is authenticated
 export const isAuth = async (
   req: AuthRequest,
   res: Response,
@@ -42,39 +43,17 @@ export const isAuth = async (
   }
 };
 
-//admin acceess
-export const isAdmin = async (
-  req: { user: { _id: any } },
-  res: {
-    status: (arg0: number) => {
-      (): any;
-      new (): any;
-      send: {
-        (arg0: { success: boolean; message: string; error?: unknown }): void;
-        new (): any;
-      };
-    };
-  },
-  next: () => void
-) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (user) {
-      if (user.role === "admin") {
-        return res.status(401).send({
-          success: false,
-          message: "UnAuthorized Access",
-        });
-      } else {
-        next();
-      }
-    }
-  } catch (error) {
-    res.status(401).send({
-      success: false,
-      error,
-      message: "User is not admin",
-    });
+// Middleware to check if the user is an admin
+export const isAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+): void => {
+  if (req.user && req.user.role === "admin") {
+    return next();
+  } else {
+    res.status(403);
+    throw new Error("Not authorized as admin");
   }
 };
 
