@@ -2,6 +2,8 @@ import { RequestHandler } from "express";
 import User from "../models/user";
 import bcrypt from "bcrypt";
 import { generateToken } from "../middlewares/auth";
+import fs from "fs";
+import path from "path";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
@@ -154,20 +156,39 @@ export const changePassword: RequestHandler = async (req, res) => {
 
 // CHANGE USER IMAGE
 export const uploadImage: RequestHandler = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) {
-    const newUser = { image: req.file?.filename };
-    User.updateOne({ _id: req.params.id }, { $set: newUser })
-      .then((_result) => {
-        res.status(200).json({
-          message: "Image uploaded successfully",
-        });
-      })
-      .catch((error) => {
-        res.status(401).json({
-          message: error.message,
-        });
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
       });
+    }
+    if (!req.file) {
+      return res.status(400).json({
+        message: "No file uploaded",
+      });
+    }
+    // Remove old image if it exists
+    if (user.image) {
+      const oldImagePath = path.resolve(
+        __dirname,
+        "../../uploads/images",
+        user.image
+      );
+      fs.promises.unlink(oldImagePath).catch((err) => {
+        console.warn(
+          `Failed to delete old image (${user.image}):`,
+          err.message
+        );
+      });
+    }
+    // Update user with new image
+    const newUser = { image: req.file.filename };
+    await User.updateOne({ _id: req.params.id }, { $set: newUser });
+  } catch (error: any) {
+    res.status(500).json({
+      message: "Error uploading image: " + error.message,
+    });
   }
 };
 
