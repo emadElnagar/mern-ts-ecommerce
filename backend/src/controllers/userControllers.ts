@@ -7,42 +7,41 @@ import path from "path";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
-  const takenEmail = await User.findOne({ email: req.body.email });
-  if (takenEmail) {
-    return res.json({ message: "This email is already registered" });
-  }
-  interface NewUser {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-  }
-  const user = new User<NewUser>({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    password: await bcrypt.hash(req.body.password, 10),
-  });
-  const token = generateToken({
-    _id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    role: user.role,
-    image: user.image ?? "",
-  });
-  user
-    .save()
-    .then((_user) => {
-      res.status(200).json({
-        token,
-      });
-    })
-    .catch((err) => {
-      res.status(401).json({
-        message: err.message,
-      });
+  try {
+    const { firstName, lastName, email, password } = req.body;
+    if (!firstName || !lastName || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "This email is already registered" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
     });
+
+    const token = generateToken({
+      _id: user._id,
+      firstName,
+      lastName,
+      email,
+      role: user.role,
+      image: user.image ?? "",
+    });
+
+    await user.save();
+    res.status(200).json({ token });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 // USER LOGIN CONTROLLER
