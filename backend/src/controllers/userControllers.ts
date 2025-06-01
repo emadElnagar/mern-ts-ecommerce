@@ -46,45 +46,47 @@ export const userRegister: RequestHandler = async (req, res) => {
 
 // USER LOGIN CONTROLLER
 export const userLogin: RequestHandler = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  if (user) {
-    if (bcrypt.compareSync(req.body.password, user.password)) {
-      const token = generateToken({
-        _id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        role: user.role,
-        image: user.image ?? "",
-      });
-      res.status(200).json({
-        token,
-      });
-      return;
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: "Invalid email or password" });
     }
+
+    const token = generateToken({
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      role: user.role,
+      image: user.image ?? "",
+    });
+
+    res.status(200).json({ token });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
-  res.status(401).send({ message: "invalid email or password" });
 };
 
 // GET ALL USERS
 export const getAllUsers: RequestHandler = async (_req, res) => {
   try {
     const users = await User.find({});
-    res.send(users);
-  } catch (error) {
-    res.send(error);
+    res.status(200).json(users);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 };
 
 // GET USER PROFILE CONTROLLER
 export const userProfile: RequestHandler = async (req, res) => {
-  const profile = await User.findById(req.params.id);
-  if (profile) {
-    res.send(profile);
-  } else {
-    return res.status(404).json({
-      message: "User Not Found",
-    });
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.status(200).json(user);
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 };
 
