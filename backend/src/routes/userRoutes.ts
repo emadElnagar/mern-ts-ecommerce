@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import {
   changePassword,
   changeRole,
@@ -13,7 +13,9 @@ import {
   userProfile,
   userRegister,
 } from "../controllers/userControllers";
+import { isAuth } from "../middlewares/auth";
 import { upload } from "../middlewares/multer";
+import { AuthenticatedRequest } from "../controllers/userControllers";
 
 const userRouter = Router();
 
@@ -30,7 +32,9 @@ userRouter.get("/all", getAllUsers);
 userRouter.get("/profile/:id", userProfile);
 
 // UPDATE USER NAME
-userRouter.post("/:id/name/update", updateUserName);
+userRouter.post("/name/update", isAuth as RequestHandler, (req, res) =>
+  updateUserName(req as AuthenticatedRequest, res)
+);
 
 // CHANGE USER EMAIL
 userRouter.patch("/:id/email/change", changeUserEmail);

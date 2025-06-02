@@ -4,6 +4,18 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../middlewares/auth";
 import fs from "fs";
 import path from "path";
+import { Request, Response } from "express";
+
+export interface AuthenticatedRequest extends Request {
+  user: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: string;
+    image?: string;
+  };
+}
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
@@ -91,22 +103,24 @@ export const userProfile: RequestHandler = async (req, res) => {
 };
 
 // UPDATE USER NAME
-export const updateUserName: RequestHandler = async (req, res) => {
+export const updateUserName = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  const user = req.user;
+  if (!user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
   const newUser = {
     firstName: req.body.firstName,
     lastName: req.body.lastName,
   };
-  User.updateOne({ _id: req.params.id }, { $set: newUser })
-    .then((_result) => {
-      res.status(200).json({
-        message: "user email updated successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error" + error.message,
-      });
-    });
+  try {
+    await User.updateOne({ _id: user._id }, { $set: newUser });
+    res.status(200).json({ message: "User name updated successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 // CHANGE USER EMAIL
