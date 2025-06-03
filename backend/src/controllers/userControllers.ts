@@ -11,6 +11,7 @@ export interface AuthenticatedRequest extends Request {
     _id: string;
     firstName: string;
     lastName: string;
+    password: string;
     email: string;
     role: string;
     image?: string;
@@ -124,55 +125,69 @@ export const updateUserName = async (
 };
 
 // CHANGE USER EMAIL
-export const changeUserEmail: RequestHandler = async (req, res) => {
+export const changeUserEmail = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const existingUser = await User.find({ email: req.body.email });
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: "Email already exists" });
+    }
+    if (!req.body.email) {
+      return res.status(400).json({ message: "New email is required" });
+    }
+    // Update the user's email
+    await User.updateOne(
+      { _id: user._id },
+      { $set: { email: req.body.email } }
+    );
+    res.status(200).json({ message: "User email updated successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
   const newUser = {
     email: req.body.email,
   };
-  User.updateOne({ _id: req.params.id }, { $set: newUser })
-    .then((_result) => {
-      res.status(200).json({
-        message: "user email updated successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error" + error.message,
-      });
-    });
 };
 
 // CHANGE USER PASSWORD
-export const changePassword: RequestHandler = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) {
-    const validate = await bcrypt.compare(
+export const changePassword = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    if (!req.body.currentPassword || !req.body.newPassword) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
+    const isCurrentPasswordValid = await bcrypt.compare(
       req.body.currentPassword,
       user.password
     );
-    if (!validate) {
-      return res.status(401).json({
-        message: "Current password is not correct",
-      });
+    if (!isCurrentPasswordValid) {
+      return res.status(401).json({ message: "Current password is incorrect" });
     }
-    const newUser = { password: await bcrypt.hash(req.body.newPassword, 10) };
-    User.updateOne({ _id: req.params.id }, { $set: newUser })
-      .then((_result) => {
-        res.status(200).json({
-          message: "Password changed successfully",
-        });
-      })
-      .catch((error) => {
-        res.status(401).json({
-          message: error.message,
-        });
-      });
+    const hashedNewPassword = await bcrypt.hash(req.body.newPassword, 10);
+    const newUser = { password: hashedNewPassword };
+    await User.updateOne({ _id: user._id }, { $set: newUser });
+    res.status(200).json({ message: "Password changed successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
 // CHANGE USER IMAGE
-export const uploadImage: RequestHandler = async (req, res) => {
+export const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = req.user;
     if (!user) {
       return res.status(404).json({
         message: "User not found",
