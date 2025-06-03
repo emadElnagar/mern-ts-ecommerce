@@ -37,13 +37,22 @@ userRouter.post("/name/update", isAuth as RequestHandler, (req, res) =>
 );
 
 // CHANGE USER EMAIL
-userRouter.patch("/:id/email/change", changeUserEmail);
+userRouter.patch("/email/change", isAuth as RequestHandler, (req, res) =>
+  changeUserEmail(req as AuthenticatedRequest, res)
+);
 
 // CHANGE USER IMAGE
-userRouter.patch("/profile/:id/image", upload.single("usrimg"), uploadImage);
+userRouter.patch(
+  "/profile/image",
+  isAuth as RequestHandler,
+  upload.single("usrimg"),
+  (req, res) => uploadImage(req as AuthenticatedRequest, res)
+);
 
 // CHANGE PASSWORD
-userRouter.patch("/:id/password/change", changePassword);
+userRouter.patch("/password/change", isAuth as RequestHandler, (req, res) =>
+  changePassword(req as AuthenticatedRequest, res)
+);
 
 // CHANGE USER ROLE
 userRouter.patch("/:id/update/role", changeRole);
