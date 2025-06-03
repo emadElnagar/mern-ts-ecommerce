@@ -41,6 +41,7 @@ export const SignUp: any = createAsyncThunk(
       const response = await axios.post(`${url}/register`, user);
       const data = jwtDecode<JwtPayload>(response.data.token);
       sessionStorage.setItem("userInfo", JSON.stringify(data));
+      sessionStorage.setItem("token", response.data.token);
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -56,6 +57,7 @@ export const Login: any = createAsyncThunk(
       const response = await axios.post(`${url}/login`, user);
       const data = jwtDecode<JwtPayload>(response.data.token);
       sessionStorage.setItem("userInfo", JSON.stringify(data));
+      sessionStorage.setItem("token", response.data.token);
       return data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -66,6 +68,8 @@ export const Login: any = createAsyncThunk(
 // User Logout Service
 export const Logout: any = createAsyncThunk("users/logout", async () => {
   sessionStorage.removeItem("userInfo");
+  sessionStorage.removeItem("token");
+  return null;
 });
 
 // Get All Users
