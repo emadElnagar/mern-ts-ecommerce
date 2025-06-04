@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 interface User {
   firstName: string;
@@ -10,21 +10,24 @@ interface User {
   phone?: string;
 }
 
-const userSchema = new Schema<User>({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: {
-    type: String,
-    enum: ['user', 'admin', 'moderator'],
-    default: 'user'
+const userSchema = new Schema<User>(
+  {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    role: {
+      type: String,
+      enum: ["user", "admin", "moderator"],
+      default: "user",
+    },
+    image: String,
+    phone: String,
   },
-  image: String,
-  phone: String,
-}, {
-  timestamps: true
-});
+  {
+    timestamps: true,
+  }
+);
 
 const User = model("User", userSchema);
 export default User;

@@ -214,7 +214,10 @@ export const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
     }
     // Update user with new image
     const newUser = { image: req.file.filename };
-    await User.updateOne({ _id: req.params.id }, { $set: newUser });
+    await User.updateOne({ _id: user._id }, { $set: newUser });
+    res.status(200).json({
+      message: "Image uploaded successfully",
+    });
   } catch (error: any) {
     res.status(500).json({
       message: "Error uploading image: " + error.message,
