@@ -103,10 +103,20 @@ export const updateUserName: any = createAsyncThunk(
   "users/namechange",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/${user._id}/name/update`, {
-        firstName: user.firstName,
-        lastName: user.lastName,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${url}/name/update`,
+        {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        },
+        config
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -119,9 +129,19 @@ export const changeEmail: any = createAsyncThunk(
   "users/emailchange",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${url}/${user._id}/email/change`, {
-        email: user.email,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.patch(
+        `${url}/email/change`,
+        {
+          email: user.email,
+        },
+        config
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -134,9 +154,16 @@ export const changeUserImage: any = createAsyncThunk(
   "users/image",
   async (data: any, { rejectWithValue }) => {
     try {
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       const response = await axios.patch(
-        `${url}/profile/${data._id}/image`,
-        data.formData
+        `${url}/profile/image`,
+        data.formData,
+        config
       );
       return response.data;
     } catch (error: any) {
@@ -150,10 +177,20 @@ export const ChangePassword: any = createAsyncThunk(
   "users/password/change",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${url}/${user._id}/password/change`, {
-        currentPassword: user.currentPassword,
-        newPassword: user.newPassword,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.patch(
+        `${url}/password/change`,
+        {
+          currentPassword: user.currentPassword,
+          newPassword: user.newPassword,
+        },
+        config
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
