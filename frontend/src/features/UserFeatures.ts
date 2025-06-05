@@ -254,7 +254,7 @@ export const DeleteProfile: any = createAsyncThunk(
         },
       };
       const response = await axios.post(
-        `${url}/profile/${user._id}/delete`,
+        `${url}/profile/delete`,
         {
           password: user.password,
         },
