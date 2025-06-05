@@ -13,7 +13,7 @@ import {
   userProfile,
   userRegister,
 } from "../controllers/userControllers";
-import { isAuth } from "../middlewares/auth";
+import { isAdmin, isAuth } from "../middlewares/auth";
 import { upload } from "../middlewares/multer";
 import { AuthenticatedRequest } from "../controllers/userControllers";
 
@@ -55,13 +55,25 @@ userRouter.patch("/password/change", isAuth as RequestHandler, (req, res) =>
 );
 
 // CHANGE USER ROLE
-userRouter.patch("/:id/update/role", changeRole);
+userRouter.patch(
+  "/:id/update/role",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  (req, res) => changeRole(req as AuthenticatedRequest, res)
+);
 
 // DELETE MY PROFILE
-userRouter.post("/profile/:id/delete", deleteProfile);
+userRouter.post("/profile/delete", isAuth as RequestHandler, (req, res) =>
+  deleteProfile(req as AuthenticatedRequest, res)
+);
 
 // DELETE USER
-userRouter.delete("/:id/delete", deleteUser);
+userRouter.delete(
+  "/:id/delete",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  (req, res) => deleteUser(req as AuthenticatedRequest, res)
+);
 
 // SEARCH USER
 userRouter.get("/", SearchUser);

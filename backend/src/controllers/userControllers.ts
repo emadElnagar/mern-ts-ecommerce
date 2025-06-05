@@ -226,64 +226,99 @@ export const uploadImage = async (req: AuthenticatedRequest, res: Response) => {
 };
 
 // CHANGE USER ROLE
-export const changeRole: RequestHandler = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (!user) {
-    return res.status(404).json({
-      message: "User not found",
-    });
+export const changeRole = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const user = await User.findById(req.params.id);
+    const { role } = req.body;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    if (!req.body.role) {
+      return res.status(400).json({ message: "Role is required" });
+    }
+    const validRoles = ["user", "admin", "moderator"];
+    if (!validRoles.includes(req.body.role)) {
+      return res.status(400).json({ message: "Invalid role" });
+    }
+    // Update the user's role
+    await User.updateOne(
+      { _id: req.params.id },
+      { $set: { role } },
+      { new: true }
+    );
+    res.status(200).json({ message: "User role updated successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
-  const newUser = { role: req.body.role };
-  User.updateOne({ _id: req.params.id }, { $set: newUser })
-    .then((_result) => {
-      res.status(200).json({
-        message: "User role updated successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: error.message,
-      });
-    });
 };
 
 // DELETE PROFILE (By User)
-export const deleteProfile: RequestHandler = async (req, res) => {
-  const user = await User.findById(req.params.id);
-  if (user) {
+export const deleteProfile = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const user = req.user;
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    // Check if the user has provided a password for deletion
     const validate = await bcrypt.compare(req.body.password, user.password);
     if (!validate) {
       return res.status(401).json({
-        message: "Password is not correct",
+        message: "Password is incorrect",
       });
     }
-    User.deleteOne({ _id: req.params.id })
-      .then((_result) => {
-        res.status(200).json({
-          message: "User Deleted Successfully",
-        });
-      })
-      .catch((error) => {
-        res.status(401).json({
-          message: "Error Deleting User" + error.message,
-        });
+    // Remove old image if it exists
+    if (user.image) {
+      const userImage = path.resolve(
+        __dirname,
+        "../../uploads/images",
+        user.image
+      );
+      fs.promises.unlink(userImage).catch((err) => {
+        console.warn(`Failed to delete image (${user.image}):`, err.message);
       });
+    }
+    // Delete the user
+    await User.deleteOne({ _id: user._id });
+    res.status(200).json({ message: "User profile deleted successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
 // DELETE USER (By Admin)
-export const deleteUser: RequestHandler = async (req, res) => {
-  User.deleteOne({ _id: req.params.id })
-    .then((_result) => {
-      res.status(200).json({
-        message: "User Deleted Successfully",
+export const deleteUser = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const admin = req.user;
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Check if the user has an image and delete it
+    if (user.image) {
+      const userImage = path.resolve(
+        __dirname,
+        "../../uploads/images",
+        user.image
+      );
+      fs.promises.unlink(userImage).catch((err) => {
+        console.warn(`Failed to delete image (${user.image}):`, err.message);
       });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error Deleting User" + error.message,
-      });
-    });
+    }
+    // Check if the admin is trying to delete their own account
+    if (admin && admin._id.toString() === user._id.toString()) {
+      return res
+        .status(400)
+        .json({ message: "You cannot delete your own account" });
+    }
+    // Delete the user
+    await User.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
 };
 
 // SEARCH USER
