@@ -15,7 +15,7 @@ import {
 } from "../controllers/userControllers";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { upload } from "../middlewares/multer";
-import { AuthenticatedRequest } from "../controllers/userControllers";
+import { AuthenticatedRequest } from "../types/authTypes";
 
 const userRouter = Router();
 

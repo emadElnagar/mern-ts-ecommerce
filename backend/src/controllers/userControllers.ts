@@ -4,19 +4,8 @@ import bcrypt from "bcrypt";
 import { generateToken } from "../middlewares/auth";
 import fs from "fs";
 import path from "path";
-import { Request, Response } from "express";
-
-export interface AuthenticatedRequest extends Request {
-  user: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    password: string;
-    email: string;
-    role: string;
-    image?: string;
-  };
-}
+import { Response } from "express";
+import { AuthenticatedRequest } from "../types/authTypes";
 
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
