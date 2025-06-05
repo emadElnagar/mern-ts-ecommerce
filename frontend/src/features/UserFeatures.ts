@@ -203,9 +203,19 @@ export const UpdateRole: any = createAsyncThunk(
   "users/role",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${url}/${user.id}/update/role`, {
-        role: user.role,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.patch(
+        `${url}/${user.id}/update/role`,
+        {
+          role: user.role,
+        },
+        config
+      );
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -218,7 +228,13 @@ export const DeleteUser: any = createAsyncThunk(
   "users/delete",
   async (id: any, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${url}/${id}/delete`);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.delete(`${url}/${id}/delete`, config);
       return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message);
@@ -231,9 +247,20 @@ export const DeleteProfile: any = createAsyncThunk(
   "profile/delte",
   async (user: any, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/profile/${user._id}/delete`, {
-        password: user.password,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${url}/profile/${user._id}/delete`,
+        {
+          password: user.password,
+        },
+        config
+      );
+      sessionStorage.removeItem("token");
       sessionStorage.removeItem("userInfo");
       return response.data;
     } catch (error: any) {
