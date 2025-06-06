@@ -10,23 +10,46 @@ import { AuthenticatedRequest } from "../types/authTypes";
 // USER REGISTER CONTROLLER
 export const userRegister: RequestHandler = async (req, res) => {
   try {
+    // Validation checks for registration
     const { firstName, lastName, email, password } = req.body;
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
-
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res
         .status(400)
         .json({ message: "This email is already registered" });
     }
-
+    if (firstName.length < 3 || firstName.length > 20) {
+      return res
+        .status(400)
+        .json({ message: "First name must be between 3 and 20 characters" });
+    }
+    if (lastName.length < 3 || lastName.length > 20) {
+      return res
+        .status(400)
+        .json({ message: "Last name must be between 3 and 20 characters" });
+    }
+    if (!/^[a-zA-Z]+$/.test(firstName)) {
+      return res
+        .status(400)
+        .json({ message: "First name must be letters only" });
+    }
+    if (!/^[a-zA-Z]+$/.test(lastName)) {
+      return res
+        .status(400)
+        .json({ message: "Last name must be letters only" });
+    }
     const newEmail = req.body.email?.trim().toLowerCase();
-
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(newEmail)) {
       return res.status(400).json({ message: "Invalid email format" });
+    }
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 8 characters long" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
