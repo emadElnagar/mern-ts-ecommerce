@@ -44,7 +44,11 @@ export const SignUp: any = createAsyncThunk(
       sessionStorage.setItem("token", response.data.token);
       return data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -60,7 +64,11 @@ export const Login: any = createAsyncThunk(
       sessionStorage.setItem("token", response.data.token);
       return data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -80,7 +88,11 @@ export const GetAllUsers: any = createAsyncThunk(
       const response = await axios.get(`${url}/all`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -93,7 +105,11 @@ export const GetProfile: any = createAsyncThunk(
       const response = await axios.get(`${url}/profile/${id}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -119,7 +135,11 @@ export const updateUserName: any = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -144,7 +164,11 @@ export const changeEmail: any = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -167,7 +191,11 @@ export const changeUserImage: any = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -193,7 +221,11 @@ export const ChangePassword: any = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -218,7 +250,11 @@ export const UpdateRole: any = createAsyncThunk(
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -237,7 +273,11 @@ export const DeleteUser: any = createAsyncThunk(
       const response = await axios.delete(`${url}/${id}/delete`, config);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -264,7 +304,11 @@ export const DeleteProfile: any = createAsyncThunk(
       sessionStorage.removeItem("userInfo");
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -276,7 +320,11 @@ export const SearchUser: any = createAsyncThunk(
       const response = await axios.get(`${url}?search=${search}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -299,7 +347,7 @@ const userSlice = createSlice({
       })
       .addCase(SignUp.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // User login extra reducers
       .addCase(Login.pending, (state) => {
@@ -312,7 +360,7 @@ const userSlice = createSlice({
       })
       .addCase(Login.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // User logout extra reducers
       .addCase(Logout.fulfilled, (state) => {
@@ -343,7 +391,7 @@ const userSlice = createSlice({
       })
       .addCase(GetProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Change user name
       .addCase(updateUserName.pending, (state) => {
@@ -363,7 +411,7 @@ const userSlice = createSlice({
       })
       .addCase(updateUserName.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Change user email
       .addCase(changeEmail.pending, (state) => {
@@ -383,7 +431,7 @@ const userSlice = createSlice({
       })
       .addCase(changeEmail.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Change user password
       .addCase(ChangePassword.pending, (state) => {
@@ -403,7 +451,7 @@ const userSlice = createSlice({
       })
       .addCase(ChangePassword.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Change user image
       .addCase(changeUserImage.pending, (state) => {
@@ -423,7 +471,7 @@ const userSlice = createSlice({
       })
       .addCase(changeUserImage.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Update user role
       .addCase(UpdateRole.pending, (state) => {
@@ -431,7 +479,7 @@ const userSlice = createSlice({
       })
       .addCase(UpdateRole.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       .addCase(UpdateRole.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -463,7 +511,7 @@ const userSlice = createSlice({
       })
       .addCase(DeleteUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Delete user (By User)
       .addCase(DeleteProfile.pending, (state) => {
@@ -484,7 +532,7 @@ const userSlice = createSlice({
       })
       .addCase(DeleteProfile.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Search user
       .addCase(SearchUser.pending, (state) => {
@@ -497,7 +545,7 @@ const userSlice = createSlice({
       })
       .addCase(SearchUser.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });
