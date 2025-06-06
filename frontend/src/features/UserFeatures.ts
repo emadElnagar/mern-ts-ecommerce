@@ -332,12 +332,22 @@ export const SearchUser: any = createAsyncThunk(
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    resetUserState: (state) => {
+      state.isLoading = false;
+      state.error = null;
+      state.user = null;
+      state.profile = null;
+      state.users = [];
+      state.searchedUsers = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       // User register extra reducers
       .addCase(SignUp.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(SignUp.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -352,6 +362,7 @@ const userSlice = createSlice({
       // User login extra reducers
       .addCase(Login.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(Login.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -370,6 +381,7 @@ const userSlice = createSlice({
       // Get all users extra reducers
       .addCase(GetAllUsers.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetAllUsers.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -383,6 +395,7 @@ const userSlice = createSlice({
       // User profile extra reducers
       .addCase(GetProfile.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetProfile.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -396,6 +409,7 @@ const userSlice = createSlice({
       // Change user name
       .addCase(updateUserName.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(updateUserName.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -416,6 +430,7 @@ const userSlice = createSlice({
       // Change user email
       .addCase(changeEmail.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(changeEmail.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -436,6 +451,7 @@ const userSlice = createSlice({
       // Change user password
       .addCase(ChangePassword.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(ChangePassword.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -456,6 +472,7 @@ const userSlice = createSlice({
       // Change user image
       .addCase(changeUserImage.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(changeUserImage.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -476,6 +493,7 @@ const userSlice = createSlice({
       // Update user role
       .addCase(UpdateRole.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(UpdateRole.rejected, (state, action) => {
         state.isLoading = false;
@@ -496,6 +514,7 @@ const userSlice = createSlice({
       // Delete user extra reducers (By Admin)
       .addCase(DeleteUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(DeleteUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -516,6 +535,7 @@ const userSlice = createSlice({
       // Delete user (By User)
       .addCase(DeleteProfile.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(DeleteProfile.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -537,6 +557,7 @@ const userSlice = createSlice({
       // Search user
       .addCase(SearchUser.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(SearchUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -550,4 +571,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { resetUserState } = userSlice.actions;
 export default userSlice.reducer;
