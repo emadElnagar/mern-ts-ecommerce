@@ -1,79 +1,95 @@
 import { RequestHandler } from "express";
 import Category from "../models/category";
+import { AuthenticatedRequest } from "../types/authTypes";
+import { Response } from "express";
 
 // Create a new category
-export const newCategory: RequestHandler = async (req, res) => {
-  const foundCategoryTitle = await Category.findOne({
-    title: req.params.title,
-  });
-  if (foundCategoryTitle) {
-    return res.json({
-      message: "This category already exists, Try another name",
+export const newCategory = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const foundCategoryTitle = await Category.findOne({
+      title: req.body.title,
+    });
+    if (foundCategoryTitle) {
+      return res.status(400).json({
+        message: "This category already exists, Try another name",
+      });
+    }
+    interface newCategory {
+      title: string;
+      author: string;
+    }
+    const category = new Category<newCategory>({
+      title: req.body.title,
+      author: req.user._id,
+    });
+    await category.save();
+    res.status(200).json({
+      message: "Category created successfully",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
     });
   }
-  interface newCategory {
-    title: string;
-    author: object;
-  }
-  const category = new Category<newCategory>({
-    title: req.body.title,
-    author: req.body.author,
-  });
-  category
-    .save()
-    .then((category) => {
-      res.status(200).json({
-        _id: category._id,
-        title: category.title,
-        author: category.author,
-      });
-    })
-    .catch((err) => {
-      res.status(401).json({
-        message: err.message,
-      });
-    });
 };
 
 // Get all categories
 export const getAllCategories: RequestHandler = async (_req, res) => {
   try {
     const Categories = await Category.find({});
-    res.send(Categories);
-  } catch (error) {
-    res.send(error);
+    res.status(200).json({
+      categories: Categories,
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 
 // Update category
 export const updateCategory: RequestHandler = async (req, res) => {
-  const newCategory = {
-    title: req.body.title,
-  };
-  Category.updateOne({ _id: req.params.id }, { $set: newCategory })
-    .then((_result) => {
-      res.status(200).json({
-        message: "Category updated successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error" + error.message,
-      });
+  try {
+    const newCategory = {
+      title: req.body.title,
+    };
+    const foundCategory = await Category.findOne({
+      title: req.body.title,
+      _id: { $ne: req.params.id },
     });
+    if (foundCategory) {
+      return res.status(400).json({
+        message: "This category already exists, Try another name",
+      });
+    }
+    if (
+      !req.body.title ||
+      typeof req.body.title !== "string" ||
+      !req.body.title.trim()
+    ) {
+      return res.status(400).json({ message: "Invalid category title" });
+    }
+    await Category.updateOne({ _id: req.params.id }, { $set: newCategory });
+    res.status(200).json({
+      message: "Category updated successfully",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 // Delete category
 export const deleteCategory: RequestHandler = (req, res) => {
-  Category.deleteOne({ _id: req.params.id })
-    .then((_result) => {
-      res.status(200).json({
-        message: "Category Deleted Successfully",
-      });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error Deleting Category" + error.message,
-      });
+  try {
+    Category.deleteOne({ _id: req.params.id });
+    res.status(200).json({
+      message: "Category deleted successfully",
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
