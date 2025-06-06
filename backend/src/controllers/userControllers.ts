@@ -22,11 +22,18 @@ export const userRegister: RequestHandler = async (req, res) => {
         .json({ message: "This email is already registered" });
     }
 
+    const newEmail = req.body.email?.trim().toLowerCase();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       firstName,
       lastName,
-      email,
+      email: newEmail,
       password: hashedPassword,
     });
 
@@ -120,28 +127,38 @@ export const changeUserEmail = async (
 ) => {
   try {
     const user = req.user;
+    const newEmail = req.body.email?.trim().toLowerCase();
+
     if (!user) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const existingUser = await User.find({ email: req.body.email });
-    if (existingUser.length > 0) {
-      return res.status(400).json({ message: "Email already exists" });
-    }
-    if (!req.body.email) {
+
+    if (!newEmail) {
       return res.status(400).json({ message: "New email is required" });
     }
-    // Update the user's email
-    await User.updateOne(
-      { _id: user._id },
-      { $set: { email: req.body.email } }
-    );
-    res.status(200).json({ message: "User email updated successfully" });
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(newEmail)) {
+      return res.status(400).json({ message: "Invalid email format" });
+    }
+
+    const existingUser = await User.findOne({
+      email: newEmail,
+      _id: { $ne: user._id },
+    });
+
+    if (existingUser) {
+      return res
+        .status(400)
+        .json({ message: "Email already exists, try another one" });
+    }
+
+    await User.updateOne({ _id: user._id }, { $set: { email: newEmail } });
+
+    return res.status(200).json({ message: "User email updated successfully" });
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
   }
-  const newUser = {
-    email: req.body.email,
-  };
 };
 
 // CHANGE USER PASSWORD
