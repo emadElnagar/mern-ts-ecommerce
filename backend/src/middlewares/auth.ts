@@ -15,32 +15,34 @@ export const isAuth = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): Promise<void> => {
-  let token;
+): Promise<any> => {
+  const authHeader = req.headers.authorization;
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.split(" ")[1];
+
     try {
-      token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(
         token,
         process.env.JWT_SECRET!
       ) as DecodedToken;
 
-      req.user = await User.findById(decoded._id).select("-password");
+      const user = await User.findById(decoded._id).select("-password");
+
+      if (!user) {
+        return res
+          .status(401)
+          .json({ message: "Not authorized, user not found" });
+      }
+
+      req.user = user;
       return next();
-    } catch (error) {
-      res.status(401);
-      throw new Error("Not authorized, token failed");
+    } catch (err) {
+      return res.status(401).json({ message: "Not authorized, token invalid" });
     }
   }
 
-  if (!token) {
-    res.status(401);
-    throw new Error("Not authorized, no token");
-  }
+  return res.status(401).json({ message: "Not authorized, no token" });
 };
 
 // Middleware to check if the user is an admin
@@ -48,12 +50,11 @@ export const isAdmin = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-): void => {
+): any => {
   if (req.user && req.user.role === "admin") {
     return next();
   } else {
-    res.status(403);
-    throw new Error("Not authorized as admin");
+    return res.status(403).json({ message: "Access denied" });
   }
 };
 
