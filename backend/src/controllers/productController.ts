@@ -201,6 +201,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
         message: "Count in stock cannot be negative",
       });
     }
+    // Update product in the database
     const updatedProduct = {
       name,
       slug: slugify(name, {
@@ -220,6 +221,22 @@ export const updateProduct: RequestHandler = async (req, res) => {
       { slug: req.params.slug },
       { $set: updatedProduct }
     );
+    // Remove old images from the filesystem
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      for (const image of product.images) {
+        const productImagePath = path.resolve(
+          __dirname,
+          "../../uploads/images",
+          image
+        );
+        fs.promises.unlink(productImagePath).catch((err) => {
+          console.warn(`Failed to delete image (${image}):`, err.message);
+        });
+      }
+    }
+    res.status(200).json({
+      message: "Product Updated Successfully",
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
@@ -236,6 +253,20 @@ export const deleteProduct: RequestHandler = async (req, res) => {
         message: "Product Not Found",
       });
     }
+    // Remove product images from the filesystem
+    if (Array.isArray(product.images) && product.images.length > 0) {
+      for (const image of product.images) {
+        const productImagePath = path.resolve(
+          __dirname,
+          "../../uploads/images",
+          image
+        );
+        fs.promises.unlink(productImagePath).catch((err) => {
+          console.warn(`Failed to delete image (${image}):`, err.message);
+        });
+      }
+    }
+    // Delete the product from the database
     await Product.deleteOne({ _id: req.params.id });
     res.status(200).json({
       message: "Product Deleted Successfully",
