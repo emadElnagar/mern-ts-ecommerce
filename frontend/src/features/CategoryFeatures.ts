@@ -28,10 +28,20 @@ export const NewCategory: any = createAsyncThunk(
   "categories/new",
   async (category: object, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/new`, category);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(`${url}/new`, category, config);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -44,7 +54,11 @@ export const GetAllCategories: any = createAsyncThunk(
       const response = await axios.get(`${url}/all`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -54,12 +68,26 @@ export const UpdateCategory: any = createAsyncThunk(
   "category/update",
   async (category: any, { rejectWithValue }) => {
     try {
-      const response = await axios.patch(`${url}/${category._id}/update`, {
-        title: category.title,
-      });
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.patch(
+        `${url}/${category._id}/update`,
+        {
+          title: category.title,
+        },
+        config
+      );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -69,10 +97,20 @@ export const DeleteCategory: any = createAsyncThunk(
   "category/delete",
   async (id: any, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${url}/${id}/delete`);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.delete(`${url}/${id}/delete`, config);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -87,6 +125,7 @@ const categorySlice = createSlice({
       // Create new category
       .addCase(NewCategory.pending, (state, _action) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(NewCategory.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -95,11 +134,12 @@ const categorySlice = createSlice({
       })
       .addCase(NewCategory.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Get all categories
-      .addCase(GetAllCategories.pending, (state, _) => {
+      .addCase(GetAllCategories.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetAllCategories.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -108,11 +148,12 @@ const categorySlice = createSlice({
       })
       .addCase(GetAllCategories.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Update category
       .addCase(UpdateCategory.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(UpdateCategory.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -128,11 +169,12 @@ const categorySlice = createSlice({
       })
       .addCase(UpdateCategory.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Delete category
       .addCase(DeleteCategory.pending, (state, _) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(DeleteCategory.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -148,7 +190,7 @@ const categorySlice = createSlice({
       })
       .addCase(DeleteCategory.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });

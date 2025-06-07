@@ -13,7 +13,9 @@ import LoadingBox from "../../components/LoadingBox";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
-  const { categories, error, loading } = useSelector((state: any) => state.category);
+  const { categories, error, loading } = useSelector(
+    (state: any) => state.category
+  );
   useEffect(() => {
     dispatch(GetAllCategories());
   }, [dispatch]);
@@ -29,19 +31,31 @@ const CategoriesPage = () => {
             <CategoryForm />
           </Section>
           <Section>
-            <h1 className="text-center">categories list</h1>
-            {
-              loading ? <LoadingBox /> :
-              error ? <ErrorBox message={ `Error loading categories` } /> :
-              categories.map((category: { _id: React.Key, title: string }) => (
-                <CategoryList key={ category._id } title={ category.title } _id={ category._id } />
-                ))
-              }
+            {loading ? (
+              <LoadingBox />
+            ) : error ? (
+              <ErrorBox message={error} />
+            ) : (
+              categories.length > 0 && (
+                <>
+                  <h1 className="text-center">all categories</h1>
+                  {categories.map(
+                    (category: { _id: React.Key; title: string }) => (
+                      <CategoryList
+                        key={category._id}
+                        title={category.title}
+                        _id={category._id}
+                      />
+                    )
+                  )}
+                </>
+              )
+            )}
           </Section>
         </Content>
       </Main>
     </Fragment>
-  )
-}
+  );
+};
 
 export default CategoriesPage;
