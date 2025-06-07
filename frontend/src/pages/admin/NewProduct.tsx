@@ -6,13 +6,14 @@ import { Content } from "../../styles/admin";
 import { Field, Input, Select, Textarea } from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
-import { NewProduct } from "../../features/ProductFeatures";
+import { NewProduct, resetProductState } from "../../features/ProductFeatures";
 import { useNavigate } from "react-router-dom";
 
 const NewProductPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { categories } = useSelector((state: any) => state.category);
+  const { error } = useSelector((state: any) => state.product);
   const { user } = useSelector((state: any) => state.user);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -58,49 +59,43 @@ const NewProductPage = () => {
   // Handle form submit
   const handleSbmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(resetProductState());
     const formData = new FormData();
-    if (typeof images === "undefined") return;
-    if (
-      !name ||
-      !description ||
-      !brand ||
-      !price ||
-      !countInStock ||
-      !category
-    ) {
+    if (typeof images === "undefined") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Please enter all required fields",
+        text: "Please select images",
       });
-    } else if (images.length < 1) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Please upload at least 1 image",
-      });
-    } else if (discount !== null && discount > price) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `Discount can't be greater than price`,
-      });
-    } else {
-      images.forEach(function (item, index, arr) {
-        arr[index] = item;
-        formData.append(`imgnames`, item.name);
-        formData.append(`images`, item);
-      });
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("brand", brand);
-      formData.append("price", price!.toString());
-      formData.append("countInStock", countInStock!.toString());
-      formData.append("category", category);
-      formData.append("seller", user._id);
-      discount !== null && formData.append("discount", discount!.toString());
-      dispatch(NewProduct(formData)).then(setImages([])).then(navigate("/"));
+      return;
     }
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error,
+      });
+      return;
+    }
+    images.forEach(function (item, index, arr) {
+      arr[index] = item;
+      formData.append(`imgnames`, item.name);
+      formData.append(`images`, item);
+    });
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("brand", brand);
+    formData.append("price", price!.toString());
+    formData.append("countInStock", countInStock!.toString());
+    formData.append("category", category);
+    formData.append("seller", user._id);
+    discount !== null && formData.append("discount", discount!.toString());
+    dispatch(NewProduct(formData))
+      .unwrap()
+      .then(() => {
+        setImages([]);
+        navigate("/");
+      });
   };
   return (
     <Fragment>

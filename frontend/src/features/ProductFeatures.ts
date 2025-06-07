@@ -186,7 +186,16 @@ export const DeleteProduct: any = createAsyncThunk(
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    resetProductState: (state) => {
+      state.isLoading = false;
+      state.error = null;
+      state.products = [];
+      state.searchedProducts = [];
+      state.similarProducts = [];
+      state.product = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       // Create new product
@@ -304,4 +313,5 @@ const productSlice = createSlice({
   },
 });
 
+export const { resetProductState } = productSlice.actions;
 export default productSlice.reducer;
