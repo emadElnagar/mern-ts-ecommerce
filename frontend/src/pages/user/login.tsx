@@ -9,9 +9,9 @@ import {
 } from "../../styles/main";
 import { Helmet } from "react-helmet";
 import { useDispatch, useSelector } from "react-redux";
-import { Login } from "../../features/UserFeatures";
+import { Login, resetUserState } from "../../features/UserFeatures";
 import LoadingBox from "../../components/LoadingBox";
-import ErrorBox from "../../components/ErrorBox";
+import Swal from "sweetalert2";
 
 function LoginPage() {
   const [email, setEmail] = useState("");
@@ -21,6 +21,15 @@ function LoginPage() {
   const { user, error, loading } = useSelector((state: any) => state.user);
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(resetUserState());
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+      });
+      return;
+    }
     dispatch(Login({ email, password }));
   };
   if (user) {
@@ -36,7 +45,6 @@ function LoginPage() {
       ) : (
         <Container>
           <Section>
-            {error && <ErrorBox message={error} />}
             <Form method="post" onSubmit={handleLogin}>
               <HeaderCenter>login</HeaderCenter>
               <Field>
