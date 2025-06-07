@@ -36,10 +36,8 @@ export const newCategory = async (req: AuthenticatedRequest, res: Response) => {
 // Get all categories
 export const getAllCategories: RequestHandler = async (_req, res) => {
   try {
-    const Categories = await Category.find({});
-    res.status(200).json({
-      categories: Categories,
-    });
+    const categories = await Category.find({});
+    res.status(200).json(categories);
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
@@ -81,9 +79,9 @@ export const updateCategory: RequestHandler = async (req, res) => {
 };
 
 // Delete category
-export const deleteCategory: RequestHandler = (req, res) => {
+export const deleteCategory: RequestHandler = async (req, res) => {
   try {
-    Category.deleteOne({ _id: req.params.id });
+    await Category.deleteOne({ _id: req.params.id });
     res.status(200).json({
       message: "Category deleted successfully",
     });
