@@ -1,8 +1,11 @@
 import { RequestHandler } from "express";
 import Product from "../models/product";
 import slugify from "slugify";
-import mongoose from "mongoose";
 import Category from "../models/category";
+import { Response } from "express";
+import { AuthenticatedRequest } from "../types/authTypes";
+import path from "path";
+import fs from "fs";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
@@ -22,121 +25,226 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug });
-  if (product) {
-    res.send(product);
-  } else {
-    return res.status(404).json({
-      message: "Product Not Found",
+  try {
+    const product = await Product.findOne({ slug: req.params.slug }).populate(
+      "category"
+    );
+    if (!product) {
+      return res.status(404).json({
+        message: "Product Not Found",
+      });
+    }
+    res.status(200).json(product);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
     });
   }
 };
 
 // Get similar products
 export const getSimilarProducts: RequestHandler = async (req, res) => {
-  const product = await Product.findOne({ slug: req.params.slug });
-  const similarProducts = (
-    await Product.find({ category: product?.category })
+  try {
+    const product = await Product.findOne({ slug: req.params.slug });
+    if (!product) {
+      return res.status(404).json({
+        message: "Product Not Found",
+      });
+    }
+    const similarProducts = await Product.find({
+      category: product.category,
+      _id: { $ne: product._id },
+    })
       .sort({ createdAt: -1 })
-      .limit(3)
-  ).filter((item) => item.slug !== product?.slug);
-  if (!similarProducts) return;
-  res.send(similarProducts);
+      .limit(3);
+    if (!similarProducts || similarProducts.length === 0) {
+      return res.status(404).json({
+        message: "No similar products found",
+      });
+    }
+    res.status(200).json(similarProducts);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 // CREATE A NEW PRODUCT
-export const newProduct: RequestHandler = async (req, res) => {
-  // Unique product name
-  const foundProductName = await Product.findOne({ name: req.body.name });
-  if (foundProductName) {
-    return res.json({
-      message: "This product already exists, Try another name",
+export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const foundProductName = await Product.findOne({
+      name: req.body.name,
+    });
+    if (foundProductName) {
+      return res.status(400).json({
+        message: "This product already exists, Try another name",
+      });
+    }
+    const {
+      name,
+      description,
+      brand,
+      price,
+      discount,
+      images,
+      countInStock,
+      category,
+    } = req.body;
+    if (
+      !name ||
+      !description ||
+      !brand ||
+      !price ||
+      !countInStock ||
+      !category
+    ) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    if (discount < 0) {
+      return res.status(400).json({
+        message: "Discount cannot be negative",
+      });
+    }
+    if (discount > price) {
+      return res.status(400).json({
+        message: "Discount cannot be more than price",
+      });
+    }
+    if (countInStock < 0) {
+      return res.status(400).json({
+        message: "Count in stock cannot be negative",
+      });
+    }
+    const product = new Product({
+      name,
+      slug: slugify(name, {
+        replacement: "-",
+        lower: true,
+        strict: true,
+      }),
+      description,
+      brand,
+      price,
+      discount,
+      countInStock,
+      category,
+      images: req.body.imgnames,
+      seller: req.user._id,
+    });
+    await product.save();
+    res.status(201).json({
+      message: "Product Created Successfully",
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
     });
   }
-  interface newProduct {
-    name: string;
-    slug: string;
-    description: string;
-    brand: string;
-    price: number;
-    discount: number;
-    countInStock: number;
-    images: string | undefined;
-    category: object;
-    seller: object;
-  }
-  const product = new Product<newProduct>({
-    name: req.body.name,
-    slug: slugify(req.body.name, {
-      replacement: "-",
-      lower: true,
-      strict: true,
-    }),
-    description: req.body.description,
-    brand: req.body.brand,
-    price: req.body.price,
-    discount: req.body.discount,
-    countInStock: req.body.countInStock,
-    images: req.body.imgnames,
-    category: req.body.category,
-    seller: req.body.seller,
-  });
-  product
-    .save()
-    .then((_product) => {
-      res.status(200).json({
-        message: "Product Created Successfully",
-      });
-    })
-    .catch((err) => {
-      res.status(401).json({
-        message: err.message,
-      });
-    });
 };
 
 // Update product
 export const updateProduct: RequestHandler = async (req, res) => {
-  const newProduct = {
-    name: req.body.name,
-    slug: slugify(req.body.name, {
-      replacement: "-",
-      lower: true,
-      strict: true,
-    }),
-    description: req.body.description,
-    brand: req.body.brand,
-    price: req.body.price,
-    countInStock: req.body.countInStock,
-    images: req.body.imgnames,
-    category: req.body.category,
-  };
-  Product.updateOne({ slug: req.params.slug }, { $set: newProduct })
-    .then((_result) => {
-      res.status(200).json({
-        message: "Product updated successfully",
+  try {
+    const product = await Product.findOne({ slug: req.params.slug });
+    if (!product) {
+      return res.status(404).json({
+        message: "Product Not Found",
       });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: error.message,
-      });
+    }
+    const foundProductName = await Product.findOne({
+      name: req.body.name,
+      _id: { $ne: product._id },
     });
+    if (foundProductName) {
+      return res.status(400).json({
+        message: "This product already exists, Try another name",
+      });
+    }
+    const {
+      name,
+      description,
+      brand,
+      price,
+      discount,
+      images,
+      countInStock,
+      category,
+    } = req.body;
+    if (
+      !name ||
+      !description ||
+      !brand ||
+      !price ||
+      !countInStock ||
+      !category ||
+      !images
+    ) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+    if (discount < 0) {
+      return res.status(400).json({
+        message: "Discount cannot be negative",
+      });
+    }
+    if (discount > price) {
+      return res.status(400).json({
+        message: "Discount cannot be more than price",
+      });
+    }
+    if (countInStock < 0) {
+      return res.status(400).json({
+        message: "Count in stock cannot be negative",
+      });
+    }
+    const updatedProduct = {
+      name,
+      slug: slugify(name, {
+        replacement: "-",
+        lower: true,
+        strict: true,
+      }),
+      description,
+      brand,
+      price,
+      discount,
+      countInStock,
+      category,
+      images: req.body.imgnames,
+    };
+    await Product.updateOne(
+      { slug: req.params.slug },
+      { $set: updatedProduct }
+    );
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 // Delete product
 export const deleteProduct: RequestHandler = async (req, res) => {
-  Product.deleteOne({ _id: req.params.id })
-    .then((_result) => {
-      res.status(200).json({
-        message: "Product Deleted Successfully",
+  try {
+    const product = await Product.findOne({ _id: req.params.id });
+    if (!product) {
+      return res.status(404).json({
+        message: "Product Not Found",
       });
-    })
-    .catch((error) => {
-      res.status(401).json({
-        message: "Error deleting product" + error.message,
-      });
+    }
+    await Product.deleteOne({ _id: req.params.id });
+    res.status(200).json({
+      message: "Product Deleted Successfully",
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 // Search product
