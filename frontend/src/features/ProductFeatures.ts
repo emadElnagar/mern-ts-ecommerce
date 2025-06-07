@@ -44,10 +44,20 @@ export const NewProduct: any = createAsyncThunk(
   "products/new",
   async (product: any, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`${url}/new`, product);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(`${url}/new`, product, config);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -60,7 +70,11 @@ export const GetAllProducts: any = createAsyncThunk(
       const response = await axios.get(`${url}/all`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -73,7 +87,11 @@ export const GetSingleProduct: any = createAsyncThunk(
       const response = await axios.get(`${url}/${slug}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -86,7 +104,11 @@ export const GetSimilarProducts: any = createAsyncThunk(
       const response = await axios.get(`${url}/${slug}/similar`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -99,7 +121,11 @@ export const SearchProducts: any = createAsyncThunk(
       const response = await axios.get(`${url}?search=${keyword}`);
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -109,13 +135,24 @@ export const UpdateProduct: any = createAsyncThunk(
   "products/update",
   async (product: any, { rejectWithValue }) => {
     try {
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
       const response = await axios.put(
         `${url}/${product.slug}/update`,
-        product.data
+        product.data,
+        config
       );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -125,10 +162,23 @@ export const DeleteProduct: any = createAsyncThunk(
   "products/delete",
   async (product: any, { rejectWithValue }) => {
     try {
-      const response = await axios.delete(`${url}/${product._id}/delete`);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.delete(
+        `${url}/${product._id}/delete`,
+        config
+      );
       return response.data;
     } catch (error: any) {
-      return rejectWithValue(error.message);
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
     }
   }
 );
@@ -142,6 +192,7 @@ const productSlice = createSlice({
       // Create new product
       .addCase(NewProduct.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(NewProduct.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -150,11 +201,12 @@ const productSlice = createSlice({
       })
       .addCase(NewProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Get all products
       .addCase(GetAllProducts.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -163,11 +215,12 @@ const productSlice = createSlice({
       })
       .addCase(GetAllProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Get single product
       .addCase(GetSingleProduct.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetSingleProduct.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -176,11 +229,12 @@ const productSlice = createSlice({
       })
       .addCase(GetSingleProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Get similar products
       .addCase(GetSimilarProducts.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(GetSimilarProducts.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -189,11 +243,12 @@ const productSlice = createSlice({
       })
       .addCase(GetSimilarProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Update product
       .addCase(UpdateProduct.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(UpdateProduct.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -209,11 +264,12 @@ const productSlice = createSlice({
       })
       .addCase(UpdateProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Delete product
       .addCase(DeleteProduct.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(DeleteProduct.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -229,11 +285,12 @@ const productSlice = createSlice({
       })
       .addCase(DeleteProduct.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       })
       // Search products
       .addCase(SearchProducts.pending, (state) => {
         state.isLoading = true;
+        state.error = null;
       })
       .addCase(SearchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -242,7 +299,7 @@ const productSlice = createSlice({
       })
       .addCase(SearchProducts.rejected, (state, action) => {
         state.isLoading = false;
-        state.error = action.error;
+        state.error = action.payload;
       });
   },
 });
