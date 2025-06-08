@@ -87,7 +87,6 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
       brand,
       price,
       discount,
-      images,
       countInStock,
       category,
     } = req.body;
@@ -169,7 +168,6 @@ export const updateProduct: RequestHandler = async (req, res) => {
       brand,
       price,
       discount,
-      images,
       countInStock,
       category,
     } = req.body;
@@ -179,8 +177,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
       !brand ||
       !price ||
       !countInStock ||
-      !category ||
-      !images
+      !category
     ) {
       return res.status(400).json({
         message: "All fields are required",

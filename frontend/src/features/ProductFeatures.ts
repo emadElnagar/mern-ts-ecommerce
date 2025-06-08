@@ -262,9 +262,7 @@ const productSlice = createSlice({
       .addCase(UpdateProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        const {
-          args: { slug },
-        } = action.meta;
+        const { slug } = action.meta.arg;
         if (slug) {
           state.products = state.products.map((product) =>
             product.slug === slug ? action.payload : product

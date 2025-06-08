@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   GetSingleProduct,
+  resetProductState,
   UpdateProduct,
 } from "../../features/ProductFeatures";
 import LoadingBox from "../../components/LoadingBox";
@@ -24,7 +25,6 @@ import Swal from "sweetalert2";
 const UpdatePage = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
-  const { user } = useSelector((state: any) => state.user);
   const { slug } = useParams();
   const { error, loading, product } = useSelector(
     (state: any) => state.product
@@ -49,10 +49,20 @@ const UpdatePage = () => {
       setPrice(product.price);
       setDiscount(product.discount);
       setCountInStock(product.countInStock);
-      setCategory(product.category);
+      if (
+        product.category &&
+        typeof product.category === "object" &&
+        product.category._id
+      ) {
+        setCategory(product.category._id);
+      } else {
+        setCategory(product.category);
+      }
+
       setImages([product.images]);
     }
   }, [product]);
+
   // Change price
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = !Number.isNaN(e.target.valueAsNumber)
@@ -81,59 +91,53 @@ const UpdatePage = () => {
     };
     const files = target.files;
     if (files) {
-      for (let i = 0; i < files.length; i++) {
-        images.push(files[i]);
-      }
+      const fileArray = Array.from(files); // Convert FileList to array
+      setImages((prev) => [...prev, ...fileArray]); // Properly update state
     }
   };
   // Handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    dispatch(resetProductState());
     const formData = new FormData();
-    if (typeof images === "undefined") return;
-    if (
-      !name ||
-      !description ||
-      !brand ||
-      !price ||
-      !countInStock ||
-      !category
-    ) {
+    if (typeof images === "undefined") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Please enter all required fields",
+        text: "Please select images",
       });
-    } else if (images.length < 1) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Please upload at least 1 image",
-      });
-    } else if (discount !== null && discount > price) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `Discount can't be greater than price`,
-      });
-    } else {
-      images.forEach(function (item, index, arr) {
-        arr[index] = item;
-        formData.append(`imgnames`, item.name);
-        formData.append(`images`, item);
-      });
-      formData.append("name", name);
-      formData.append("description", description);
-      formData.append("brand", brand);
-      formData.append("price", price!.toString());
-      formData.append("countInStock", countInStock!.toString());
-      formData.append("category", category);
-      formData.append("seller", user._id);
-      discount !== null && formData.append("discount", discount!.toString());
-      dispatch(UpdateProduct({ data: formData, slug }))
-        .then(setImages([]))
-        .then(navigate("/"));
+      return;
     }
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: error.message,
+      });
+      return;
+    }
+    images.forEach((item) => {
+      if (item instanceof File) {
+        formData.append("imgnames", item.name);
+        formData.append("images", item);
+      }
+    });
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("brand", brand);
+    formData.append("price", price!.toString());
+    formData.append("countInStock", countInStock!.toString());
+    formData.append("category", category.toString());
+    discount !== null &&
+      discount !== undefined &&
+      discount > 0 &&
+      formData.append("discount", discount!.toString());
+    dispatch(UpdateProduct({ data: formData, slug }))
+      .unwrap()
+      .then(() => {
+        setImages([]);
+        navigate("/");
+      });
   };
   return (
     <Fragment>
@@ -224,21 +228,16 @@ const UpdatePage = () => {
                     <Select
                       name="category"
                       id="category"
-                      onChange={(e: {
-                        target: { value: SetStateAction<string> };
-                      }) => setCategory(e.target.value)}
+                      value={category}
+                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                        setCategory(e.target.value)
+                      }
                     >
-                      {categories.map(
-                        (category: { _id: Key; title: string }) => (
-                          <option
-                            key={category._id}
-                            value={`${category._id}`}
-                            selected={category._id === product.category}
-                          >
-                            {category.title}
-                          </option>
-                        )
-                      )}
+                      {categories.map((cat: { title: string; _id: Key }) => (
+                        <option key={cat._id} value={cat._id}>
+                          {cat.title}
+                        </option>
+                      ))}
                     </Select>
                     <label htmlFor="category">category</label>
                   </Field>
