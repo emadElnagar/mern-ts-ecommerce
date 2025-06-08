@@ -29,28 +29,28 @@ const AllProducts = () => {
               <LoadingBox />
             ) : (
               <Grid>
-                {products.map(
-                  (product: {
-                    _id: Key;
-                    name: string;
-                    slug: string;
-                    images: string[];
-                    price: number;
-                    discount: number;
-                    myClass: string;
-                  }) => (
-                    <Product
-                      key={product._id}
-                      _id={product._id}
-                      name={product.name}
-                      slug={product.slug}
-                      image={product.images[0]}
-                      price={product.price}
-                      discount={product.discount}
-                      myClass={""}
-                    />
-                  )
-                )}
+                {products &&
+                  products.length > 0 &&
+                  products.map(
+                    (product: {
+                      _id: Key;
+                      name: string;
+                      slug: string;
+                      images: string[];
+                      price: number;
+                      discount: number;
+                    }) => (
+                      <Product
+                        key={product._id}
+                        _id={product._id}
+                        name={product.name}
+                        slug={product.slug}
+                        image={product.images[0]}
+                        price={product.price}
+                        discount={product.discount}
+                      />
+                    )
+                  )}
               </Grid>
             )}
           </Section>

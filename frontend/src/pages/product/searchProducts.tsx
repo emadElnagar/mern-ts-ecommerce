@@ -41,7 +41,6 @@ const SearchProductsPage = () => {
                     images: string[];
                     price: number;
                     discount: number;
-                    myClass: string;
                   }) => (
                     <Product
                       key={product._id}
@@ -51,7 +50,6 @@ const SearchProductsPage = () => {
                       image={product.images[0]}
                       price={product.price}
                       discount={product.discount}
-                      myClass="stable"
                     />
                   )
                 )}

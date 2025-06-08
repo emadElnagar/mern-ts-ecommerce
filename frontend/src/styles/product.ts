@@ -5,14 +5,6 @@ export const ProductDiv = styled.div`
   transition: 0.3s all ease;
   &:hover {
     box-shadow: 0 0 2px ${vars.secondary};
-    transform: translatey(-10px);
-  }
-  &.stable {
-    border: 1px solid ${vars.shadow};
-    &:hover {
-      box-shadow: none;
-      transform: translatey(0);
-    }
   }
 `;
 export const ProductHeader = styled.div`

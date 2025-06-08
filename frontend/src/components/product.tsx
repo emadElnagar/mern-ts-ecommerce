@@ -19,14 +19,12 @@ type productProps = {
   image: string;
   price: number;
   discount: number;
-  myClass: string;
 };
 
 function Product(product: productProps) {
   const realPrice = product.price - product.discount;
-  const myClass = product.myClass;
   return (
-    <ProductDiv className={myClass}>
+    <ProductDiv>
       <Link to={`/products/${product.slug}`}>
         <ProductHeader>
           <ProductTitle>{product.name}</ProductTitle>

@@ -48,7 +48,6 @@ const RelatedProducts = (props: propsType) => {
                     image={product.images[0]}
                     price={product.price}
                     discount={product.discount}
-                    myClass="stable"
                   />
                 )
               )}

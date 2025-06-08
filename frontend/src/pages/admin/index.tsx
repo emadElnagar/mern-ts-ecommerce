@@ -71,46 +71,50 @@ const AdminMainPage = () => {
               <LoadingBox />
             ) : (
               <Grid>
-                {products.map(
-                  (product: {
-                    _id: Key;
-                    slug: string;
-                    name: string;
-                    images: string[];
-                    price: number;
-                    discount: number;
-                  }) => (
-                    <ProductDiv className="stable" key={product._id}>
-                      <ProductHeader>
-                        <ProductTitle>{product.name}</ProductTitle>
-                      </ProductHeader>
-                      <ProductImg
-                        src={`http://localhost:5000/${product.images[0]}`}
-                        alt="There is a problem showing your photos"
-                      />
-                      {product.discount ? (
-                        <FlexBetweenRow>
-                          <small>
-                            <OriginalPrice>{product.price}$</OriginalPrice>
-                          </small>
-                        </FlexBetweenRow>
-                      ) : (
-                        <FlexBetweenRow>
-                          <span>{product.price}$</span>
-                        </FlexBetweenRow>
-                      )}
+                {products &&
+                  products.length > 0 &&
+                  products.map(
+                    (product: {
+                      _id: Key;
+                      slug: string;
+                      name: string;
+                      images: string[];
+                      price: number;
+                      discount: number;
+                    }) => (
+                      <ProductDiv className="stable" key={product._id}>
+                        <ProductHeader>
+                          <ProductTitle>{product.name}</ProductTitle>
+                        </ProductHeader>
+                        <ProductImg
+                          src={`http://localhost:5000/${product.images[0]}`}
+                          alt="There is a problem showing your photos"
+                        />
+                        {product.discount ? (
+                          <FlexBetweenRow>
+                            <small>
+                              <OriginalPrice>{product.price}$</OriginalPrice>
+                            </small>
+                          </FlexBetweenRow>
+                        ) : (
+                          <FlexBetweenRow>
+                            <span>{product.price}$</span>
+                          </FlexBetweenRow>
+                        )}
 
-                      <FlexBetweenRow>
-                        <IconButton onClick={() => handleUpdate(product.slug)}>
-                          update <HiPencil />
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(product._id)}>
-                          delete <MdDelete />
-                        </IconButton>
-                      </FlexBetweenRow>
-                    </ProductDiv>
-                  )
-                )}
+                        <FlexBetweenRow>
+                          <IconButton
+                            onClick={() => handleUpdate(product.slug)}
+                          >
+                            update <HiPencil />
+                          </IconButton>
+                          <IconButton onClick={() => handleDelete(product._id)}>
+                            delete <MdDelete />
+                          </IconButton>
+                        </FlexBetweenRow>
+                      </ProductDiv>
+                    )
+                  )}
               </Grid>
             )}
           </Section>
