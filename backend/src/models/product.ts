@@ -4,6 +4,7 @@ interface Product {
   name: string;
   slug: string;
   description: string;
+  features: string[];
   brand: string;
   price: number;
   discount?: number;
@@ -24,9 +25,10 @@ interface Product {
 
 const productSchema = new Schema<Product>(
   {
-    name: { type: String, required: true },
+    name: { type: String, required: true, trim: true },
     slug: String,
     description: { type: String, required: true },
+    features: { type: [String], required: true, trim: true },
     brand: { type: String, required: true },
     price: { type: Number, required: true },
     discount: Number,

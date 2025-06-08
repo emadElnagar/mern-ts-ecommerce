@@ -89,6 +89,7 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
       discount,
       countInStock,
       category,
+      features,
     } = req.body;
     if (
       !name ||
@@ -96,7 +97,8 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
       !brand ||
       !price ||
       !countInStock ||
-      !category
+      !category ||
+      !features
     ) {
       return res.status(400).json({
         message: "All fields are required",
@@ -130,6 +132,7 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
       discount,
       countInStock,
       category,
+      features,
       images: req.body.imgnames,
       seller: req.user._id,
     });
@@ -170,6 +173,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
       discount,
       countInStock,
       category,
+      features,
     } = req.body;
     if (
       !name ||
@@ -177,7 +181,8 @@ export const updateProduct: RequestHandler = async (req, res) => {
       !brand ||
       !price ||
       !countInStock ||
-      !category
+      !category ||
+      !features
     ) {
       return res.status(400).json({
         message: "All fields are required",
@@ -212,6 +217,7 @@ export const updateProduct: RequestHandler = async (req, res) => {
       discount,
       countInStock,
       category,
+      features,
       images: req.body.imgnames,
     };
     await Product.updateOne(
