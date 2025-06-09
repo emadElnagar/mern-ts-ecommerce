@@ -10,7 +10,16 @@ import { Helmet } from "react-helmet";
 import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
 import SideNav from "../../components/SideNav";
-import { Field, Input, Select, Textarea } from "../../styles/form";
+import {
+  CloseButton,
+  Field,
+  ImageContainer,
+  ImagePreview,
+  ImgPreview,
+  Input,
+  Select,
+  Textarea,
+} from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -21,6 +30,7 @@ import {
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import Swal from "sweetalert2";
+import { IoCloseOutline } from "react-icons/io5";
 
 const UpdatePage = () => {
   const dispatch = useDispatch();
@@ -252,6 +262,37 @@ const UpdatePage = () => {
                     />
                     <label htmlFor="images">images</label>
                   </Field>
+                  {images.length > 0 && (
+                    <ImagePreview>
+                      {images.map((image, index) => {
+                        if (!(image instanceof Blob)) {
+                          return null;
+                        }
+                        return (
+                          <ImageContainer key={index}>
+                            <ImgPreview
+                              src={URL.createObjectURL(image)}
+                              alt="problem showing image"
+                              className="img-preview"
+                            />
+                            <CloseButton
+                              type="button"
+                              className="btn-close"
+                              onClick={() => {
+                                setImages((prevImages) =>
+                                  prevImages.filter(
+                                    (_img, imgIndex) => imgIndex !== index
+                                  )
+                                );
+                              }}
+                            >
+                              <IoCloseOutline />
+                            </CloseButton>
+                          </ImageContainer>
+                        );
+                      })}
+                    </ImagePreview>
+                  )}
                   <Button type="submit">submit</Button>
                 </form>
               </Section>

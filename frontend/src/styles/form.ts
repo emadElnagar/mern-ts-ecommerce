@@ -87,3 +87,33 @@ export const Paragraph = styled.p`
 export const Select = styled.select`
   padding: 5px;
 `;
+
+export const ImagePreview = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+`;
+
+export const ImageContainer = styled.div`
+  position: relative;
+  display: flex;
+`;
+
+export const ImgPreview = styled.img`
+  width: 100px;
+  height: 100px;
+  border: 1px solid #888888;
+  position: relative;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  color: #000;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+`;

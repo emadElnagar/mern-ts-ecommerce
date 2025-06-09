@@ -1,13 +1,30 @@
-import { ChangeEvent, Fragment, Key, SetStateAction, useState } from "react";
+import {
+  ChangeEvent,
+  Fragment,
+  Key,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import { Helmet } from "react-helmet";
 import { Button, HeaderCenter, Main, Section } from "../../styles/main";
 import SideNav from "../../components/SideNav";
 import { Content } from "../../styles/admin";
-import { Field, Input, Select, Textarea } from "../../styles/form";
+import {
+  CloseButton,
+  Field,
+  ImageContainer,
+  ImagePreview,
+  ImgPreview,
+  Input,
+  Select,
+  Textarea,
+} from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { NewProduct, resetProductState } from "../../features/ProductFeatures";
 import { useNavigate } from "react-router-dom";
+import { IoCloseOutline } from "react-icons/io5";
 
 const NewProductPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +38,7 @@ const NewProductPage = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
   const [countInStock, setCountInStock] = useState<number | null>(null);
-  const [category, setCategory] = useState(categories[0]._id);
+  const [category, setCategory] = useState("");
   const [images, setImages] = useState<File[]>([]);
   // Change price
   const onPriceChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -97,6 +114,11 @@ const NewProductPage = () => {
         navigate("/");
       });
   };
+  useEffect(() => {
+    if (categories && categories.length > 0) {
+      setCategory(categories[0]._id);
+    }
+  }, [categories]);
   return (
     <Fragment>
       <Helmet>
@@ -178,11 +200,13 @@ const NewProductPage = () => {
                   name="category"
                   id="category"
                 >
-                  {categories.map((category: { _id: Key; title: string }) => (
-                    <option key={category._id} value={`${category._id}`}>
-                      {category.title}
-                    </option>
-                  ))}
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((category: { _id: Key; title: string }) => (
+                      <option key={category._id} value={`${category._id}`}>
+                        {category.title}
+                      </option>
+                    ))}
                 </Select>
                 <label htmlFor="category">category</label>
               </Field>
@@ -197,6 +221,35 @@ const NewProductPage = () => {
                 />
                 <label htmlFor="images">images</label>
               </Field>
+              {images.length > 0 && (
+                <ImagePreview>
+                  {images.map((image, index) => (
+                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                    <ImageContainer key={index}>
+                      <ImgPreview
+                        key={index}
+                        src={URL.createObjectURL(image)}
+                        alt="problem showing image"
+                        className="img-preview"
+                      />
+                      <CloseButton
+                        key={`${index}-close`}
+                        type="button"
+                        className="btn-close"
+                        onClick={() => {
+                          setImages((prevImages) =>
+                            prevImages.filter(
+                              (_img, imgIndex) => imgIndex !== index
+                            )
+                          );
+                        }}
+                      >
+                        <IoCloseOutline />
+                      </CloseButton>
+                    </ImageContainer>
+                  ))}
+                </ImagePreview>
+              )}
               <Button type="submit">submit</Button>
             </form>
           </Section>

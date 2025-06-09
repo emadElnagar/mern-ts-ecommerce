@@ -54,6 +54,10 @@ export const NavButton = styled.button`
   padding: 10px 15px;
   cursor: pointer;
   width: 100%;
+  &.home-button {
+    background: ${vars.primary};
+    padding: 20px 0;
+  }
   &:hover {
     background: ${vars.primary};
   }
