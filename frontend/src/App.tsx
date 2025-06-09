@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/Home";
 import Footer from "./components/Footer";
 import ErrorPage from "./pages/ErrorPage";
@@ -19,15 +19,14 @@ import SingleProduct from "./pages/product/SingleProduct";
 import UpdatePage from "./pages/admin/UpdateProduct";
 import SearchProductsPage from "./pages/product/searchProducts";
 
-function App() {
+function AppContent() {
   const { user } = useSelector((state: any) => state.user);
+  const location = useLocation();
+  const isAdminRoute = location.pathname.startsWith("/admin");
+
   return (
-    <BrowserRouter>
-      <div className="App">
-        <header>
-          <NavBar />
-        </header>
-      </div>
+    <>
+      {!isAdminRoute && <NavBar />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/users/login" element={<LoginPage />} />
@@ -53,7 +52,20 @@ function App() {
         )}
         <Route path="*" element={<ErrorPage />} />
       </Routes>
-      <Footer />
+      {!isAdminRoute && <Footer />}
+    </>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <div
+        className="App"
+        style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+      >
+        <AppContent />
+      </div>
     </BrowserRouter>
   );
 }
