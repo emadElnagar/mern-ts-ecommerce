@@ -27,6 +27,14 @@ export const Field = styled.div`
   }
 `;
 
+export const SpecialField = styled(Field)`
+  display: flex;
+  flex-direction: row;
+  input {
+    width: 100%;
+  }
+`;
+
 export const Input = styled.input`
   border: none;
   border-bottom: 1px solid #888888;
@@ -67,6 +75,14 @@ export const Textarea = styled.textarea`
     outline: none;
     border: 1px solid #000;
   }
+`;
+
+export const FeatureContainer = styled.li`
+  position: relative;
+  display: flex;
+  background: #f0f0f0;
+  padding: 10px;
+  margin: 10px 0;
 `;
 
 export const Label = styled.label`
