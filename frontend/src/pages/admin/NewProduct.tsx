@@ -12,6 +12,7 @@ import SideNav from "../../components/SideNav";
 import { Content } from "../../styles/admin";
 import {
   CloseButton,
+  CloseButtonCenter,
   FeatureContainer,
   Field,
   ImageContainer,
@@ -195,7 +196,7 @@ const NewProductPage = () => {
                     {features.map((feature: string, index: Key) => (
                       <FeatureContainer key={index}>
                         <span>{feature}</span>
-                        <CloseButton
+                        <CloseButtonCenter
                           key={`${index}-close`}
                           type="button"
                           className="btn-close"
@@ -209,7 +210,7 @@ const NewProductPage = () => {
                           }}
                         >
                           <IoCloseOutline />
-                        </CloseButton>
+                        </CloseButtonCenter>
                       </FeatureContainer>
                     ))}
                   </ul>

@@ -133,3 +133,15 @@ export const CloseButton = styled.button`
   cursor: pointer;
   border: none;
 `;
+
+export const CloseButtonCenter = styled.button`
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #000;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  border: none;
+`;
