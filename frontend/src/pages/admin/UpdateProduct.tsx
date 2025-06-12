@@ -12,12 +12,15 @@ import { Content } from "../../styles/admin";
 import SideNav from "../../components/SideNav";
 import {
   CloseButton,
+  CloseButtonCenter,
+  FeatureContainer,
   Field,
   ImageContainer,
   ImagePreview,
   ImgPreview,
   Input,
   Select,
+  SpecialField,
   Textarea,
 } from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,6 +48,8 @@ const UpdatePage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [feature, setFeature] = useState("");
+  const [features, setFeatures] = useState<string[]>([]);
   const [brand, setBrand] = useState("");
   const [price, setPrice] = useState<number | null>(null);
   const [discount, setDiscount] = useState<number | null>(null);
@@ -94,6 +99,19 @@ const UpdatePage = () => {
       : null;
     setCountInStock(value);
   };
+  // Handle add feature
+  const handleAddFeature = () => {
+    if (feature.trim() === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Please enter a feature",
+      });
+      return;
+    }
+    setFeatures((prevFeatures) => [...prevFeatures, feature.trim()]);
+    setFeature("");
+  };
   // Handle images
   const onImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
@@ -134,6 +152,7 @@ const UpdatePage = () => {
     });
     formData.append("name", name);
     formData.append("description", description);
+    formData.append("features", JSON.stringify(features));
     formData.append("brand", brand);
     formData.append("price", price!.toString());
     formData.append("countInStock", countInStock!.toString());
@@ -193,6 +212,48 @@ const UpdatePage = () => {
                     ></Textarea>
                     <label htmlFor="description">description</label>
                   </Field>
+                  <Field>
+                    <SpecialField>
+                      <Input
+                        onChange={(e: {
+                          target: { value: SetStateAction<string> };
+                        }) => setFeature(e.target.value)}
+                        value={feature}
+                        type="text"
+                        id="features"
+                      />
+                      <Button type="button" onClick={handleAddFeature}>
+                        Add
+                      </Button>
+                    </SpecialField>
+                    <label htmlFor="features">features</label>
+                  </Field>
+                  {features.length > 0 && (
+                    <>
+                      <ul>
+                        {features.map((feature: string, index: Key) => (
+                          <FeatureContainer key={index}>
+                            <span>{feature}</span>
+                            <CloseButtonCenter
+                              key={`${index}-close`}
+                              type="button"
+                              className="btn-close"
+                              onClick={() => {
+                                setFeatures((prevFeatures) =>
+                                  prevFeatures.filter(
+                                    (_feature, featureIndex) =>
+                                      featureIndex !== index
+                                  )
+                                );
+                              }}
+                            >
+                              <IoCloseOutline />
+                            </CloseButtonCenter>
+                          </FeatureContainer>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                   <Field>
                     <Input
                       type="text"
