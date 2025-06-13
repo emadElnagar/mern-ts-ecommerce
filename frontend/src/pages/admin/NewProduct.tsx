@@ -117,9 +117,11 @@ const NewProductPage = () => {
       formData.append(`imgnames`, item.name);
       formData.append(`images`, item);
     });
+    features.forEach((feature: string) => {
+      formData.append("features", feature);
+    });
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("features", JSON.stringify(features));
     formData.append("brand", brand);
     formData.append("price", price!.toString());
     formData.append("countInStock", countInStock!.toString());
