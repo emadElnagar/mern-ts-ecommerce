@@ -26,6 +26,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { NewProduct, resetProductState } from "../../features/ProductFeatures";
+import { GetAllCategories } from "../../features/CategoryFeatures";
 import { useNavigate } from "react-router-dom";
 import { IoCloseOutline } from "react-icons/io5";
 
@@ -136,10 +137,13 @@ const NewProductPage = () => {
       });
   };
   useEffect(() => {
+    // Get all categories
+    dispatch(GetAllCategories());
+    // set first category as default
     if (categories && categories.length > 0) {
       setCategory(categories[0]._id);
     }
-  }, [categories]);
+  }, [dispatch, categories]);
   return (
     <Fragment>
       <Helmet>
