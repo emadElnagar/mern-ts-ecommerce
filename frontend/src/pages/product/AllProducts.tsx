@@ -9,7 +9,7 @@ import Product from "../../components/product";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
-  const { products, error, loading } = useSelector(
+  const { products, error, isLoading } = useSelector(
     (state: any) => state.product
   );
   useEffect(() => {
@@ -25,7 +25,7 @@ const AllProducts = () => {
           <Section>
             {error ? (
               <ErrorBox message="Error getting products" />
-            ) : loading ? (
+            ) : isLoading ? (
               <LoadingBox />
             ) : (
               <Grid>

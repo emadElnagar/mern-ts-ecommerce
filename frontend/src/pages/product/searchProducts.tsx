@@ -11,7 +11,7 @@ import Product from "../../components/product";
 const SearchProductsPage = () => {
   const { keyword } = useParams<{ keyword: string }>();
   const dispatch = useDispatch();
-  const { searchedProducts, loading, error } = useSelector(
+  const { searchedProducts, isLoading, error } = useSelector(
     (state: any) => state.product
   );
   useEffect(() => {
@@ -24,10 +24,10 @@ const SearchProductsPage = () => {
       </Helmet>
       <Main>
         <Container>
-          {loading ? (
+          {isLoading ? (
             <LoadingBox />
           ) : error ? (
-            <ErrorBox message={`Error loading products`} />
+            <ErrorBox message={error.message} />
           ) : searchedProducts &&
             searchedProducts.products &&
             searchedProducts.products.length > 0 ? (

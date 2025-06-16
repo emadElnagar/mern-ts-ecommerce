@@ -22,7 +22,7 @@ function RegisterPage() {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, error, loading } = useSelector((state: any) => state.user);
+  const { user, error, isLoading } = useSelector((state: any) => state.user);
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -51,7 +51,7 @@ function RegisterPage() {
       <Helmet>
         <title>Electronics-register</title>
       </Helmet>
-      {loading ? (
+      {isLoading ? (
         <LoadingBox />
       ) : (
         <Container>

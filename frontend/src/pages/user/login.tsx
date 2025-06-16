@@ -18,7 +18,7 @@ function LoginPage() {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, error, loading } = useSelector((state: any) => state.user);
+  const { user, error, isLoading } = useSelector((state: any) => state.user);
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(resetUserState());
@@ -40,7 +40,7 @@ function LoginPage() {
       <Helmet>
         <title>Electronics-login</title>
       </Helmet>
-      {loading ? (
+      {isLoading ? (
         <LoadingBox />
       ) : (
         <Container>

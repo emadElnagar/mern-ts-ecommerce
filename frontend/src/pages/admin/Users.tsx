@@ -33,7 +33,7 @@ type UpdateUser = {
 const AllUsers = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
-  const { users, searchedUsers, error, loading } = useSelector(
+  const { users, searchedUsers, error, isLoading } = useSelector(
     (state: any) => state.user
   );
   // Get all users
@@ -141,7 +141,7 @@ const AllUsers = () => {
           </Section>
           <Section>
             <h1 className="text-center">all usres</h1>
-            {loading ? (
+            {isLoading ? (
               <LoadingBox />
             ) : error ? (
               <ErrorBox message={`Error loading users`} />

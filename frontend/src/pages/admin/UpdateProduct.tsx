@@ -39,7 +39,7 @@ const UpdatePage = () => {
   const dispatch = useDispatch();
   const { categories } = useSelector((state: any) => state.category);
   const { slug } = useParams();
-  const { error, loading, product } = useSelector(
+  const { error, isLoading, product } = useSelector(
     (state: any) => state.product
   );
   useEffect(() => {
@@ -178,7 +178,7 @@ const UpdatePage = () => {
       <Main>
         <SideNav />
         <Content>
-          {loading ? (
+          {isLoading ? (
             <LoadingBox />
           ) : error ? (
             <ErrorBox message={error.message} />

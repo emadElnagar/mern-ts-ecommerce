@@ -12,7 +12,7 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const [imgIndex, setImgIndex] = useState(0);
   const { slug } = useParams();
-  const { error, loading, product } = useSelector(
+  const { error, isLoading, product } = useSelector(
     (state: any) => state.product
   );
   // Get single product
@@ -27,7 +27,7 @@ const SingleProduct = () => {
       </Helmet>
       <Main>
         <Container>
-          {loading ? (
+          {isLoading ? (
             <LoadingBox />
           ) : error ? (
             <ErrorBox message="error loading product" />

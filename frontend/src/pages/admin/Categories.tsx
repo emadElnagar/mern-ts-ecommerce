@@ -13,7 +13,7 @@ import LoadingBox from "../../components/LoadingBox";
 
 const CategoriesPage = () => {
   const dispatch = useDispatch();
-  const { categories, error, loading } = useSelector(
+  const { categories, error, isLoading } = useSelector(
     (state: any) => state.category
   );
   useEffect(() => {
@@ -31,7 +31,7 @@ const CategoriesPage = () => {
             <CategoryForm />
           </Section>
           <Section>
-            {loading ? (
+            {isLoading ? (
               <LoadingBox />
             ) : error ? (
               <ErrorBox message={error} />

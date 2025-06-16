@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 const AdminMainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products, error, loading } = useSelector(
+  const { products, error, isLoading } = useSelector(
     (state: any) => state.product
   );
   useEffect(() => {
@@ -67,7 +67,7 @@ const AdminMainPage = () => {
           <Section>
             {error ? (
               <ErrorBox message="Error getting products" />
-            ) : loading ? (
+            ) : isLoading ? (
               <LoadingBox />
             ) : (
               <Grid>
