@@ -13,12 +13,15 @@ import {
 import { FileInput, Label } from "../../styles/form";
 import { FaCamera } from "react-icons/fa";
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
+import ErrorBox from "../../components/ErrorBox";
+import LoadingBox from "../../components/LoadingBox";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
   const { id } = useParams();
-  const { profile } = useSelector((state: any) => state.user);
-  const { user } = useSelector((state: any) => state.user);
+  const { user, profile, isLoading, error } = useSelector(
+    (state: any) => state.user
+  );
   const dispatch = useDispatch();
   // Get profile data
   useEffect(() => {
@@ -55,7 +58,11 @@ const ProfilePage = () => {
       <Helmet>
         <title>Electronics-profile</title>
       </Helmet>
-      {profile !== null && (
+      {isLoading ? (
+        <LoadingBox />
+      ) : error ? (
+        <ErrorBox message={error} />
+      ) : (
         <Container>
           <ImgContainer>
             <Image
