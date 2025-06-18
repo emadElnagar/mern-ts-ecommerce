@@ -36,7 +36,7 @@ const AllProducts = () => {
                       _id: Key;
                       name: string;
                       slug: string;
-                      images: string[];
+                      images?: string[];
                       price: number;
                       discount: number;
                     }) => (
@@ -45,7 +45,7 @@ const AllProducts = () => {
                         _id={product._id}
                         name={product.name}
                         slug={product.slug}
-                        image={product.images[0]}
+                        image={product.images?.[0] || "fallback.jpg"}
                         price={product.price}
                         discount={product.discount}
                       />
