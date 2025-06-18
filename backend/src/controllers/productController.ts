@@ -14,6 +14,7 @@ export const getAllProducts: RequestHandler = async (req, res) => {
     const limit = 12;
     const skip = (page - 1) * limit;
     const products = await Product.find()
+      .populate("category")
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
