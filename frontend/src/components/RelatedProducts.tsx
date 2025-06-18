@@ -26,6 +26,7 @@ const RelatedProducts = (props: propsType) => {
       ) : error ? (
         <ErrorBox message="Error getting similar products" />
       ) : (
+        similarProducts &&
         similarProducts.length > 0 && (
           <Section>
             <h2 className="text-center">related products</h2>

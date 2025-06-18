@@ -30,9 +30,9 @@ const SingleProduct = () => {
           {isLoading ? (
             <LoadingBox />
           ) : error ? (
-            <ErrorBox message="error loading product" />
+            <ErrorBox message={error.message} />
           ) : (
-            product !== null && (
+            product && (
               <Section>
                 <div className="product-summary">
                   <div className="images">
@@ -66,7 +66,7 @@ const SingleProduct = () => {
               </Section>
             )
           )}
-          {product !== null && <RelatedProducts slug={product.slug} />}
+          {product && <RelatedProducts slug={product.slug} />}
         </Container>
       </Main>
     </Fragment>
