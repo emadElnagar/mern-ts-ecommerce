@@ -167,7 +167,7 @@ const UpdatePage = () => {
       .unwrap()
       .then(() => {
         setImages([]);
-        navigate("/");
+        navigate("/admin");
       });
   };
   return (

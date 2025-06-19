@@ -133,7 +133,7 @@ const NewProductPage = () => {
       .unwrap()
       .then(() => {
         setImages([]);
-        navigate("/");
+        navigate("/admin");
       });
   };
   useEffect(() => {
