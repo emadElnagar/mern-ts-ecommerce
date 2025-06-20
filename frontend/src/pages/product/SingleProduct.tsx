@@ -57,7 +57,20 @@ const SingleProduct = () => {
                   </div>
                   <div className="porduct-desc">
                     <h2>{product.name}</h2>
-                    <p>{product.description}</p>
+                    {product.features && product.features.length > 0 && (
+                      <div className="features">
+                        <h3>Product Highlights:</h3>
+                        <ul>
+                          {product.features.map(
+                            (feature: string, index: number) => (
+                              <li className="listed-item" key={index}>
+                                {feature}
+                              </li>
+                            )
+                          )}
+                        </ul>
+                      </div>
+                    )}
                     <div>
                       <span>{product.price}$</span>
                     </div>

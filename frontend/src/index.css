@@ -86,12 +86,22 @@ select {
 
 .product-summary {
   display: flex;
+  justify-content: space-evenly;
+  .images,
+  .porduct-desc {
+    width: calc((100% / 2) - 1rem);
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  }
   .images-min {
+    --space: 1rem;
+    --items: 6;
     display: flex;
     img {
-      max-width: calc(100% / 6);
+      max-width: calc((100% / var(--items)) - var(--space));
+      margin-inline-end: calc(var(--space) / (var(--items) - 1));
       border: 2px solid #caced1;
-      margin-inline-start: 4px;
     }
     img.selected {
       border: 2px solid #fed700;
@@ -100,4 +110,9 @@ select {
   .porduct-desc {
     padding: 1rem;
   }
+}
+
+.listed-item {
+  list-style-type: disc;
+  margin-inline-start: 1rem;
 }
