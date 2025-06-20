@@ -39,3 +39,15 @@ export const IconButton = styled.button`
     color: ${vars.primary};
   }
 `;
+
+export const Price = styled.div`
+  font-size: 2rem;
+`;
+
+export const FinalPrice = styled.span`
+  margin-inline-end: 1rem;
+`;
+
+export const OldPrice = styled.span`
+  color: #b71c1c;
+`;

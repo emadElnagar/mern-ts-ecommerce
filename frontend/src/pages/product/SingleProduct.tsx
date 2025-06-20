@@ -7,6 +7,7 @@ import { useParams } from "react-router-dom";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import RelatedProducts from "../../components/RelatedProducts";
+import { FinalPrice, OldPrice, Price } from "../../styles/product";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const SingleProduct = () => {
     dispatch(GetSingleProduct(slug));
   }, [dispatch, slug]);
   // Get similar products
+  const finalprice = product && product.price - product.discount;
   return (
     <Fragment>
       <Helmet>
@@ -59,6 +61,20 @@ const SingleProduct = () => {
                     </div>
                     <div className="porduct-desc">
                       <h2>{product.name}</h2>
+                      <div>
+                        {product.discount && product.discount > 0 ? (
+                          <Price>
+                            <FinalPrice>${finalprice}</FinalPrice>
+                            <OldPrice>
+                              <del>${product.price}</del>
+                            </OldPrice>
+                          </Price>
+                        ) : (
+                          <Price>
+                            <FinalPrice>${product.price}</FinalPrice>
+                          </Price>
+                        )}
+                      </div>
                       {product.features && product.features.length > 0 && (
                         <div className="features">
                           <h3>Product Highlights:</h3>
@@ -73,9 +89,6 @@ const SingleProduct = () => {
                           </ul>
                         </div>
                       )}
-                      <div>
-                        <span>{product.price}$</span>
-                      </div>
                     </div>
                   </div>
                 </Section>
