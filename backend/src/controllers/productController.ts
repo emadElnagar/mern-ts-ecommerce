@@ -110,7 +110,10 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
         message: "Discount cannot be negative",
       });
     }
-    if (discount > price) {
+    const parsedPrice = parseFloat(price);
+    const parsedDiscount = parseFloat(discount || "0");
+
+    if (parsedDiscount > parsedPrice) {
       return res.status(400).json({
         message: "Discount cannot be more than price",
       });
