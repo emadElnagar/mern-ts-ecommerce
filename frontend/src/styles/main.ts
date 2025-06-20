@@ -187,3 +187,17 @@ export const Grid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 40px;
 `;
+
+export const Tabs = styled.div`
+  display: flex;
+`;
+
+export const Tab = styled.button`
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  &.active {
+    border-bottom: 2px solid ${vars.primary};
+  }
+`;

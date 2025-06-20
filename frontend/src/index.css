@@ -37,6 +37,10 @@ a {
   text-align: center;
 }
 
+.d-none {
+  display: none;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
