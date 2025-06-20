@@ -45,16 +45,15 @@ function Product(product: productProps) {
             <span>{product.price}$</span>
           </FlexBetweenRow>
         )}
-
-        <FlexBetweenRow>
-          <IconButton>
-            <FaCartArrowDown /> add to cart
-          </IconButton>
-          <IconButton>
-            <AiOutlineHeart /> wishlist
-          </IconButton>
-        </FlexBetweenRow>
       </Link>
+      <FlexBetweenRow>
+        <IconButton>
+          <FaCartArrowDown /> add to cart
+        </IconButton>
+        <IconButton>
+          <AiOutlineHeart /> wishlist
+        </IconButton>
+      </FlexBetweenRow>
     </ProductDiv>
   );
 }

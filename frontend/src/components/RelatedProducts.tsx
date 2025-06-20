@@ -36,7 +36,7 @@ const RelatedProducts = (props: propsType) => {
                   _id: Key;
                   name: string;
                   slug: string;
-                  images: string[];
+                  images?: string[];
                   price: number;
                   discount: number;
                   myClass: string;
@@ -46,7 +46,7 @@ const RelatedProducts = (props: propsType) => {
                     _id={product._id}
                     name={product.name}
                     slug={product.slug}
-                    image={product.images[0]}
+                    image={product.images?.[0] || "fallback.jpg"}
                     price={product.price}
                     discount={product.discount}
                   />
