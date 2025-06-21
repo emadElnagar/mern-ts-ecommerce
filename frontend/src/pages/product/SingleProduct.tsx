@@ -8,6 +8,7 @@ import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import RelatedProducts from "../../components/RelatedProducts";
 import { FinalPrice, OldPrice, Price } from "../../styles/product";
+import Review from "../../components/ReviewProduct";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -115,7 +116,7 @@ const SingleProduct = () => {
                     </div>
                   ) : (
                     <div className="reviews">
-                      <h3>Reviews</h3>
+                      <Review />
                     </div>
                   )}
                 </Section>
