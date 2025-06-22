@@ -183,6 +183,33 @@ export const DeleteProduct: any = createAsyncThunk(
   }
 );
 
+// create product review
+export const ReviewProduct: any = createAsyncThunk(
+  "products/review",
+  async (review: any, { rejectWithValue }) => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(
+        `${url}/${review.slug}/review`,
+        review.data,
+        config
+      );
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -305,6 +332,20 @@ const productSlice = createSlice({
         state.searchedProducts = action.payload;
       })
       .addCase(SearchProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Create product review
+      .addCase(ReviewProduct.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(ReviewProduct.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.product?.reviews?.push(action.payload.review);
+      })
+      .addCase(ReviewProduct.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
