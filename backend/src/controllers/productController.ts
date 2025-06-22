@@ -285,6 +285,52 @@ export const deleteProduct: RequestHandler = async (req, res) => {
   }
 };
 
+// Create a new product review
+export const createReview = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const { slug } = req.params;
+    const { rating, comment } = req.body;
+    const userId = req.user?._id;
+
+    const product = await Product.findById(slug);
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Check if user has already reviewed
+    const alreadyReviewed = product.reviews?.some(
+      (review: any) => review.user.toString() === userId.toString()
+    );
+
+    if (alreadyReviewed) {
+      return res
+        .status(400)
+        .json({ message: "Product already reviewed by this user" });
+    }
+
+    const newReview = {
+      user: userId,
+      rating: Number(rating),
+      comment: String(comment),
+      createdAt: new Date(),
+    };
+
+    product.reviews?.push(newReview as any);
+    await product.save();
+
+    res
+      .status(201)
+      .json({ message: "Review added successfully", review: newReview });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // Search product
 export const SearchProduct: RequestHandler = async (req, res) => {
   try {

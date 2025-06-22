@@ -42,7 +42,7 @@ const productSchema = new Schema<Product>(
         user: { type: Schema.Types.ObjectId, ref: "User" },
         rating: Number,
         comment: String,
-        createdAt: { type: Date, default: Date.now() },
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   },

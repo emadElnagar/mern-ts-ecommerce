@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from "express";
 import {
+  createReview,
   deleteProduct,
   getAllProducts,
   getSimilarProducts,
@@ -51,5 +52,10 @@ productRouter.get("/:slug", getSingleProduct);
 
 // GET SIMILAR PRODUCTS
 productRouter.get("/:slug/similar", getSimilarProducts);
+
+// Create a new product reveiw
+productRouter.post("/:slug/reiew", isAuth as RequestHandler, (req, res) =>
+  createReview(req as AuthenticatedRequest, res)
+);
 
 export default productRouter;
