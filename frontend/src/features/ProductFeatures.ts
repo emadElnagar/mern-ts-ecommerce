@@ -196,7 +196,7 @@ export const ReviewProduct: any = createAsyncThunk(
       };
       const response = await axios.post(
         `${url}/${review.slug}/review`,
-        review.data,
+        review,
         config
       );
       return response.data;
