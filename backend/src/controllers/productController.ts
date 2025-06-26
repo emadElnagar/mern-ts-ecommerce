@@ -27,9 +27,12 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
   try {
-    const product = await Product.findOne({ slug: req.params.slug }).populate(
-      "category"
-    );
+    const product = await Product.findOne({ slug: req.params.slug })
+      .populate("category")
+      .populate({
+        path: "reviews.user",
+        select: "_id firstName lastName email image",
+      });
     if (!product) {
       return res.status(404).json({
         message: "Product Not Found",
