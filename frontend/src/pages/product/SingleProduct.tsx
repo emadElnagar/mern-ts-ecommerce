@@ -116,7 +116,7 @@ const SingleProduct = () => {
                     </div>
                   ) : (
                     <div className="reviews">
-                      <Review />
+                      <Review slug={slug ?? ""} />
                     </div>
                   )}
                 </Section>

@@ -54,7 +54,7 @@ productRouter.get("/:slug", getSingleProduct);
 productRouter.get("/:slug/similar", getSimilarProducts);
 
 // Create a new product reveiw
-productRouter.post("/:slug/reiew", isAuth as RequestHandler, (req, res) =>
+productRouter.post("/:slug/review", isAuth as RequestHandler, (req, res) =>
   createReview(req as AuthenticatedRequest, res)
 );
 

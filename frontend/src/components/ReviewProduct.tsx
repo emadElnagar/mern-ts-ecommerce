@@ -1,17 +1,31 @@
-import { Fragment, useState } from "react";
+import { FormEvent, Fragment, useState } from "react";
 import { IoMdStar } from "react-icons/io";
 import { Button } from "../styles/main";
+import { useDispatch } from "react-redux";
+import { ReviewProduct } from "../features/ProductFeatures";
 
-const Review = () => {
+type productProps = {
+  slug: string;
+};
+
+const Review = (product: productProps) => {
+  const { slug } = product;
+  const dispatch = useDispatch();
   const [rating, setRating] = useState<number | null>(null);
   const [hover, setHover] = useState<number | null>(null);
+  const [comment, setComment] = useState<string>("");
+  // Handle review submission
+  const handleReview = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(ReviewProduct({ rating, comment, slug }));
+  };
   return (
     <Fragment>
       <div className="review-container">
-        {[...Array(5)].map((star, index) => {
-          const currentRating = index + 1;
-          return (
-            <>
+        <form onSubmit={(e) => handleReview(e)}>
+          {[...Array(5)].map((_star, index) => {
+            const currentRating = index + 1;
+            return (
               <label>
                 <input
                   type="radio"
@@ -31,11 +45,15 @@ const Review = () => {
                   onMouseLeave={() => setHover(null)}
                 />
               </label>
-            </>
-          );
-        })}
-        <textarea placeholder="Type your review" />
-        <Button type="submit">Post</Button>
+            );
+          })}
+          <textarea
+            placeholder="Type your review"
+            onChange={(e) => setComment(e.target.value)}
+            value={comment}
+          ></textarea>
+          <Button type="submit">Post</Button>
+        </form>
       </div>
     </Fragment>
   );

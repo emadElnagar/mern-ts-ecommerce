@@ -293,11 +293,21 @@ export const createReview = async (
   try {
     const { slug } = req.params;
     const { rating, comment } = req.body;
-    const userId = req.user?._id;
+    const userId = req.user._id;
 
-    const product = await Product.findById(slug);
+    const product = await Product.findOne({ slug });
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
+    }
+
+    if (!userId) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    if (!rating || !comment) {
+      return res.status(400).json({
+        message: "Rating and comment are required",
+      });
     }
 
     // Check if user has already reviewed
