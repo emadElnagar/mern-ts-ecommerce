@@ -9,6 +9,7 @@ import ErrorBox from "../../components/ErrorBox";
 import RelatedProducts from "../../components/RelatedProducts";
 import { FinalPrice, OldPrice, Price } from "../../styles/product";
 import Review from "../../components/ReviewProduct";
+import RatingStars from "../../components/RatingStars";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -115,7 +116,51 @@ const SingleProduct = () => {
                       <p>{product.description}</p>
                     </div>
                   ) : (
-                    <div className="reviews">
+                    <div className="reviews-container">
+                      <div className="reviews-created">
+                        {product &&
+                          product.reviews &&
+                          product.reviews.length > 0 && (
+                            <h3>
+                              ({product.reviews.length}){" "}
+                              {product.reviews.length === 1
+                                ? "review"
+                                : "reviews"}{" "}
+                              for {product.name}
+                            </h3>
+                          )}
+                        {product &&
+                          product.reviews &&
+                          product.reviews.length > 0 && (
+                            <div className="reviews">
+                              {product.reviews.map(
+                                (review: any, index: number) => (
+                                  <div className="review" key={index}>
+                                    <div className="review-user">
+                                      <img
+                                        src="https://placehold.co/50x50"
+                                        alt="user"
+                                      />
+                                      <span>
+                                        {review.user.firstName}{" "}
+                                        {review.user.lastName}
+                                      </span>
+                                      <span>
+                                        {new Date(
+                                          review.createdAt
+                                        ).toLocaleDateString()}
+                                      </span>
+                                    </div>
+                                    <p>
+                                      <RatingStars rating={review.rating} />
+                                    </p>
+                                    <p>{review.comment}</p>
+                                  </div>
+                                )
+                              )}
+                            </div>
+                          )}
+                      </div>
                       <Review slug={slug ?? ""} />
                     </div>
                   )}
