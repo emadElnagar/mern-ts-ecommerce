@@ -138,23 +138,32 @@ const SingleProduct = () => {
                                   <div className="review" key={index}>
                                     <div className="review-user">
                                       <img
-                                        src="https://placehold.co/50x50"
+                                        src={`${
+                                          review.user.image
+                                            ? `http://localhost:5000/${review.user.image}`
+                                            : `${
+                                                process.env.PUBLIC_URL +
+                                                "/user-icon-2098873_640.png"
+                                              }`
+                                        }`}
                                         alt="user"
                                       />
-                                      <span>
+                                      <span className="user-name">
                                         {review.user.firstName}{" "}
                                         {review.user.lastName}
                                       </span>
-                                      <span>
+                                      <span className="review-date">
                                         {new Date(
                                           review.createdAt
                                         ).toLocaleDateString()}
                                       </span>
                                     </div>
-                                    <p>
-                                      <RatingStars rating={review.rating} />
-                                    </p>
-                                    <p>{review.comment}</p>
+                                    <div className="review-content">
+                                      <p>
+                                        <RatingStars rating={review.rating} />
+                                      </p>
+                                      <p>{review.comment}</p>
+                                    </div>
                                   </div>
                                 )
                               )}

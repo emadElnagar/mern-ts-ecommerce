@@ -125,6 +125,9 @@ select {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
+  h3 {
+    margin-top: 1rem;
+  }
   .review-form {
     width: 50%;
     @media (max-width: 767px) {
@@ -141,6 +144,30 @@ select {
       height: 100px;
       padding: 0.5rem;
       resize: none;
+    }
+  }
+}
+
+.review {
+  border-bottom: 1px solid #caced1;
+  padding: 1rem 0;
+  .review-user {
+    display: flex;
+    align-items: center;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+    }
+    .user-name {
+      text-transform: capitalize;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-inline: 0.5rem;
+    }
+    .review-date {
+      font-size: 0.9rem;
+      color: #808080;
     }
   }
 }
