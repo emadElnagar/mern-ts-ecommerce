@@ -19,6 +19,14 @@ const SingleProduct = () => {
   const { error, isLoading, product } = useSelector(
     (state: any) => state.product
   );
+  const productRating =
+    product &&
+    product.reviews &&
+    product.reviews.length > 0 &&
+    product.reviews.reduce(
+      (sum: any, review: { rating: any }) => sum + review.rating,
+      0
+    ) / product.reviews.length;
   // Get single product
   useEffect(() => {
     dispatch(GetSingleProduct(slug));
@@ -63,6 +71,11 @@ const SingleProduct = () => {
                     </div>
                     <div className="porduct-desc">
                       <h2>{product.name}</h2>
+                      <div className="rating">
+                        {productRating && (
+                          <RatingStars rating={productRating} />
+                        )}
+                      </div>
                       <div>
                         {product.discount && product.discount > 0 ? (
                           <Price>
