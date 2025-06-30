@@ -47,6 +47,16 @@ export const FullButton = styled.button`
   width: 100%;
 `;
 
+export const FullButtonRounded = styled.button`
+  background: ${vars.primary};
+  text-transform: capitalize;
+  border: 1px solid ${vars.primary};
+  padding: 10px 15px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 50px;
+`;
+
 export const NavButton = styled.button`
   background: transparent;
   text-transform: capitalize;
@@ -76,6 +86,11 @@ export const FlexBetweenRow = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0.5rem 15px;
+`;
+
+export const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
 `;
 
 export const DropDownButton = styled.button`

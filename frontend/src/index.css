@@ -171,3 +171,11 @@ select {
     }
   }
 }
+
+.reviews-number {
+  margin-inline-start: 0.5rem;
+}
+
+.product-actions {
+  margin-block: 1rem;
+}

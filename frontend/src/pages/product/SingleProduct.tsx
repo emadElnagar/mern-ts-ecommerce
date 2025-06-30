@@ -1,6 +1,15 @@
 import { Fragment, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Image, Main, Section, Tab, Tabs } from "../../styles/main";
+import {
+  FullButtonRounded,
+  Container,
+  FlexRow,
+  Image,
+  Main,
+  Section,
+  Tab,
+  Tabs,
+} from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { GetSingleProduct } from "../../features/ProductFeatures";
 import { useParams } from "react-router-dom";
@@ -10,6 +19,7 @@ import RelatedProducts from "../../components/RelatedProducts";
 import { FinalPrice, OldPrice, Price } from "../../styles/product";
 import Review from "../../components/ReviewProduct";
 import RatingStars from "../../components/RatingStars";
+import { FaCartArrowDown } from "react-icons/fa";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -73,7 +83,12 @@ const SingleProduct = () => {
                       <h2>{product.name}</h2>
                       <div className="rating">
                         {productRating && (
-                          <RatingStars rating={productRating} />
+                          <FlexRow>
+                            <RatingStars rating={productRating} />
+                            <span className="reviews-number">
+                              ({product.reviews.length} reviews)
+                            </span>
+                          </FlexRow>
                         )}
                       </div>
                       <div>
@@ -104,6 +119,19 @@ const SingleProduct = () => {
                           </ul>
                         </div>
                       )}
+                      <div className="product-actions">
+                        <FullButtonRounded>
+                          Add to Cart <FaCartArrowDown />
+                        </FullButtonRounded>
+                        <FullButtonRounded
+                          style={{
+                            marginTop: "10px",
+                            backgroundColor: "#e67514",
+                          }}
+                        >
+                          Buy Now
+                        </FullButtonRounded>
+                      </div>
                     </div>
                   </div>
                 </Section>
