@@ -28,7 +28,7 @@ const ProfilePage = () => {
     dispatch(GetProfile(id));
   }, [dispatch, id]);
   // Handel image upload
-  const hangelImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement & {
       files: FileList;
     };
@@ -90,8 +90,8 @@ const ProfilePage = () => {
                     <FileInput
                       type="file"
                       id="img"
-                      accept="*/images"
-                      onChange={hangelImageUpload}
+                      accept="image/*"
+                      onChange={handleImageUpload}
                     />
                     <Label htmlFor="img">
                       <FaCamera className="icon" />
