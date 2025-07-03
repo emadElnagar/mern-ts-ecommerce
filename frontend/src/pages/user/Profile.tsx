@@ -66,15 +66,15 @@ const ProfilePage = () => {
         <Container>
           <ImgContainer>
             <Image
-              src={`${
+              src={
                 userImg
                   ? URL.createObjectURL(userImg)
-                  : profile.image
+                  : profile?.image
                   ? `http://localhost:5000/${profile.image}`
                   : `${process.env.PUBLIC_URL + "/user-icon-2098873_640.png"}`
-              }`}
+              }
             />
-            {user && user._id === profile._id && (
+            {user && user._id === profile?._id && (
               <UserForm onSubmit={handleSubmit}>
                 {userImg ? (
                   <div>
@@ -102,7 +102,7 @@ const ProfilePage = () => {
             )}
           </ImgContainer>
           <h3 className="text-center">
-            {profile.firstName} {profile.lastName}
+            {profile?.firstName} {profile?.lastName}
           </h3>
         </Container>
       )}
