@@ -84,7 +84,7 @@ const SingleProduct = () => {
                       <div className="rating">
                         {productRating && (
                           <FlexRow>
-                            <RatingStars rating={productRating} />
+                            <RatingStars rating={productRating.toFixed(1)} />
                             <span className="reviews-number">
                               ({product.reviews.length} reviews)
                             </span>
