@@ -9,6 +9,10 @@ import {
   Section,
   Tab,
   Tabs,
+  QuantityInput,
+  QuantityContainer,
+  ButtonRoundedStart,
+  ButtonRoundedEnd,
 } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { GetSingleProduct } from "../../features/ProductFeatures";
@@ -20,11 +24,14 @@ import { FinalPrice, OldPrice, Price } from "../../styles/product";
 import Review from "../../components/ReviewProduct";
 import RatingStars from "../../components/RatingStars";
 import { FaCartArrowDown } from "react-icons/fa";
+import { AiOutlinePlus } from "react-icons/ai";
+import { AiOutlineMinus } from "react-icons/ai";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
   const [imgIndex, setImgIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
+  const [quantity, setQuantity] = useState(1);
   const { slug } = useParams();
   const { error, isLoading, product } = useSelector(
     (state: any) => state.product
@@ -41,8 +48,20 @@ const SingleProduct = () => {
   useEffect(() => {
     dispatch(GetSingleProduct(slug));
   }, [dispatch, slug]);
-  // Get similar products
+  // Product price calculation
   const finalprice = product && product.price - product.discount;
+  // decrease quantity
+  const handleDecrease = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+  // increase quantity
+  const handleIncrease = () => {
+    if (quantity < product.countInStock) {
+      setQuantity(quantity + 1);
+    }
+  };
   return (
     <Fragment>
       <Helmet>
@@ -120,9 +139,30 @@ const SingleProduct = () => {
                         </div>
                       )}
                       <div className="product-actions">
-                        <FullButtonRounded>
-                          Add to Cart <FaCartArrowDown />
-                        </FullButtonRounded>
+                        <FlexRow>
+                          <QuantityContainer>
+                            <ButtonRoundedStart
+                              onClick={() => handleDecrease()}
+                            >
+                              <AiOutlineMinus />
+                            </ButtonRoundedStart>
+                            <QuantityInput
+                              type="number"
+                              id="quantity"
+                              name="quantity"
+                              min="1"
+                              max={product.countInStock}
+                              defaultValue="1"
+                              value={quantity}
+                            />
+                            <ButtonRoundedEnd onClick={() => handleIncrease()}>
+                              <AiOutlinePlus />
+                            </ButtonRoundedEnd>
+                          </QuantityContainer>
+                          <FullButtonRounded>
+                            Add to Cart <FaCartArrowDown />
+                          </FullButtonRounded>
+                        </FlexRow>
                         <FullButtonRounded
                           style={{
                             marginTop: "10px",

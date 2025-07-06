@@ -33,6 +33,24 @@ export const Button = styled.button`
   cursor: pointer;
 `;
 
+export const ButtonRoundedStart = styled.button`
+  background: ${vars.primary};
+  text-transform: capitalize;
+  border: 1px solid ${vars.primary};
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50px 0 0 50px;
+`;
+
+export const ButtonRoundedEnd = styled.button`
+  background: ${vars.primary};
+  text-transform: capitalize;
+  border: 1px solid ${vars.primary};
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 0 50px 50px 0;
+`;
+
 export const LightedSpan = styled.span`
   font-weight: bold;
   text-transform: capitalize;
@@ -215,4 +233,20 @@ export const Tab = styled.button`
   &.active {
     border-bottom: 2px solid ${vars.primary};
   }
+`;
+
+export const QuantityInput = styled.input`
+  border: 1px solid ${vars.primary};
+  text-align: center;
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+`;
+
+export const QuantityContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  margin-inline-end: 0.5rem;
 `;
