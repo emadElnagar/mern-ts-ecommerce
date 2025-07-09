@@ -26,6 +26,7 @@ import RatingStars from "../../components/RatingStars";
 import { FaCartArrowDown } from "react-icons/fa";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineMinus } from "react-icons/ai";
+import { addToCart } from "../../features/CartFeatures";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -61,6 +62,10 @@ const SingleProduct = () => {
     if (quantity < product.countInStock) {
       setQuantity(quantity + 1);
     }
+  };
+  // Add to cart
+  const handleAddToCart = () => {
+    dispatch(addToCart({ _id: product._id, quantity }));
   };
   return (
     <Fragment>
@@ -159,7 +164,7 @@ const SingleProduct = () => {
                               <AiOutlinePlus />
                             </ButtonRoundedEnd>
                           </QuantityContainer>
-                          <FullButtonRounded>
+                          <FullButtonRounded onClick={() => handleAddToCart()}>
                             Add to Cart <FaCartArrowDown />
                           </FullButtonRounded>
                         </FlexRow>
