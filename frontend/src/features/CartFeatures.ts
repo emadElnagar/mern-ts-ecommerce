@@ -25,7 +25,15 @@ export const addToCart: any = createAsyncThunk(
         id: product._id,
         quantity: product.quantity,
       };
-      localStorage.setItem("cart", JSON.stringify(data));
+      let foundItems = localStorage.getItem("cart");
+      let cartArray = foundItems ? JSON.parse(foundItems) : [];
+      let existingItem = cartArray.find(
+        (item: { id: object }) => item.id === data.id
+      );
+      existingItem
+        ? (existingItem.quantity += data.quantity)
+        : cartArray.push(data);
+      localStorage.setItem("cart", JSON.stringify(cartArray));
       return data;
     } catch (error: any) {
       const message =
@@ -38,7 +46,7 @@ export const addToCart: any = createAsyncThunk(
 );
 
 const cartSlice = createSlice({
-  name: "category",
+  name: "cart",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
