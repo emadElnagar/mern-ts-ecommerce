@@ -24,6 +24,42 @@ export const getAllProducts: RequestHandler = async (req, res) => {
   }
 };
 
+// Get cart products
+export const getCartProducts: RequestHandler = async (req, res) => {
+  try {
+    const cart = req.body;
+    if (!cart || !Array.isArray(cart) || cart.length === 0) {
+      return res.status(400).json({
+        message: "Cart is empty or invalid",
+      });
+    }
+    const productIds = cart.map((item: any) => item.productId);
+    const products = await Product.find({ _id: { $in: productIds } }).populate(
+      "category"
+    );
+    if (products.length === 0) {
+      return res.status(404).json({
+        message: "No products found in the cart",
+      });
+    }
+    // Combine product data with the quantity from the request
+    const productsWithQuantity = products.map((product) => {
+      const matchedItem = cart.find(
+        (item) => item.productId === product._id.toString()
+      );
+      return {
+        ...product.toObject(),
+        quantity: matchedItem ? matchedItem.quantity : 0,
+      };
+    });
+    res.status(200).json(productsWithQuantity);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
   try {

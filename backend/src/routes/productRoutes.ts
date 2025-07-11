@@ -3,6 +3,7 @@ import {
   createReview,
   deleteProduct,
   getAllProducts,
+  getCartProducts,
   getSimilarProducts,
   getSingleProduct,
   newProduct,
@@ -46,6 +47,9 @@ productRouter.get("/", SearchProduct);
 
 // GET ALL PRODUCTS
 productRouter.get("/all", getAllProducts);
+
+// GET CART PRODUCTS
+productRouter.get("/cart", getCartProducts);
 
 // GET SINGLE PRODUCT
 productRouter.get("/:slug", getSingleProduct);
