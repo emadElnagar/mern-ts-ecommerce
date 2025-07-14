@@ -27,6 +27,7 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineMinus } from "react-icons/ai";
 import { addToCart } from "../../features/CartFeatures";
+import RatingPercentage from "../../components/RatingPercentage";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -202,62 +203,67 @@ const SingleProduct = () => {
                       <p>{product.description}</p>
                     </div>
                   ) : (
-                    <div className="reviews-container">
-                      <div className="reviews-created">
-                        {product &&
-                          product.reviews &&
-                          product.reviews.length > 0 && (
-                            <h3>
-                              ({product.reviews.length}){" "}
-                              {product.reviews.length === 1
-                                ? "review"
-                                : "reviews"}{" "}
-                              for {product.name}
-                            </h3>
-                          )}
-                        {product &&
-                          product.reviews &&
-                          product.reviews.length > 0 && (
-                            <div className="reviews">
-                              {product.reviews.map(
-                                (review: any, index: number) => (
-                                  <div className="review" key={index}>
-                                    <div className="review-user">
-                                      <img
-                                        src={`${
-                                          review.user.image
-                                            ? `http://localhost:5000/${review.user.image}`
-                                            : `${
-                                                process.env.PUBLIC_URL +
-                                                "/user-icon-2098873_640.png"
-                                              }`
-                                        }`}
-                                        alt="user"
-                                      />
-                                      <span className="user-name">
-                                        {review.user.firstName}{" "}
-                                        {review.user.lastName}
-                                      </span>
-                                      <span className="review-date">
-                                        {new Date(
-                                          review.createdAt
-                                        ).toLocaleDateString()}
-                                      </span>
-                                    </div>
-                                    <div className="review-content">
-                                      <p>
-                                        <RatingStars rating={review.rating} />
-                                      </p>
-                                      <p>{review.comment}</p>
-                                    </div>
-                                  </div>
-                                )
-                              )}
-                            </div>
-                          )}
+                    <>
+                      <div className="rating-percentage">
+                        <RatingPercentage reviews={product.reviews} />
                       </div>
-                      <Review slug={slug ?? ""} />
-                    </div>
+                      <div className="reviews-container">
+                        <div className="reviews-created">
+                          {product &&
+                            product.reviews &&
+                            product.reviews.length > 0 && (
+                              <h3>
+                                ({product.reviews.length}){" "}
+                                {product.reviews.length === 1
+                                  ? "review"
+                                  : "reviews"}{" "}
+                                for {product.name}
+                              </h3>
+                            )}
+                          {product &&
+                            product.reviews &&
+                            product.reviews.length > 0 && (
+                              <div className="reviews">
+                                {product.reviews.map(
+                                  (review: any, index: number) => (
+                                    <div className="review" key={index}>
+                                      <div className="review-user">
+                                        <img
+                                          src={`${
+                                            review.user.image
+                                              ? `http://localhost:5000/${review.user.image}`
+                                              : `${
+                                                  process.env.PUBLIC_URL +
+                                                  "/user-icon-2098873_640.png"
+                                                }`
+                                          }`}
+                                          alt="user"
+                                        />
+                                        <span className="user-name">
+                                          {review.user.firstName}{" "}
+                                          {review.user.lastName}
+                                        </span>
+                                        <span className="review-date">
+                                          {new Date(
+                                            review.createdAt
+                                          ).toLocaleDateString()}
+                                        </span>
+                                      </div>
+                                      <div className="review-content">
+                                        <p>
+                                          <RatingStars rating={review.rating} />
+                                        </p>
+                                        <p>{review.comment}</p>
+                                      </div>
+                                    </div>
+                                  )
+                                )}
+                              </div>
+                            )}
+                        </div>
+                        <Review slug={slug ?? ""} />
+                      </div>
+                    </>
                   )}
                 </Section>
               </>
