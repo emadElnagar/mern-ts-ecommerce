@@ -21,16 +21,36 @@ const RatingPercentage: React.FC<RatingStatsProps> = ({ reviews }) => {
   const totalReviews = reviews.length;
 
   return (
-    <div>
-      <h3>Rating Breakdown</h3>
-      {[1, 2, 3, 4, 5].map((rating) => {
+    <div style={{ maxWidth: 500, margin: "0 auto" }}>
+      {[5, 4, 3, 2, 1].map((rating) => {
         const count = ratingCounts[rating as 1 | 2 | 3 | 4 | 5];
-        const percentage =
-          totalReviews > 0 ? ((count / totalReviews) * 100).toFixed(1) : "0";
+        const percentage = totalReviews > 0 ? (count / totalReviews) * 100 : 0;
+
         return (
-          <p key={rating}>
-            {rating}: {count} review(s) — {percentage}%
-          </p>
+          <div key={rating} style={{ marginBottom: 8 }}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <span>{rating} star</span>
+              <span>
+                {count} ({percentage.toFixed(1)}%)
+              </span>
+            </div>
+            <div
+              style={{
+                height: 10,
+                backgroundColor: "#eee",
+                borderRadius: 4,
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  width: `${percentage}%`,
+                  height: "100%",
+                  backgroundColor: "#fed700",
+                }}
+              />
+            </div>
+          </div>
         );
       })}
     </div>
