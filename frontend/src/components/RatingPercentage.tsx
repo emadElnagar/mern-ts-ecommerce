@@ -31,7 +31,7 @@ const RatingPercentage: React.FC<RatingStatsProps> = ({ reviews }) => {
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <span>{rating} star</span>
               <span>
-                {count} ({percentage.toFixed(1)}%)
+                {count} ({Math.round(percentage)}%)
               </span>
             </div>
             <div
