@@ -179,3 +179,13 @@ select {
 .product-actions {
   margin-block: 1rem;
 }
+
+.review-redirect {
+  font-size: 1.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  a {
+    color: #00b7ff;
+  }
+}

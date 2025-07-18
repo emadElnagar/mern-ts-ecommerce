@@ -1,8 +1,9 @@
 import { FormEvent, useState } from "react";
 import { IoMdStar } from "react-icons/io";
 import { Button } from "../styles/main";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ReviewProduct } from "../features/ProductFeatures";
+import { Link } from "react-router-dom";
 
 type productProps = {
   slug: string;
@@ -14,12 +15,13 @@ const Review = (product: productProps) => {
   const [rating, setRating] = useState<number | null>(null);
   const [hover, setHover] = useState<number | null>(null);
   const [comment, setComment] = useState<string>("");
+  const { user } = useSelector((state: any) => state.user);
   // Handle review submission
   const handleReview = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(ReviewProduct({ rating, comment, slug }));
   };
-  return (
+  return user ? (
     <div className="review-form">
       <form onSubmit={(e) => handleReview(e)}>
         {[...Array(5)].map((_star, index) => {
@@ -53,6 +55,17 @@ const Review = (product: productProps) => {
         ></textarea>
         <Button type="submit">Post</Button>
       </form>
+    </div>
+  ) : (
+    <div className="review-redirect">
+      Please&nbsp;
+      <Link
+        to={`/users/login?next=/products/${slug}`}
+        className="review-redirect"
+      >
+        login
+      </Link>
+      &nbsp;to review this product.
     </div>
   );
 };
