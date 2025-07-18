@@ -1,5 +1,5 @@
 import { Fragment, SetStateAction, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Form, Field, Input, Paragraph } from "../../styles/form";
 import {
   Container,
@@ -14,6 +14,8 @@ import LoadingBox from "../../components/LoadingBox";
 import Swal from "sweetalert2";
 
 function LoginPage() {
+  const search = useLocation().search;
+  const next = new URLSearchParams(search).get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
@@ -33,7 +35,7 @@ function LoginPage() {
     dispatch(Login({ email, password }));
   };
   if (user) {
-    navigate("/");
+    next ? navigate(`${next}`) : navigate("/");
   }
   return (
     <Fragment>
@@ -74,7 +76,13 @@ function LoginPage() {
               <FullButton type="submit">login</FullButton>
               <Paragraph>
                 don't have an account?{" "}
-                <Link to="/users/register">register</Link>
+                <Link
+                  to={`${
+                    next ? "/users/register?next=" + next : "/users/register"
+                  }`}
+                >
+                  register
+                </Link>
               </Paragraph>
             </Form>
           </Section>

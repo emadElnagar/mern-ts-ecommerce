@@ -1,5 +1,5 @@
 import { Fragment, SetStateAction, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Field, Input, Paragraph } from "../../styles/form";
 import {
@@ -14,6 +14,9 @@ import { SignUp, resetUserState } from "../../features/UserFeatures";
 import LoadingBox from "../../components/LoadingBox";
 
 function RegisterPage() {
+  const search = useLocation().search;
+  const next = new URLSearchParams(search).get("next");
+
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,7 +47,7 @@ function RegisterPage() {
     }
   };
   if (user) {
-    navigate("/");
+    next ? navigate(`${next}`) : navigate("/");
   }
   return (
     <Fragment>
@@ -115,7 +118,12 @@ function RegisterPage() {
               </Field>
               <FullButton type="submit">signup</FullButton>
               <Paragraph>
-                have an account? <Link to="/users/login">login</Link>
+                have an account?{" "}
+                <Link
+                  to={`${next ? "/users/login?next=" + next : "/users/login"}`}
+                >
+                  login
+                </Link>
               </Paragraph>
             </Form>
           </Section>
