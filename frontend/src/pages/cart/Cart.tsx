@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { Container, Section } from "../../styles/main";
 import {
@@ -12,8 +12,16 @@ import {
   QuantityInput,
   RemoveButton,
 } from "../../styles/cart";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../../features/CartFeatures";
 
-const cart = () => {
+const Cart = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
+  const cart = useSelector((state: any) => state.cart);
+  console.log(cart);
   return (
     <Fragment>
       <Helmet>
@@ -92,4 +100,4 @@ const cart = () => {
   );
 };
 
-export default cart;
+export default Cart;
