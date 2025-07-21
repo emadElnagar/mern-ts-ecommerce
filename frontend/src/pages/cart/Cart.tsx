@@ -20,8 +20,7 @@ const Cart = () => {
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
-  const cart = useSelector((state: any) => state.cart);
-  console.log(cart);
+  const { cart, error, isLoading } = useSelector((state: any) => state.cart);
   return (
     <Fragment>
       <Helmet>
