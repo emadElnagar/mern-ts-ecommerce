@@ -55,9 +55,7 @@ export const getCart: any = createAsyncThunk(
     try {
       const cartArray = localStorage.getItem("cart");
       const cart = cartArray ? JSON.parse(cartArray) : [];
-      const response = await axios.get(`${url}`, {
-        params: { cart: JSON.stringify(cart) },
-      });
+      const response = await axios.post(`${url}`, cart);
       return response.data;
     } catch (error: any) {
       const message =

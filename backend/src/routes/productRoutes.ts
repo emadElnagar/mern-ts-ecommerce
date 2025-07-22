@@ -49,7 +49,7 @@ productRouter.get("/", SearchProduct);
 productRouter.get("/all", getAllProducts);
 
 // GET CART PRODUCTS
-productRouter.get("/cart", getCartProducts);
+productRouter.post("/cart", getCartProducts);
 
 // GET SINGLE PRODUCT
 productRouter.get("/:slug", getSingleProduct);

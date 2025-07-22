@@ -33,7 +33,7 @@ export const getCartProducts: RequestHandler = async (req, res) => {
         message: "Cart is empty or invalid",
       });
     }
-    const productIds = cart.map((item: any) => item.productId);
+    const productIds = cart.map((item: any) => item.id);
     const products = await Product.find({ _id: { $in: productIds } }).populate(
       "category"
     );
