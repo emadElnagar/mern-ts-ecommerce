@@ -45,7 +45,7 @@ export const getCartProducts: RequestHandler = async (req, res) => {
     // Combine product data with the quantity from the request
     const productsWithQuantity = products.map((product) => {
       const matchedItem = cart.find(
-        (item) => item.productId === product._id.toString()
+        (item) => item.id === product._id.toString()
       );
       return {
         ...product.toObject(),
