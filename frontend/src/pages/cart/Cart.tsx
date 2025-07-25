@@ -50,33 +50,38 @@ const Cart = () => {
                   </TableRow>
                 </TableHead>
                 <tbody>
-                  {cart.map((product: any) => (
-                    <TableRow key={product._id}>
-                      <TableData>
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                          <ProductImage
-                            src={`http://localhost:5000/${product.images[0]}`}
-                            alt="There is a problem showing your photos"
+                  {cart.map((product: any) => {
+                    const quantity = product.quantity || 1;
+                    const discount = product.discount || 0;
+                    const price = product.price || 0;
+                    return (
+                      <TableRow key={product._id}>
+                        <TableData>
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <ProductImage
+                              src={`http://localhost:5000/${product.images[0]}`}
+                              alt="There is a problem showing your photos"
+                            />
+                            {product.name}
+                          </div>
+                        </TableData>
+                        <TableData>${price - discount}</TableData>
+                        <TableData>
+                          <QuantityInput
+                            type="number"
+                            value={quantity}
+                            readOnly
                           />
-                          {product.name}
-                        </div>
-                      </TableData>
-                      <TableData>${product.Price - product.discount}</TableData>
-                      <TableData>
-                        <QuantityInput
-                          type="number"
-                          value={product.quantity}
-                          readOnly
-                        />
-                      </TableData>
-                      <TableData>
-                        ${(product.price - product.discount) * product.quantity}
-                      </TableData>
-                      <TableData>
-                        <RemoveButton>Remove</RemoveButton>
-                      </TableData>
-                    </TableRow>
-                  ))}
+                        </TableData>
+                        <TableData>${(price - discount) * quantity}</TableData>
+                        <TableData>
+                          <RemoveButton>Remove</RemoveButton>
+                        </TableData>
+                      </TableRow>
+                    );
+                  })}
                   <TableRow>
                     <TableData colSpan={3}>
                       <strong>Total:</strong>
