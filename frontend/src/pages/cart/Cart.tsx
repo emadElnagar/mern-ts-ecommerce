@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Section } from "../../styles/main";
+import { Container, Header, Section } from "../../styles/main";
 import {
   TableWrapper,
   StyledTable,
@@ -52,10 +52,10 @@ const Cart = () => {
         <Section>
           {isLoading ? (
             <LoadingBox />
+          ) : cart.length === 0 ? (
+            <Header className="text-center">Your cart is empty</Header>
           ) : error ? (
             <ErrorBox message={error} />
-          ) : cart.length === 0 ? (
-            <ErrorBox message="Your cart is empty" />
           ) : (
             <TableWrapper>
               <StyledTable>
