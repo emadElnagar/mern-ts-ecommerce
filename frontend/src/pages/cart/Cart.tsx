@@ -23,7 +23,13 @@ const Cart = () => {
     dispatch(getCart());
   }, [dispatch]);
   const { cart, error, isLoading } = useSelector((state: any) => state.cart);
-  console.log(cart);
+  // Get total price
+  const totalPrice = cart.reduce((acc: number, product: any) => {
+    const quantity = product.quantity || 1;
+    const discount = product.discount || 0;
+    const price = product.price || 0;
+    return acc + (price - discount) * quantity;
+  }, 0);
   return (
     <Fragment>
       <Helmet>
@@ -87,7 +93,7 @@ const Cart = () => {
                       <strong>Total:</strong>
                     </TableData>
                     <TableData>
-                      <strong>$141.97</strong>
+                      <strong>${totalPrice}</strong>
                     </TableData>
                     <TableData>
                       <RemoveButton>Clear Cart</RemoveButton>
