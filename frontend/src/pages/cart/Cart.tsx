@@ -13,7 +13,11 @@ import {
   RemoveButton,
 } from "../../styles/cart";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFromCart, getCart } from "../../features/CartFeatures";
+import {
+  clearCart,
+  deleteFromCart,
+  getCart,
+} from "../../features/CartFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link } from "react-router-dom";
@@ -34,6 +38,10 @@ const Cart = () => {
   // Remove product from cart
   const removeProduct = (id: string) => {
     dispatch(deleteFromCart(id));
+  };
+  // clear cart
+  const clearTheCart = () => {
+    dispatch(clearCart());
   };
   return (
     <Fragment>
@@ -72,10 +80,12 @@ const Cart = () => {
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              <ProductImage
-                                src={`http://localhost:5000/${product.images[0]}`}
-                                alt="There is a problem showing your photos"
-                              />
+                              {product && product.images && (
+                                <ProductImage
+                                  src={`http://localhost:5000/${product.images[0]}`}
+                                  alt="There is a problem showing your photos"
+                                />
+                              )}
                               {product.name}
                             </div>
                           </Link>
@@ -107,7 +117,9 @@ const Cart = () => {
                       <strong>${totalPrice}</strong>
                     </TableData>
                     <TableData>
-                      <RemoveButton>Clear Cart</RemoveButton>
+                      <RemoveButton onClick={() => clearTheCart()}>
+                        Clear Cart
+                      </RemoveButton>
                     </TableData>
                   </TableRow>
                 </tbody>

@@ -89,6 +89,23 @@ export const deleteFromCart: any = createAsyncThunk(
   }
 );
 
+// Clear the cart
+export const clearCart: any = createAsyncThunk(
+  "cart/clear",
+  async (_, { rejectWithValue }) => {
+    try {
+      localStorage.removeItem("cart");
+      return [];
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -136,6 +153,20 @@ const cartSlice = createSlice({
         );
       })
       .addCase(deleteFromCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Clear the cart
+      .addCase(clearCart.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(clearCart.fulfilled, (state) => {
+        state.isLoading = false;
+        state.error = null;
+        state.cart = [];
+      })
+      .addCase(clearCart.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
