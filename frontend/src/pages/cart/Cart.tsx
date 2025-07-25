@@ -13,9 +13,10 @@ import {
   RemoveButton,
 } from "../../styles/cart";
 import { useDispatch, useSelector } from "react-redux";
-import { getCart } from "../../features/CartFeatures";
+import { deleteFromCart, getCart } from "../../features/CartFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,10 @@ const Cart = () => {
     const price = product.price || 0;
     return acc + (price - discount) * quantity;
   }, 0);
+  // Remove product from cart
+  const removeProduct = (id: string) => {
+    dispatch(deleteFromCart(id));
+  };
   return (
     <Fragment>
       <Helmet>
@@ -63,15 +68,17 @@ const Cart = () => {
                     return (
                       <TableRow key={product._id}>
                         <TableData>
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <ProductImage
-                              src={`http://localhost:5000/${product.images[0]}`}
-                              alt="There is a problem showing your photos"
-                            />
-                            {product.name}
-                          </div>
+                          <Link to={`/products/${product.slug}`}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <ProductImage
+                                src={`http://localhost:5000/${product.images[0]}`}
+                                alt="There is a problem showing your photos"
+                              />
+                              {product.name}
+                            </div>
+                          </Link>
                         </TableData>
                         <TableData>${price - discount}</TableData>
                         <TableData>
@@ -83,7 +90,11 @@ const Cart = () => {
                         </TableData>
                         <TableData>${(price - discount) * quantity}</TableData>
                         <TableData>
-                          <RemoveButton>Remove</RemoveButton>
+                          <RemoveButton
+                            onClick={() => removeProduct(product._id)}
+                          >
+                            Remove
+                          </RemoveButton>
                         </TableData>
                       </TableRow>
                     );

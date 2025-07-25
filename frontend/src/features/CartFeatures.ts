@@ -67,6 +67,28 @@ export const getCart: any = createAsyncThunk(
   }
 );
 
+// Delete from cart
+export const deleteFromCart: any = createAsyncThunk(
+  "cart/delete",
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      let cartArrayProducts = localStorage.getItem("cart");
+      let cartArray = cartArrayProducts ? JSON.parse(cartArrayProducts) : [];
+      cartArray = cartArray.filter(
+        (item: { id: string }) => item.id !== productId
+      );
+      localStorage.setItem("cart", JSON.stringify(cartArray));
+      return productId;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -98,6 +120,22 @@ const cartSlice = createSlice({
         state.cart = action.payload;
       })
       .addCase(getCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Delete from cart
+      .addCase(deleteFromCart.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(deleteFromCart.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.cart = state.cart.filter(
+          (product) => product._id !== action.payload
+        );
+      })
+      .addCase(deleteFromCart.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
