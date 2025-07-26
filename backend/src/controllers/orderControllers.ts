@@ -32,3 +32,18 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     });
   }
 };
+
+// Get all orders
+export const getAllOrders = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const orders = await Order.find();
+    res.status(200).json(orders);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
