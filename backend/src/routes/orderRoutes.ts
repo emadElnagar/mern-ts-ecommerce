@@ -1,19 +1,30 @@
 import { RequestHandler, Router } from "express";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { AuthenticatedRequest } from "../types/authTypes";
-import { createOrder, getAllOrders } from "../controllers/orderControllers";
+import {
+  createOrder,
+  getAllOrders,
+  getUserOrders,
+} from "../controllers/orderControllers";
 
 const orderRouter = Router();
 
+// Create a new order
 orderRouter.post("/create", isAuth as RequestHandler, (req, res) =>
   createOrder(req as AuthenticatedRequest, res)
 );
 
+// Get all orders
 orderRouter.get(
   "/",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
   async (req, res) => getAllOrders(req as AuthenticatedRequest, res)
+);
+
+// Get user orders
+orderRouter.get("/user", isAuth as RequestHandler, async (req, res) =>
+  getUserOrders(req as AuthenticatedRequest, res)
 );
 
 export default orderRouter;
