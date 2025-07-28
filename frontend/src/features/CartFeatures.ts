@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const url = "http://localhost:5000/api/products/cart";
+const url = process.env.REACT_APP_CART_URL;
 
 interface product {
   _id: object;
@@ -56,6 +55,7 @@ export const getCart: any = createAsyncThunk(
       const cartArray = localStorage.getItem("cart");
       const cart = cartArray ? JSON.parse(cartArray) : [];
       const response = await axios.post(`${url}`, cart);
+      console.log(url);
       return response.data;
     } catch (error: any) {
       const message =
