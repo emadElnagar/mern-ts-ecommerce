@@ -29,7 +29,7 @@ interface Order {
   totalPrice?: number;
   isPaid?: boolean;
   paidAt?: Date;
-  isDelivered?: boolean;
+  shippingStatus?: string;
   deliveredAt?: Date;
 }
 
@@ -67,7 +67,17 @@ const orderSchema = new Schema<Order>(
     totalPrice: Number,
     isPaid: { type: Boolean, default: false },
     paidAt: Date,
-    isDelivered: { type: Boolean, default: false },
+    shippingStatus: {
+      type: String,
+      enum: [
+        "Pending",
+        "Processing",
+        "Out for Delivery",
+        "Delivered",
+        "Canceled",
+      ],
+      default: "Pending",
+    },
     deliveredAt: Date,
   },
   {

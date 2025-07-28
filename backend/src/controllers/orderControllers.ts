@@ -33,7 +33,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   }
 };
 
-// Get all orders
+// Get all orders ( admin only )
 export const getAllOrders = async (
   _req: AuthenticatedRequest,
   res: Response
@@ -48,7 +48,7 @@ export const getAllOrders = async (
   }
 };
 
-// Get user orders
+// Get user orders ( user specific )
 export const getUserOrders = async (
   req: AuthenticatedRequest,
   res: Response
