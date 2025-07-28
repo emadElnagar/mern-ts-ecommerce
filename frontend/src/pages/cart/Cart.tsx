@@ -11,6 +11,7 @@ import {
   ProductImage,
   QuantityInput,
   RemoveButton,
+  CheckoutButton,
 } from "../../styles/cart";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -57,74 +58,82 @@ const Cart = () => {
           ) : error ? (
             <ErrorBox message={error} />
           ) : (
-            <TableWrapper>
-              <StyledTable>
-                <TableHead>
-                  <TableRow>
-                    <TableHeader>Product</TableHeader>
-                    <TableHeader>Price</TableHeader>
-                    <TableHeader>Quantity</TableHeader>
-                    <TableHeader>Total</TableHeader>
-                    <TableHeader>Actions</TableHeader>
-                  </TableRow>
-                </TableHead>
-                <tbody>
-                  {cart.map((product: any) => {
-                    const quantity = product.quantity || 1;
-                    const discount = product.discount || 0;
-                    const price = product.price || 0;
-                    return (
-                      <TableRow key={product._id}>
-                        <TableData>
-                          <Link to={`/products/${product.slug}`}>
-                            <div
-                              style={{ display: "flex", alignItems: "center" }}
+            <>
+              <TableWrapper>
+                <StyledTable>
+                  <TableHead>
+                    <TableRow>
+                      <TableHeader>Product</TableHeader>
+                      <TableHeader>Price</TableHeader>
+                      <TableHeader>Quantity</TableHeader>
+                      <TableHeader>Total</TableHeader>
+                      <TableHeader>Actions</TableHeader>
+                    </TableRow>
+                  </TableHead>
+                  <tbody>
+                    {cart.map((product: any) => {
+                      const quantity = product.quantity || 1;
+                      const discount = product.discount || 0;
+                      const price = product.price || 0;
+                      return (
+                        <TableRow key={product._id}>
+                          <TableData>
+                            <Link to={`/products/${product.slug}`}>
+                              <div
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                {product && product.images && (
+                                  <ProductImage
+                                    src={`http://localhost:5000/${product.images[0]}`}
+                                    alt="There is a problem showing your photos"
+                                  />
+                                )}
+                                {product.name}
+                              </div>
+                            </Link>
+                          </TableData>
+                          <TableData>${price - discount}</TableData>
+                          <TableData>
+                            <QuantityInput
+                              type="number"
+                              value={quantity}
+                              readOnly
+                            />
+                          </TableData>
+                          <TableData>
+                            ${(price - discount) * quantity}
+                          </TableData>
+                          <TableData>
+                            <RemoveButton
+                              onClick={() => removeProduct(product._id)}
                             >
-                              {product && product.images && (
-                                <ProductImage
-                                  src={`http://localhost:5000/${product.images[0]}`}
-                                  alt="There is a problem showing your photos"
-                                />
-                              )}
-                              {product.name}
-                            </div>
-                          </Link>
-                        </TableData>
-                        <TableData>${price - discount}</TableData>
-                        <TableData>
-                          <QuantityInput
-                            type="number"
-                            value={quantity}
-                            readOnly
-                          />
-                        </TableData>
-                        <TableData>${(price - discount) * quantity}</TableData>
-                        <TableData>
-                          <RemoveButton
-                            onClick={() => removeProduct(product._id)}
-                          >
-                            Remove
-                          </RemoveButton>
-                        </TableData>
-                      </TableRow>
-                    );
-                  })}
-                  <TableRow>
-                    <TableData colSpan={3}>
-                      <strong>Total:</strong>
-                    </TableData>
-                    <TableData>
-                      <strong>${totalPrice}</strong>
-                    </TableData>
-                    <TableData>
-                      <RemoveButton onClick={() => clearTheCart()}>
-                        Clear Cart
-                      </RemoveButton>
-                    </TableData>
-                  </TableRow>
-                </tbody>
-              </StyledTable>
-            </TableWrapper>
+                              Remove
+                            </RemoveButton>
+                          </TableData>
+                        </TableRow>
+                      );
+                    })}
+                    <TableRow>
+                      <TableData colSpan={3}>
+                        <strong>Total:</strong>
+                      </TableData>
+                      <TableData>
+                        <strong>${totalPrice}</strong>
+                      </TableData>
+                      <TableData>
+                        <RemoveButton onClick={() => clearTheCart()}>
+                          Clear Cart
+                        </RemoveButton>
+                      </TableData>
+                    </TableRow>
+                  </tbody>
+                </StyledTable>
+              </TableWrapper>
+              <CheckoutButton>procced to checkout</CheckoutButton>
+            </>
           )}
         </Section>
       </Container>

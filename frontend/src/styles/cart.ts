@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { danger } from "./variables";
+import { danger, primary, secondary } from "./variables";
 
 export const TableWrapper = styled.div`
   overflow-x: auto;
@@ -62,4 +62,22 @@ export const RemoveButton = styled.button`
   &:hover {
     background-color: ${danger};
   }
+`;
+
+export const CheckoutButton = styled.button`
+  background-color: ${primary};
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1rem;
+  margin-top: 1rem;
+  transition: all 0.3s ease;
+  &:hover {
+    background-color: ${secondary};
+    color: #fff;
+  }
+  text-align: center;
+  display: block;
 `;
