@@ -62,3 +62,23 @@ export const getUserOrders = async (
     });
   }
 };
+
+// Get specific order
+export const getSingleOrder = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const order = await Order.findById(req.params.id)
+      .populate("customer", "_id firstName lastName email image")
+      .populate("orderItems.product");
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    res.status(200).json(order);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

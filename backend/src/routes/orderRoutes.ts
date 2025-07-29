@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../types/authTypes";
 import {
   createOrder,
   getAllOrders,
+  getSingleOrder,
   getUserOrders,
 } from "../controllers/orderControllers";
 
@@ -25,6 +26,11 @@ orderRouter.get(
 // Get user orders
 orderRouter.get("/user", isAuth as RequestHandler, async (req, res) =>
   getUserOrders(req as AuthenticatedRequest, res)
+);
+
+// Get specific order
+orderRouter.get("/:id", isAuth as RequestHandler, async (req, res) =>
+  getSingleOrder(req as AuthenticatedRequest, res)
 );
 
 export default orderRouter;
