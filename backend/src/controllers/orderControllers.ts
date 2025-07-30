@@ -82,3 +82,23 @@ export const getSingleOrder = async (
     });
   }
 };
+
+// Update order status ( admin only )
+export const updateOrderStatus = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    (order as any).status = req.body.status;
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

@@ -6,6 +6,7 @@ import {
   getAllOrders,
   getSingleOrder,
   getUserOrders,
+  updateOrderStatus,
 } from "../controllers/orderControllers";
 
 const orderRouter = Router();
@@ -31,6 +32,14 @@ orderRouter.get("/user", isAuth as RequestHandler, async (req, res) =>
 // Get specific order
 orderRouter.get("/:id", isAuth as RequestHandler, async (req, res) =>
   getSingleOrder(req as AuthenticatedRequest, res)
+);
+
+// Update order status
+orderRouter.patch(
+  "/:id/status",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => updateOrderStatus(req as AuthenticatedRequest, res)
 );
 
 export default orderRouter;
