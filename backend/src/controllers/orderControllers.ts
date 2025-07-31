@@ -102,3 +102,28 @@ export const updateOrderStatus = async (
     });
   }
 };
+
+// Cancel order ( admin or customer )
+export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    if (
+      order.customer.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to cancel this order" });
+    }
+    (order as any).status = "Canceled";
+    const updatedOrder = await order.save();
+    res.status(200).json(updatedOrder);
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};

@@ -2,6 +2,7 @@ import { RequestHandler, Router } from "express";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { AuthenticatedRequest } from "../types/authTypes";
 import {
+  cancelOrder,
   createOrder,
   getAllOrders,
   getSingleOrder,
@@ -40,6 +41,11 @@ orderRouter.patch(
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
   async (req, res) => updateOrderStatus(req as AuthenticatedRequest, res)
+);
+
+// Cancel order
+orderRouter.patch("/:id/cancel", isAuth as RequestHandler, async (req, res) =>
+  cancelOrder(req as AuthenticatedRequest, res)
 );
 
 export default orderRouter;
