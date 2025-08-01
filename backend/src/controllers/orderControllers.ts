@@ -40,6 +40,9 @@ export const getAllOrders = async (
 ) => {
   try {
     const orders = await Order.find();
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found" });
+    }
     res.status(200).json(orders);
   } catch (error: any) {
     res.status(500).json({
@@ -55,6 +58,9 @@ export const getUserOrders = async (
 ) => {
   try {
     const orders = await Order.find({ customer: req.user._id });
+    if (!orders || orders.length === 0) {
+      return res.status(404).json({ message: "No orders found for this user" });
+    }
     res.status(200).json(orders);
   } catch (error: any) {
     res.status(500).json({
