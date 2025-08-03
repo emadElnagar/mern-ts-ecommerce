@@ -70,8 +70,8 @@ export const CheckoutButton = styled.button`
   border: none;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 14px;
+  font-size: 1.2rem;
   margin-top: 1rem;
   transition: all 0.3s ease;
   &:hover {

@@ -139,11 +139,13 @@ const NewProductPage = () => {
   useEffect(() => {
     // Get all categories
     dispatch(GetAllCategories());
-    // set first category as default
-    if (categories && categories.length > 0) {
+  }, [dispatch]);
+  useEffect(() => {
+    if (categories && categories.length > 0 && category === "") {
       setCategory(categories[0]._id);
     }
-  }, [dispatch, categories]);
+  }, [categories, category]);
+  console.log(category);
   return (
     <Fragment>
       <Helmet>
