@@ -145,7 +145,6 @@ const NewProductPage = () => {
       setCategory(categories[0]._id);
     }
   }, [categories, category]);
-  console.log(category);
   return (
     <Fragment>
       <Helmet>

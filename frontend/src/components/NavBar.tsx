@@ -17,6 +17,7 @@ import {
   SearchForm,
   SearchInput,
   SearchButton,
+  CartCount,
 } from "../styles/navbar";
 import {
   Container,
@@ -37,6 +38,7 @@ function NavBar() {
   const [isActive, toggleIsActive] = useState(false);
   const [isSearch, toggleIsSearch] = useState(false);
   const [isDropDownActive, toggleIsDropDownActive] = useState(false);
+  const { cart } = useSelector((state: any) => state.cart);
   const toggleIsActiveHandler = () => {
     toggleIsDropDownActive(false);
     toggleIsSearch(false);
@@ -176,6 +178,7 @@ function NavBar() {
           <Link to="/cart">
             <ListItem>
               <AiOutlineShoppingCart />
+              {cart.length > 0 && <CartCount>{cart.length}</CartCount>}
             </ListItem>
           </Link>
           <Link to="/wishlist">

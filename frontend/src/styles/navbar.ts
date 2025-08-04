@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import * as vars from './variables';
+import * as vars from "./variables";
 
-export const Nav = styled.nav `
+export const Nav = styled.nav`
   color: #000;
   padding: 0 30px;
   height: 70px;
@@ -9,9 +9,9 @@ export const Nav = styled.nav `
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid ${vars.shadow};
-`
+`;
 
-export const Brand = styled.li `
+export const Brand = styled.li`
   font-size: 1.2rem;
   text-transform: uppercase;
   color: ${vars.primary};
@@ -19,16 +19,16 @@ export const Brand = styled.li `
   &.active {
     color: #000;
   }
-`
+`;
 
-export const ListContainer = styled.div `
+export const ListContainer = styled.div`
   display: flex;
   // MEDIUM SCREEN SIZE
   @media (max-width: 991px) {
     z-index: -1;
     width: 0;
     height: 100vh;
-    transition: width .5s ease;
+    transition: width 0.5s ease;
     padding-left: 20px;
     // WHEN CLASS ACTIVE IS ADDED
     &.active {
@@ -49,21 +49,29 @@ export const ListContainer = styled.div `
       }
     }
   }
-`
+`;
 
 export const ListContainerIcon = styled.div`
-  display: flex
-`
+  display: flex;
+`;
 
-export const ListItem = styled.li `
+export const ListItem = styled.li`
   text-transform: capitalize;
   padding: 0 10px;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   cursor: pointer;
   &:hover {
     color: ${vars.primary};
   }
-`
+`;
+
+export const CartCount = styled.span`
+  background: ${vars.primary};
+  color: #000;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+`;
 
 export const Humburger = styled.div`
   display: none;
@@ -84,14 +92,14 @@ export const Humburger = styled.div`
       }
     }
   }
-`
+`;
 
 export const HumburgerDiv = styled.div`
   height: 2px;
   width: 20px;
   background: #000;
   margin-top: 4px;
-`
+`;
 
 export const SearchForm = styled.form`
   height: 35px;
@@ -101,15 +109,15 @@ export const SearchForm = styled.form`
   &.active {
     display: flex;
   }
-`
+`;
 
 export const SearchInput = styled.input`
   width: 100%;
   padding: 0 5px;
   &:focus {
-    outline: none
+    outline: none;
   }
-`
+`;
 
 export const SearchButton = styled.button`
   color: #000;
@@ -117,4 +125,4 @@ export const SearchButton = styled.button`
   background: ${vars.primary};
   border: 1px solid ${vars.primary};
   cursor: pointer;
-`
+`;
