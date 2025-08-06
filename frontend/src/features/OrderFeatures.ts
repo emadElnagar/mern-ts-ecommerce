@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 const url = process.env.REACT_APP_ORDER_URL;
 
 export interface Order {
@@ -35,6 +36,7 @@ export interface Order {
 
 interface OrderState {
   orders: Order[];
+  userOrders?: Order[];
   order: Order | null;
   isLoading: boolean;
   error: object | null;
@@ -42,16 +44,48 @@ interface OrderState {
 
 const initialState: OrderState = {
   orders: [],
+  userOrders: [],
   order: null,
   isLoading: false,
   error: null,
 };
 
+export const GetAllOrders: any = createAsyncThunk(
+  "orders/all",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${url}`);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "category",
   initialState,
   reducers: {},
-  extraReducers: (builder) => {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(GetAllOrders.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(GetAllOrders.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.orders = action.payload;
+      })
+      .addCase(GetAllOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      });
+  },
 });
 
 export default orderSlice.reducer;
