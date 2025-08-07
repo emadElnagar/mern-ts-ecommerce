@@ -1,5 +1,5 @@
-import { Fragment, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Fragment, useEffect, useState } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import {
   AiOutlineSearch,
   AiOutlineShoppingCart,
@@ -32,6 +32,7 @@ import { Logout } from "../features/UserFeatures";
 import { Image } from "../styles/main";
 
 function NavBar() {
+  const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [keyword, setKeyword] = useState("");
@@ -69,6 +70,12 @@ function NavBar() {
     e.currentTarget.reset();
     toggleIsSearch(false);
   };
+  // Close All Buttons when navigating
+  useEffect(() => {
+    toggleIsActive(false);
+    toggleIsSearch(false);
+    toggleIsDropDownActive(false);
+  }, [location]);
   return (
     <Fragment>
       <Nav>
