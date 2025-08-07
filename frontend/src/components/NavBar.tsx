@@ -76,6 +76,26 @@ function NavBar() {
     toggleIsSearch(false);
     toggleIsDropDownActive(false);
   }, [location]);
+  // Close all buttons when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (
+        !target.closest(".active") &&
+        !target.closest(".user-img-i") &&
+        !target.closest(".humburger") &&
+        !target.closest(".search")
+      ) {
+        toggleIsActive(false);
+        toggleIsSearch(false);
+        toggleIsDropDownActive(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
   return (
     <Fragment>
       <Nav>
@@ -179,7 +199,7 @@ function NavBar() {
               </DropDown>
             </ListItem>
           )}
-          <ListItem onClick={toggleIsSearchHandler}>
+          <ListItem onClick={toggleIsSearchHandler} className="search">
             <AiOutlineSearch />
           </ListItem>
           <Link to="/cart">
