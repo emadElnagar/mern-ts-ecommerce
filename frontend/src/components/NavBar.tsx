@@ -6,6 +6,12 @@ import {
   AiOutlineHeart,
   AiOutlineUser,
 } from "react-icons/ai";
+import { TbLogin } from "react-icons/tb";
+import { FaCashRegister } from "react-icons/fa";
+import { IoIosLogOut } from "react-icons/io";
+import { CiLock } from "react-icons/ci";
+import { RiUser2Fill } from "react-icons/ri";
+import { IoSettingsSharp } from "react-icons/io5";
 import {
   Nav,
   Brand,
@@ -25,6 +31,7 @@ import {
   DropDownButton,
   DropDownContent,
   DropDownItem,
+  FlexBetweenRow,
   NavButton,
 } from "../styles/main";
 import { useDispatch, useSelector } from "react-redux";
@@ -141,14 +148,24 @@ function NavBar() {
                   <DropDownItem>
                     <Link to={`/users/profile/${user._id}`}>
                       <NavButton onClick={() => toggleIsDropDownActive(false)}>
-                        profile
+                        <FlexBetweenRow>
+                          <span>profile</span>
+                          <span>
+                            <RiUser2Fill />
+                          </span>
+                        </FlexBetweenRow>
                       </NavButton>
                     </Link>
                   </DropDownItem>
                   <DropDownItem>
                     <Link to={`/users/profile/settings`}>
                       <NavButton onClick={() => toggleIsDropDownActive(false)}>
-                        settings
+                        <FlexBetweenRow>
+                          <span>settings</span>
+                          <span>
+                            <IoSettingsSharp />
+                          </span>
+                        </FlexBetweenRow>
                       </NavButton>
                     </Link>
                   </DropDownItem>
@@ -158,13 +175,25 @@ function NavBar() {
                         <NavButton
                           onClick={() => toggleIsDropDownActive(false)}
                         >
-                          admin
+                          <FlexBetweenRow>
+                            <span>admin</span>
+                            <span>
+                              <CiLock />
+                            </span>
+                          </FlexBetweenRow>
                         </NavButton>
                       </Link>
                     </DropDownItem>
                   )}
                   <DropDownItem>
-                    <NavButton onClick={() => handleLogOut()}>logout</NavButton>
+                    <NavButton onClick={() => handleLogOut()}>
+                      <FlexBetweenRow>
+                        <span>logout</span>
+                        <span>
+                          <IoIosLogOut />
+                        </span>
+                      </FlexBetweenRow>
+                    </NavButton>
                   </DropDownItem>
                 </DropDownContent>
               </DropDown>
@@ -184,14 +213,24 @@ function NavBar() {
                   <DropDownItem>
                     <Link to="/users/login">
                       <NavButton onClick={() => toggleIsDropDownActive(false)}>
-                        login
+                        <FlexBetweenRow>
+                          <span>login</span>
+                          <span>
+                            <TbLogin />
+                          </span>
+                        </FlexBetweenRow>
                       </NavButton>
                     </Link>
                   </DropDownItem>
                   <DropDownItem>
                     <Link to="/users/register">
                       <NavButton onClick={() => toggleIsDropDownActive(false)}>
-                        register
+                        <FlexBetweenRow>
+                          <span>register</span>
+                          <span>
+                            <FaCashRegister />
+                          </span>
+                        </FlexBetweenRow>
                       </NavButton>
                     </Link>
                   </DropDownItem>

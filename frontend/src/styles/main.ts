@@ -131,7 +131,8 @@ export const DropDownContent = styled.ul`
   position: absolute;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   background: ${vars.light};
-  margin-inline-start: -30px;
+  margin-inline-start: -10px;
+  width: 120px;
   &.active {
     display: flex;
     flex-direction: column;
@@ -146,7 +147,7 @@ export const DropDownItem = styled.li`
     color: ${vars.primary};
   }
   button {
-    padding: 10px 30px;
+    padding: 10px 0;
   }
 `;
 export const Box = styled.div`
