@@ -50,6 +50,31 @@ const initialState: OrderState = {
   error: null,
 };
 
+// Create a new order
+export const CreateOrder: any = createAsyncThunk(
+  "orders/create",
+  async (orderData: Order, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.post(`${url}`, orderData, config);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Get all orders
 export const GetAllOrders: any = createAsyncThunk(
   "orders/all",
   async (_, { rejectWithValue }) => {
@@ -66,6 +91,7 @@ export const GetAllOrders: any = createAsyncThunk(
   }
 );
 
+// Get user orders
 export const GetUserOrders: any = createAsyncThunk(
   "orders/user",
   async (_, { rejectWithValue }) => {
@@ -88,6 +114,21 @@ const orderSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Create a new order
+      .addCase(CreateOrder.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(CreateOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.orders.push(action.payload);
+        state.order = action.payload;
+      })
+      .addCase(CreateOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
       // Get all orders
       .addCase(GetAllOrders.pending, (state) => {
         state.isLoading = true;
