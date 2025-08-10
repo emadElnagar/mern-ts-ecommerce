@@ -79,7 +79,13 @@ export const GetAllOrders: any = createAsyncThunk(
   "orders/all",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}`);
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${url}`, config);
       return response.data;
     } catch (error: any) {
       const message =
@@ -96,7 +102,13 @@ export const GetUserOrders: any = createAsyncThunk(
   "orders/user",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}/user`);
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${url}/user`, config);
       return response.data;
     } catch (error: any) {
       const message =
