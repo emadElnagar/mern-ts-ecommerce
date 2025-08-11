@@ -143,6 +143,37 @@ export const GetOrder: any = createAsyncThunk(
   }
 );
 
+// Update order status
+export const UpdateOrderStatus: any = createAsyncThunk(
+  "orders/updateStatus",
+  async (
+    { _id, status }: { _id: string; status: string },
+    { rejectWithValue }
+  ) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.patch(
+        `${url}/${_id}/status`,
+        { status },
+        config
+      );
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "category",
   initialState,
@@ -203,6 +234,28 @@ const orderSlice = createSlice({
         state.order = action.payload;
       })
       .addCase(GetOrder.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Update order status
+      .addCase(UpdateOrderStatus.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(UpdateOrderStatus.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const index = state.orders.findIndex(
+          (order) => order._id === action.payload._id
+        );
+        if (index !== -1) {
+          state.orders[index] = action.payload;
+        }
+        if (state.order && state.order._id === action.payload._id) {
+          state.order = action.payload;
+        }
+      })
+      .addCase(UpdateOrderStatus.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
