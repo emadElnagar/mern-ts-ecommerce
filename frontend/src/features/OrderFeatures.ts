@@ -120,6 +120,29 @@ export const GetUserOrders: any = createAsyncThunk(
   }
 );
 
+// Get specific order
+export const GetOrder: any = createAsyncThunk(
+  "orders/get",
+  async (_id: string, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${url}/${_id}`, config);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const orderSlice = createSlice({
   name: "category",
   initialState,
@@ -166,6 +189,20 @@ const orderSlice = createSlice({
         state.userOrders = action.payload;
       })
       .addCase(GetUserOrders.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Get specific order
+      .addCase(GetOrder.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(GetOrder.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.order = action.payload;
+      })
+      .addCase(GetOrder.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
