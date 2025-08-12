@@ -35,7 +35,7 @@ const SingleProduct = () => {
   const [activeTab, setActiveTab] = useState("description");
   const [quantity, setQuantity] = useState(1);
   const { slug } = useParams();
-  const { error, isLoading, product } = useSelector(
+  const { error, isLoading, product, similarProducts } = useSelector(
     (state: any) => state.product
   );
   const productRating =
@@ -269,7 +269,9 @@ const SingleProduct = () => {
               </>
             )
           )}
-          {product && <RelatedProducts slug={product.slug} />}
+          {product && similarProducts && similarProducts.length > 0 && (
+            <RelatedProducts slug={product.slug} />
+          )}
         </Container>
       </Main>
     </Fragment>
