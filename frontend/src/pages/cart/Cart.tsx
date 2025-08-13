@@ -21,10 +21,11 @@ import {
 } from "../../features/CartFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
@@ -132,7 +133,9 @@ const Cart = () => {
                   </tbody>
                 </StyledTable>
               </TableWrapper>
-              <CheckoutButton>procced to checkout</CheckoutButton>
+              <CheckoutButton onClick={() => navigate("/checkout")}>
+                procced to checkout
+              </CheckoutButton>
             </>
           )}
         </Section>
