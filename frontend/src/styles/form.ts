@@ -51,6 +51,19 @@ export const Input = styled.input`
   }
 `;
 
+export const RoundedInput = styled(Input)`
+  border-radius: 25px;
+  padding: 10px;
+  border: 1px solid #888888;
+  &:focus {
+    outline: none;
+    border: 1px solid #000;
+  }
+  & + label {
+    margin: 0 0 10px;
+  }
+`;
+
 export const BrdInput = styled.input`
   border: none;
   width: 100%;
@@ -86,6 +99,8 @@ export const FeatureContainer = styled.li`
 `;
 
 export const Label = styled.label`
+  font-size: 14px;
+  color: #000;
   .icon {
     color: #fff;
     font-size: 20px;
