@@ -6,6 +6,7 @@ import { Response } from "express";
 import { AuthenticatedRequest } from "../types/authTypes";
 import path from "path";
 import fs from "fs";
+import mongoose from "mongoose";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
@@ -192,68 +193,98 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
 
 // Update product
 export const updateProduct: RequestHandler = async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
-    const product = await Product.findOne({ slug: req.params.slug });
+    const product = await Product.findOne({ slug: req.params.slug }).session(
+      session
+    );
     if (!product) {
-      return res.status(404).json({
-        message: "Product Not Found",
-      });
+      return res.status(404).json({ message: "Product not found" });
     }
-    const foundProductName = await Product.findOne({
-      name: req.body.name,
-      _id: { $ne: product._id },
-    });
-    if (foundProductName) {
-      return res.status(400).json({
-        message: "This product already exists, Try another name",
-      });
+
+    if (req.body.name && req.body.name !== product.name) {
+      const foundProductName = await Product.findOne({
+        name: { $regex: `^${req.body.name}$`, $options: "i" },
+        _id: { $ne: product._id },
+      }).session(session);
+      if (foundProductName) {
+        return res
+          .status(400)
+          .json({ message: "This product already exists, try another name" });
+      }
     }
+
+    const requiredFields = [
+      "name",
+      "description",
+      "brand",
+      "price",
+      "countInStock",
+      "category",
+    ];
+    const missingField = requiredFields.find(
+      (field) => req.body[field] == null
+    );
+    if (missingField) {
+      return res
+        .status(400)
+        .json({ message: `Please enter the ${missingField}` });
+    }
+
     const {
       name,
       description,
       brand,
       price,
-      discount,
+      discount = 0,
       countInStock,
       category,
-      features,
+      features = [],
+      imgnames = [],
+      removeImages = [],
     } = req.body;
-    if (
-      !name ||
-      !description ||
-      !brand ||
-      !price ||
-      !countInStock ||
-      !category ||
-      !features
-    ) {
-      return res.status(400).json({
-        message: "All fields are required",
-      });
+
+    if (price < 0)
+      return res.status(400).json({ message: "Price cannot be negative" });
+    if (discount < 0)
+      return res.status(400).json({ message: "Discount cannot be negative" });
+    if (discount > price)
+      return res
+        .status(400)
+        .json({ message: "Discount cannot be more than price" });
+    if (countInStock < 0)
+      return res
+        .status(400)
+        .json({ message: "Count in stock cannot be negative" });
+
+    let updatedImages = product.images || [];
+
+    if (Array.isArray(removeImages) && removeImages.length > 0) {
+      updatedImages = updatedImages.filter(
+        (img) => !removeImages.includes(img)
+      );
+      for (const image of removeImages) {
+        const imagePath = path.resolve(
+          __dirname,
+          "../../uploads/images",
+          image
+        );
+        fs.promises.unlink(imagePath).catch((err) => {
+          return res.status(500).json({
+            message: `Failed to delete image (${image}): ${err.message}`,
+          });
+        });
+      }
     }
-    if (discount < 0) {
-      return res.status(400).json({
-        message: "Discount cannot be negative",
-      });
+
+    if (Array.isArray(imgnames) && imgnames.length > 0) {
+      updatedImages.push(...imgnames);
     }
-    if (discount > price) {
-      return res.status(400).json({
-        message: "Discount cannot be more than price",
-      });
-    }
-    if (countInStock < 0) {
-      return res.status(400).json({
-        message: "Count in stock cannot be negative",
-      });
-    }
-    // Update product in the database
-    const updatedProduct = {
+
+    const updatedProductData: any = {
       name,
-      slug: slugify(name, {
-        replacement: "-",
-        lower: true,
-        strict: true,
-      }),
+      slug: slugify(name, { replacement: "-", lower: true, strict: true }),
       description,
       brand,
       price,
@@ -261,27 +292,17 @@ export const updateProduct: RequestHandler = async (req, res) => {
       countInStock,
       category,
       features,
-      images: req.body.imgnames,
+      images: updatedImages,
     };
-    await Product.updateOne(
+
+    const updatedProduct = await Product.findOneAndUpdate(
       { slug: req.params.slug },
-      { $set: updatedProduct }
+      { $set: updatedProductData },
+      { new: true, session }
     );
-    // Remove old images from the filesystem
-    if (Array.isArray(product.images) && product.images.length > 0) {
-      for (const image of product.images) {
-        const productImagePath = path.resolve(
-          __dirname,
-          "../../uploads/images",
-          image
-        );
-        fs.promises.unlink(productImagePath).catch((err) => {
-          console.warn(`Failed to delete image (${image}):`, err.message);
-        });
-      }
-    }
+    await session.commitTransaction();
     res.status(200).json({
-      message: "Product Updated Successfully",
+      message: "Product updated successfully",
     });
   } catch (error: any) {
     return res.status(500).json({
