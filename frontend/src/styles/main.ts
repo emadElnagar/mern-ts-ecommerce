@@ -251,3 +251,11 @@ export const QuantityContainer = styled.div`
   flex-direction: row;
   margin-inline-end: 0.5rem;
 `;
+
+export const Card = styled.div`
+  padding: 20px;
+  border-radius: 10px;
+  p {
+    margin-bottom: 20px;
+  }
+`;
