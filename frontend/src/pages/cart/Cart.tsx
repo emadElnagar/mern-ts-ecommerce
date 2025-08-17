@@ -133,7 +133,9 @@ const Cart = () => {
                   </tbody>
                 </StyledTable>
               </TableWrapper>
-              <CheckoutButton onClick={() => navigate("/checkout")}>
+              <CheckoutButton
+                onClick={() => navigate("/users/login?next=/checkout")}
+              >
                 procced to checkout
               </CheckoutButton>
             </>

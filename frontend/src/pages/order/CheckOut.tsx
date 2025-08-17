@@ -8,8 +8,15 @@ import {
   Section,
 } from "../../styles/main";
 import { Field, Label, RoundedInput } from "../../styles/form";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const CheckOut = () => {
+  const { user } = useSelector((state: any) => state.user);
+  const navigate = useNavigate();
+  if (!user) {
+    navigate("/users/login?next=/checkout");
+  }
   return (
     <Fragment>
       <Helmet>
