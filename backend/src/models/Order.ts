@@ -1,14 +1,24 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Document, Types } from "mongoose";
+import { v4 as uuidv4 } from "uuid";
 
-interface Order {
-  customer: { type: Schema.Types.ObjectId; ref: "User" };
-  orderItems: [
-    {
-      product: { type: Schema.Types.ObjectId; ref: "Product" };
-      price: number;
-      quantity: number;
-    }
-  ];
+export const PaymentMethods = ["PayPal", "Stripe", "BankTransfer"] as const;
+export const PaymentStatuses = [
+  "notPaid",
+  "paid",
+  "cancelled",
+  "refunded",
+] as const;
+
+export type PaymentMethodType = (typeof PaymentMethods)[number];
+export type PaymentStatusType = (typeof PaymentStatuses)[number];
+
+export interface Order extends Document {
+  customer: Types.ObjectId;
+  orderItems: {
+    product: Types.ObjectId;
+    price: number;
+    quantity: number;
+  }[];
   shippingAddress: {
     address: string;
     city: string;
@@ -17,25 +27,33 @@ interface Order {
     phone: string;
     phone2?: string;
   };
-  paymentMethod: string;
   paymentResult?: {
     id: string;
-    status: string;
+    status: PaymentStatusType;
+    method: PaymentMethodType;
     update_time: string;
     email_address: string;
+    paidAt?: Date;
   };
   taxPrice?: number;
   shippingPrice?: number;
   totalPrice?: number;
-  isPaid?: boolean;
-  paidAt?: Date;
-  shippingStatus?: string;
+  shippingStatus?:
+    | "Pending"
+    | "Processing"
+    | "Out for Delivery"
+    | "Delivered"
+    | "Canceled";
   deliveredAt?: Date;
 }
 
 const orderSchema = new Schema<Order>(
   {
-    customer: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
     orderItems: [
       {
         product: {
@@ -53,20 +71,26 @@ const orderSchema = new Schema<Order>(
       postalCode: { type: String, required: true },
       country: { type: String, required: true },
       phone: { type: String, required: true },
-      phone2: String,
+      phone2: { type: String },
     },
-    paymentMethod: { type: String, required: true },
     paymentResult: {
-      id: String,
-      status: String,
-      update_time: String,
-      email_address: String,
+      id: { type: String },
+      status: {
+        type: String,
+        enum: PaymentStatuses,
+        default: "notPaid",
+      },
+      method: {
+        type: String,
+        enum: PaymentMethods,
+      },
+      update_time: { type: String },
+      email_address: { type: String },
+      paidAt: { type: Date },
     },
-    taxPrice: Number,
-    shippingPrice: Number,
-    totalPrice: Number,
-    isPaid: { type: Boolean, default: false },
-    paidAt: Date,
+    taxPrice: { type: Number },
+    shippingPrice: { type: Number },
+    totalPrice: { type: Number },
     shippingStatus: {
       type: String,
       enum: [
@@ -78,12 +102,21 @@ const orderSchema = new Schema<Order>(
       ],
       default: "Pending",
     },
-    deliveredAt: Date,
+    deliveredAt: { type: Date },
   },
   {
     timestamps: true,
   }
 );
 
-const Order = model("Order", orderSchema);
+// Auto payment ID generation
+orderSchema.pre("save", function (next) {
+  const order = this as Order;
+  if (order.paymentResult && !order.paymentResult.id) {
+    order.paymentResult.id = uuidv4();
+  }
+  next();
+});
+
+const Order = model<Order>("Order", orderSchema);
 export default Order;
