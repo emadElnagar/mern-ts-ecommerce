@@ -255,7 +255,9 @@ export const QuantityContainer = styled.div`
 export const Card = styled.div`
   padding: 20px;
   border-radius: 10px;
-  p {
-    margin-bottom: 20px;
+  .row {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
   }
 `;

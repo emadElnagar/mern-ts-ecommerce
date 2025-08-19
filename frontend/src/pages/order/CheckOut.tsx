@@ -28,14 +28,6 @@ const CheckOut = () => {
             <form>
               <Field>
                 <RoundedInput type="text" required />
-                <Label>First name</Label>
-              </Field>
-              <Field>
-                <RoundedInput type="text" required />
-                <Label>Last name</Label>
-              </Field>
-              <Field>
-                <RoundedInput type="text" required />
                 <Label>Country</Label>
               </Field>
               <Field>
@@ -63,12 +55,29 @@ const CheckOut = () => {
           <Section>
             <Card>
               <h2>Order Summary</h2>
-              <p>Items: 3</p>
-              <p>Price: $150.00</p>
-              <p>Shipping: $15.00</p>
-              <p>Tax: $20.00</p>
-              <hr />
-              <p>Total: $185.00</p>
+              <div>
+                <div className="row">
+                  <span>Items:</span>
+                  <span>3</span>
+                </div>
+                <div className="row">
+                  <span>Price:</span>
+                  <span>$150.00</span>
+                </div>
+                <div className="row">
+                  <span>Shipping:</span>
+                  <span>$15.00</span>
+                </div>
+                <div className="row">
+                  <span>Tax:</span>
+                  <span>$20.00</span>
+                </div>
+                <hr />
+                <div className="row">
+                  <span>Total:</span>
+                  <span>185.00</span>
+                </div>
+              </div>
               <FullButtonRounded type="submit">Place Order</FullButtonRounded>
             </Card>
           </Section>
