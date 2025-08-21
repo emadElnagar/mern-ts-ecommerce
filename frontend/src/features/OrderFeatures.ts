@@ -24,12 +24,11 @@ export interface Order {
     status: string;
     update_time: string;
     email_address: string;
+    paidAt?: Date;
   };
   taxPrice?: number;
   shippingPrice?: number;
   totalPrice?: number;
-  isPaid?: boolean;
-  paidAt?: Date;
   shippingStatus?: string;
   deliveredAt?: Date;
 }
