@@ -18,6 +18,13 @@ const CheckOut = () => {
   const { cart } = useSelector((state: any) => state.cart);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cartPrice = cart.reduce(
+    (acc: number, item: any) => acc + item.price * item.quantity,
+    0
+  );
+  const taxPrice = 0.1 * cartPrice;
+  const shippingPrice = cartPrice > 500 ? 0 : 15;
+  const totalPrice = cartPrice + taxPrice + shippingPrice;
   if (!user) {
     navigate("/users/login?next=/checkout");
   }
@@ -67,24 +74,24 @@ const CheckOut = () => {
                 <div>
                   <div className="row">
                     <span>Items:</span>
-                    <span>3</span>
+                    <span>{cart.length}</span>
                   </div>
                   <div className="row">
                     <span>Price:</span>
-                    <span>$150.00</span>
+                    <span>${cartPrice.toFixed(2)}</span>
                   </div>
                   <div className="row">
                     <span>Shipping:</span>
-                    <span>$15.00</span>
+                    <span>${shippingPrice.toFixed(2)}</span>
                   </div>
                   <div className="row">
                     <span>Tax:</span>
-                    <span>$20.00</span>
+                    <span>${taxPrice.toFixed(2)}</span>
                   </div>
                   <hr />
                   <div className="row">
                     <span>Total:</span>
-                    <span>185.00</span>
+                    <span>{totalPrice.toFixed(2)}</span>
                   </div>
                 </div>
                 <FullButtonRounded type="submit">Place Order</FullButtonRounded>
