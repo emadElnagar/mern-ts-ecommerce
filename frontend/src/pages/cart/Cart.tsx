@@ -30,6 +30,7 @@ const Cart = () => {
     dispatch(getCart());
   }, [dispatch]);
   const { cart, error, isLoading } = useSelector((state: any) => state.cart);
+  const { user } = useSelector((state: any) => state.user);
   // Get total price
   const totalPrice = cart.reduce((acc: number, product: any) => {
     const quantity = product.quantity || 1;
@@ -134,7 +135,11 @@ const Cart = () => {
                 </StyledTable>
               </TableWrapper>
               <CheckoutButton
-                onClick={() => navigate("/users/login?next=/checkout")}
+                onClick={() =>
+                  navigate(
+                    `${user ? "/checkout" : "/users/login?next=/checkout"}`
+                  )
+                }
               >
                 procced to checkout
               </CheckoutButton>
