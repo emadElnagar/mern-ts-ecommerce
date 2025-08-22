@@ -9,11 +9,13 @@ interface product {
 
 interface CartState {
   cart: product[];
+  wishlist: product[];
   isLoading: boolean;
   error: object | null;
 }
 const initialState: CartState = {
   cart: [],
+  wishlist: [],
   isLoading: false,
   error: null,
 };
@@ -106,6 +108,31 @@ export const clearCart: any = createAsyncThunk(
   }
 );
 
+// Add to wishlist
+export const addToWishlist: any = createAsyncThunk(
+  "cart/addToWishlist",
+  async (product: product, { rejectWithValue }) => {
+    try {
+      let foundItems = localStorage.getItem("wishlist");
+      let wishlistArray = foundItems ? JSON.parse(foundItems) : [];
+      let existingItem = wishlistArray.find(
+        (item: { id: object }) => item.id === product._id
+      );
+      if (!existingItem) {
+        wishlistArray.push(product);
+        localStorage.setItem("wishlist", JSON.stringify(wishlistArray));
+      }
+      return product;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -167,6 +194,25 @@ const cartSlice = createSlice({
         state.cart = [];
       })
       .addCase(clearCart.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Add to wishlist
+      .addCase(addToWishlist.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(addToWishlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const existingItem = state.wishlist.find(
+          (item) => item._id === action.payload._id
+        );
+        if (!existingItem) {
+          state.wishlist.push(action.payload);
+        }
+      })
+      .addCase(addToWishlist.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
