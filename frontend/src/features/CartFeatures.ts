@@ -133,6 +133,28 @@ export const addToWishlist: any = createAsyncThunk(
   }
 );
 
+// Remove from wishlist
+export const removeFromWishlist: any = createAsyncThunk(
+  "cart/removeFromWishlist",
+  async (productId: string, { rejectWithValue }) => {
+    try {
+      let wishlistArray = localStorage.getItem("wishlist");
+      let wishlist = wishlistArray ? JSON.parse(wishlistArray) : [];
+      wishlist = wishlist.filter(
+        (item: { id: string }) => item.id !== productId
+      );
+      localStorage.setItem("wishlist", JSON.stringify(wishlist));
+      return productId;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const cartSlice = createSlice({
   name: "cart",
   initialState,
@@ -213,6 +235,22 @@ const cartSlice = createSlice({
         }
       })
       .addCase(addToWishlist.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Remove from wishlist
+      .addCase(removeFromWishlist.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(removeFromWishlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.wishlist = state.wishlist.filter(
+          (item) => item._id !== action.payload
+        );
+      })
+      .addCase(removeFromWishlist.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       });
