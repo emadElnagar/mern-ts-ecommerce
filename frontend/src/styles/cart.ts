@@ -81,3 +81,19 @@ export const CheckoutButton = styled.button`
   text-align: center;
   display: block;
 `;
+
+export const ImageContainer = styled.div`
+  width: 50px;
+  height: 50px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+`;
+
+export const DeleteButton = styled.button`
+  background: transparent;
+  cursor: pointer;
+  border: none;
+`;

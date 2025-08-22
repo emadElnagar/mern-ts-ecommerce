@@ -20,6 +20,7 @@ import UpdatePage from "./pages/admin/UpdateProduct";
 import SearchProductsPage from "./pages/product/searchProducts";
 import Cart from "./pages/cart/Cart";
 import CheckOut from "./pages/order/CheckOut";
+import WishlistPage from "./pages/cart/Wishlist";
 
 function AppContent() {
   const { user } = useSelector((state: any) => state.user);
@@ -38,6 +39,7 @@ function AppContent() {
         <Route path="/products/:slug" element={<SingleProduct />} />
         <Route path="/search/:keyword" element={<SearchProductsPage />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/checkout" element={<CheckOut />} />
         {user !== null && (
           <Route path="/users/profile/settings" element={<ProfileSettings />} />
