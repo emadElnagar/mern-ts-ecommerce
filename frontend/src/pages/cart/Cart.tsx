@@ -89,7 +89,7 @@ const Cart = () => {
                               >
                                 {product && product.images && (
                                   <ProductImage
-                                    src={`http://localhost:5000/${product.images[0]}`}
+                                    src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
                                     alt="There is a problem showing your photos"
                                   />
                                 )}

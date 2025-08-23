@@ -70,7 +70,7 @@ const ProfilePage = () => {
                 userImg
                   ? URL.createObjectURL(userImg)
                   : profile?.image
-                  ? `http://localhost:5000/${profile.image}`
+                  ? `${process.env.REACT_APP_URL}/${profile.image}`
                   : `${process.env.PUBLIC_URL + "/user-icon-2098873_640.png"}`
               }
             />

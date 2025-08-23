@@ -30,7 +30,7 @@ function Product(product: productProps) {
           <ProductTitle>{product.name}</ProductTitle>
         </ProductHeader>
         <ProductImg
-          src={`http://localhost:5000/${product.image}`}
+          src={`${process.env.REACT_APP_URL}/${product.image}`}
           alt="There is a problem showing your photos"
         />
         {product.discount ? (

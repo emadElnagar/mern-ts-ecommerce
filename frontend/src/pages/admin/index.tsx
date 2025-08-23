@@ -87,7 +87,7 @@ const AdminMainPage = () => {
                           <ProductTitle>{product.name}</ProductTitle>
                         </ProductHeader>
                         <ProductImg
-                          src={`http://localhost:5000/${product.images?.[0]}`}
+                          src={`${process.env.REACT_APP_URL}/${product.images?.[0]}`}
                           alt="There is a problem showing your photos"
                         />
                         {product.discount ? (
