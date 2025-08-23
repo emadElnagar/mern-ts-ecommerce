@@ -57,7 +57,6 @@ export const getCart: any = createAsyncThunk(
       const cartArray = localStorage.getItem("cart");
       const cart = cartArray ? JSON.parse(cartArray) : [];
       const response = await axios.post(`${url}`, cart);
-      console.log(url);
       return response.data;
     } catch (error: any) {
       const message =
@@ -123,6 +122,25 @@ export const addToWishlist: any = createAsyncThunk(
         localStorage.setItem("wishlist", JSON.stringify(wishlistArray));
       }
       return product;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Get wishlist products
+export const getWithlist: any = createAsyncThunk(
+  "cart/getWishlist",
+  async (_, { rejectWithValue }) => {
+    try {
+      const wishlistArray = localStorage.getItem("wishlist");
+      const wishlist = wishlistArray ? JSON.parse(wishlistArray) : [];
+      const response = await axios.post(`${url}`, wishlist);
+      return response.data;
     } catch (error: any) {
       const message =
         error.response?.data?.message ||
@@ -235,6 +253,20 @@ const cartSlice = createSlice({
         }
       })
       .addCase(addToWishlist.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      // Get wishlist products
+      .addCase(getWithlist.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getWithlist.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        state.wishlist = action.payload;
+      })
+      .addCase(getWithlist.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
       })
