@@ -87,14 +87,14 @@ const SingleProduct = () => {
                     <div className="images">
                       <div className="thumbnail">
                         <Image
-                          src={`http://localhost:5000/${product.images[imgIndex]}`}
+                          src={`${process.env.REACT_APP_URL}/${product.images[imgIndex]}`}
                           alt="problem loading image"
                         />
                       </div>
                       <div className="images-min">
                         {product.images.map((image: string, index: number) => (
                           <Image
-                            src={`http://localhost:5000/${image}`}
+                            src={`${process.env.REACT_APP_URL}/${image}`}
                             alt="problem loading images"
                             className={`cursor-pointer ${
                               imgIndex === index && "selected"
@@ -231,7 +231,7 @@ const SingleProduct = () => {
                                         <img
                                           src={`${
                                             review.user.image
-                                              ? `http://localhost:5000/${review.user.image}`
+                                              ? `${process.env.REACT_APP_URL}/${review.user.image}`
                                               : `${
                                                   process.env.PUBLIC_URL +
                                                   "/user-icon-2098873_640.png"

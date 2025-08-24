@@ -11,6 +11,8 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { Key } from "react";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/CartFeatures";
 
 type productProps = {
   _id: Key;
@@ -22,6 +24,10 @@ type productProps = {
 };
 
 function Product(product: productProps) {
+  const dispatch = useDispatch();
+  const hanldeAddToCart = () => {
+    dispatch(addToCart({ _id: product._id, quantity: 1 }));
+  };
   const realPrice = product.price - product.discount;
   return (
     <ProductDiv>
@@ -47,7 +53,7 @@ function Product(product: productProps) {
         )}
       </Link>
       <FlexBetweenRow>
-        <IconButton>
+        <IconButton onClick={() => hanldeAddToCart()}>
           <FaCartArrowDown /> add to cart
         </IconButton>
         <IconButton>
