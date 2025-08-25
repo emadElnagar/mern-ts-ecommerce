@@ -12,7 +12,7 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import { Key } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../features/CartFeatures";
+import { addToCart, addToWishlist } from "../features/CartFeatures";
 
 type productProps = {
   _id: Key;
@@ -25,8 +25,13 @@ type productProps = {
 
 function Product(product: productProps) {
   const dispatch = useDispatch();
+  // Add to cart
   const hanldeAddToCart = () => {
     dispatch(addToCart({ _id: product._id, quantity: 1 }));
+  };
+  // Add to wishlist
+  const handleAddWishList = () => {
+    dispatch(addToWishlist({ _id: product._id }));
   };
   const realPrice = product.price - product.discount;
   return (
@@ -56,7 +61,7 @@ function Product(product: productProps) {
         <IconButton onClick={() => hanldeAddToCart()}>
           <FaCartArrowDown /> add to cart
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => handleAddWishList()}>
           <AiOutlineHeart /> wishlist
         </IconButton>
       </FlexBetweenRow>
