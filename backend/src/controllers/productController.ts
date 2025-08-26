@@ -61,6 +61,32 @@ export const getCartProducts: RequestHandler = async (req, res) => {
   }
 };
 
+// Get wishlist products
+export const getWishlistProducts: RequestHandler = async (req, res) => {
+  try {
+    const wishlist = req.body;
+    if (!wishlist || !Array.isArray(wishlist) || wishlist.length === 0) {
+      return res.status(400).json({
+        message: "Wishlist is empty or invalid",
+      });
+    }
+    const productIds = wishlist.map((item: any) => item.id);
+    const products = await Product.find({ _id: { $in: productIds } }).populate(
+      "category"
+    );
+    if (products.length === 0) {
+      return res.status(404).json({
+        message: "No products found in the wishlist",
+      });
+    }
+    res.status(200).json(products);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // GET SINGLE PRODUCT
 export const getSingleProduct: RequestHandler = async (req, res) => {
   try {

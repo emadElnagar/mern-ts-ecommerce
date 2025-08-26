@@ -6,6 +6,7 @@ import {
   getCartProducts,
   getSimilarProducts,
   getSingleProduct,
+  getWishlistProducts,
   newProduct,
   SearchProduct,
   updateProduct,
@@ -50,6 +51,9 @@ productRouter.get("/all", getAllProducts);
 
 // GET CART PRODUCTS
 productRouter.post("/cart", getCartProducts);
+
+// Get wishlist products
+productRouter.post("/wishlist", getWishlistProducts);
 
 // GET SINGLE PRODUCT
 productRouter.get("/:slug", getSingleProduct);
