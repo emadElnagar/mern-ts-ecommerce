@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 const url = process.env.REACT_APP_CART_URL;
+const wishlistUrl = process.env.REACT_APP_WISHLIST_URL;
 
 interface product {
   _id: object;
@@ -139,7 +140,7 @@ export const getWithlist: any = createAsyncThunk(
     try {
       const wishlistArray = localStorage.getItem("wishlist");
       const wishlist = wishlistArray ? JSON.parse(wishlistArray) : [];
-      const response = await axios.post(`${url}`, wishlist);
+      const response = await axios.post(`${wishlistUrl}`, wishlist);
       return response.data;
     } catch (error: any) {
       const message =
