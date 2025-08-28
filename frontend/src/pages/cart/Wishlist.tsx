@@ -14,7 +14,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
-import { addToCart, getWithlist } from "../../features/CartFeatures";
+import {
+  addToCart,
+  getWithlist,
+  removeFromWishlist,
+} from "../../features/CartFeatures";
 import { Link } from "react-router-dom";
 
 const WishlistPage = () => {
@@ -28,6 +32,10 @@ const WishlistPage = () => {
   // Add to cart
   const handleAddToCart = (id: string) => {
     dispatch(addToCart({ _id: id, quantity: 1 }));
+  };
+  // Remove from wishlist
+  const handleRemoveFromWishlist = (id: string) => {
+    dispatch(removeFromWishlist(id));
   };
   return (
     <Fragment>
@@ -58,7 +66,13 @@ const WishlistPage = () => {
                     wishlist.map((product: any) => (
                       <TableRow key={product._id}>
                         <TableData>
-                          <DeleteButton>x</DeleteButton>
+                          <DeleteButton
+                            onClick={() =>
+                              handleRemoveFromWishlist(product._id)
+                            }
+                          >
+                            x
+                          </DeleteButton>
                         </TableData>
                         <TableData>
                           <Link to={`/products/${product.slug}`}>
@@ -69,10 +83,14 @@ const WishlistPage = () => {
                               }}
                             >
                               <ImageContainer style={{ marginRight: "10px" }}>
-                                <img
-                                  src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
-                                  alt="There is a problem showing your photos"
-                                />
+                                {product &&
+                                  product.images &&
+                                  product.images.length > 0 && (
+                                    <img
+                                      src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
+                                      alt="There is a problem showing your photos"
+                                    />
+                                  )}
                               </ImageContainer>
                               {product.name}
                             </div>
