@@ -12,13 +12,7 @@ export const Nav = styled.nav`
 `;
 
 export const Brand = styled.li`
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  color: ${vars.primary};
-  z-index: 10000;
-  &.active {
-    color: #000;
-  }
+  width: 120px;
 `;
 
 export const ListContainer = styled.div`

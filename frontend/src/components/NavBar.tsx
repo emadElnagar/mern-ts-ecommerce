@@ -107,7 +107,12 @@ function NavBar() {
     <Fragment>
       <Nav>
         <Brand className={`${isActive === true ? "active" : ""}`}>
-          <Link to="/">electronics</Link>
+          <Link to="/">
+            <Image
+              src={`${process.env.PUBLIC_URL + "/voltaro-logo.png"}`}
+              alt="voltaro"
+            />
+          </Link>
         </Brand>
         <ListContainer className={`${isActive === true ? "active" : ""}`}>
           <ListItem>
