@@ -14,7 +14,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
-import { getWithlist } from "../../features/CartFeatures";
+import { addToCart, getWithlist } from "../../features/CartFeatures";
+import { Link } from "react-router-dom";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,10 @@ const WishlistPage = () => {
   useEffect(() => {
     dispatch(getWithlist());
   }, [dispatch]);
+  // Add to cart
+  const handleAddToCart = (id: string) => {
+    dispatch(addToCart({ _id: id, quantity: 1 }));
+  };
   return (
     <Fragment>
       <Helmet>
@@ -42,32 +47,53 @@ const WishlistPage = () => {
               <StyledTable>
                 <TableHead>
                   <TableRow>
-                    <TableHeader colSpan={3}>Product</TableHeader>
+                    <TableHeader colSpan={2}>Product</TableHeader>
                     <TableHeader>Price</TableHeader>
                     <TableHeader>Stock Status</TableHeader>
                     <TableHeader>cart</TableHeader>
                   </TableRow>
                 </TableHead>
                 <tbody>
-                  <TableRow>
-                    <TableData>
-                      <DeleteButton>x</DeleteButton>
-                    </TableData>
-                    <TableData>
-                      <ImageContainer>
-                        <img
-                          src="https://placehold.co/50"
-                          alt="There is a problem showing your photos"
-                        />
-                      </ImageContainer>
-                    </TableData>
-                    <TableData>Product name</TableData>
-                    <TableData>$130.00</TableData>
-                    <TableData>In stock</TableData>
-                    <TableData>
-                      <Button>Add to cart</Button>
-                    </TableData>
-                  </TableRow>
+                  {wishlist &&
+                    wishlist.map((product: any) => (
+                      <TableRow key={product._id}>
+                        <TableData>
+                          <DeleteButton>x</DeleteButton>
+                        </TableData>
+                        <TableData>
+                          <Link to={`/products/${product.slug}`}>
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                              }}
+                            >
+                              <ImageContainer style={{ marginRight: "10px" }}>
+                                <img
+                                  src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
+                                  alt="There is a problem showing your photos"
+                                />
+                              </ImageContainer>
+                              {product.name}
+                            </div>
+                          </Link>
+                        </TableData>
+                        <TableData>
+                          $
+                          {product.discount
+                            ? product.price - product.discount
+                            : product.price}
+                        </TableData>
+                        <TableData>
+                          {product.countInStock >= 1 ? "in stock" : "invalid"}
+                        </TableData>
+                        <TableData>
+                          <Button onClick={() => handleAddToCart(product._id)}>
+                            Add to cart
+                          </Button>
+                        </TableData>
+                      </TableRow>
+                    ))}
                 </tbody>
               </StyledTable>
             </TableWrapper>
