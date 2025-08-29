@@ -160,7 +160,7 @@ export const removeFromWishlist: any = createAsyncThunk(
       let wishlistArray = localStorage.getItem("wishlist");
       let wishlist = wishlistArray ? JSON.parse(wishlistArray) : [];
       wishlist = wishlist.filter(
-        (item: { id: string }) => item.id !== productId
+        (item: { _id: string }) => item._id !== productId
       );
       localStorage.setItem("wishlist", JSON.stringify(wishlist));
       return productId;
