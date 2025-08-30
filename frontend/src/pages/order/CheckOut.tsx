@@ -6,6 +6,7 @@ import {
   Container,
   FlexBetweenRow,
   FullButtonRounded,
+  PaymentMethod,
   Section,
 } from "../../styles/main";
 import { Field, Label, RoundedInput } from "../../styles/form";
@@ -19,7 +20,8 @@ const CheckOut = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cartPrice = cart.reduce(
-    (acc: number, item: any) => acc + item.price * item.quantity,
+    (acc: number, item: any) =>
+      acc + (item.price - (item.discount ?? 0)) * item.quantity,
     0
   );
   const taxPrice = 0.1 * cartPrice;
@@ -93,6 +95,35 @@ const CheckOut = () => {
                     <span>Total:</span>
                     <span>{totalPrice.toFixed(2)}</span>
                   </div>
+                  <PaymentMethod>
+                    <div>
+                      <input
+                        type="radio"
+                        id="BankTransfer"
+                        name="payment"
+                        value="BankTransfer"
+                      />
+                      <label htmlFor="BankTransfer">Direct bank transfer</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="paypal"
+                        name="payment"
+                        value="paypal"
+                      />
+                      <label htmlFor="paypal">Paypal</label>
+                    </div>
+                    <div>
+                      <input
+                        type="radio"
+                        id="Stripe"
+                        name="payment"
+                        value="Stripe"
+                      />
+                      <label htmlFor="Stripe">Stripe</label>
+                    </div>
+                  </PaymentMethod>
                 </div>
                 <FullButtonRounded type="submit">Place Order</FullButtonRounded>
               </Card>

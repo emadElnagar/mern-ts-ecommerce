@@ -262,3 +262,12 @@ export const Card = styled.div`
     justify-content: space-between;
   }
 `;
+
+export const PaymentMethod = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+  label {
+    margin-inline-start: 10px;
+  }
+`;
