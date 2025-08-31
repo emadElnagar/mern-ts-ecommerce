@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import { Helmet } from "react-helmet";
 import {
   Button,
@@ -15,6 +15,13 @@ import { useNavigate } from "react-router-dom";
 import { CreateOrder } from "../../features/OrderFeatures";
 
 const CheckOut = () => {
+  const [Country, setCountry] = useState("");
+  const [City, setCity] = useState("");
+  const [StreetAddress, setStreetAddress] = useState("");
+  const [PostalCode, setPostalCode] = useState("");
+  const [Phone, setPhone] = useState("");
+  const [Phone2, setPhone2] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("BankTransfer");
   const { user } = useSelector((state: any) => state.user);
   const { cart } = useSelector((state: any) => state.cart);
   const navigate = useNavigate();
@@ -45,27 +52,62 @@ const CheckOut = () => {
             <Section style={{ width: "70%" }}>
               <form onSubmit={handleSubmit}>
                 <Field>
-                  <RoundedInput type="text" required />
+                  <RoundedInput
+                    type="text"
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setCountry(e.target.value)
+                    }
+                  />
                   <Label>Country</Label>
                 </Field>
                 <Field>
-                  <RoundedInput type="text" required />
+                  <RoundedInput
+                    type="text"
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setCity(e.target.value)
+                    }
+                  />
                   <Label>City</Label>
                 </Field>
                 <Field>
-                  <RoundedInput type="text" required />
+                  <RoundedInput
+                    type="text"
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setStreetAddress(e.target.value)
+                    }
+                  />
                   <Label>Street address</Label>
                 </Field>
                 <Field>
-                  <RoundedInput type="text" required />
+                  <RoundedInput
+                    type="text"
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPostalCode(e.target.value)
+                    }
+                  />
                   <Label>Postal code</Label>
                 </Field>
                 <Field>
-                  <RoundedInput type="text" required />
+                  <RoundedInput
+                    type="text"
+                    required
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPhone(e.target.value)
+                    }
+                  />
                   <Label>Phone</Label>
                 </Field>
                 <Field>
-                  <RoundedInput type="text" />
+                  <RoundedInput
+                    type="text"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setPhone2(e.target.value)
+                    }
+                  />
                   <Label>Phone 2 ( optional )</Label>
                 </Field>
               </form>
@@ -102,6 +144,10 @@ const CheckOut = () => {
                         id="BankTransfer"
                         name="payment"
                         value="BankTransfer"
+                        defaultChecked
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setPaymentMethod(e.target.value)
+                        }
                       />
                       <label htmlFor="BankTransfer">Direct bank transfer</label>
                     </div>
@@ -111,6 +157,9 @@ const CheckOut = () => {
                         id="paypal"
                         name="payment"
                         value="paypal"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setPaymentMethod(e.target.value)
+                        }
                       />
                       <label htmlFor="paypal">Paypal</label>
                     </div>
@@ -120,6 +169,9 @@ const CheckOut = () => {
                         id="Stripe"
                         name="payment"
                         value="Stripe"
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setPaymentMethod(e.target.value)
+                        }
                       />
                       <label htmlFor="Stripe">Stripe</label>
                     </div>
