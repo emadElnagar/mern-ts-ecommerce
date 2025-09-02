@@ -10,7 +10,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
     const {
       orderItems,
       shippingAddress,
-      paymentMethod,
+      paymentResult,
       taxPrice,
       shippingPrice,
       totalPrice,
@@ -19,7 +19,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
       customer,
       orderItems,
       shippingAddress,
-      paymentMethod,
+      paymentResult,
       taxPrice,
       shippingPrice,
       totalPrice,
