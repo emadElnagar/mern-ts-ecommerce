@@ -62,6 +62,7 @@ export const CreateOrder: any = createAsyncThunk(
         },
       };
       const response = await axios.post(`${url}`, orderData, config);
+      localStorage.removeItem("cart");
       return response.data;
     } catch (error: any) {
       const message =
