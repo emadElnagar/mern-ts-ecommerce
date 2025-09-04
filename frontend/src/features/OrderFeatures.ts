@@ -54,7 +54,7 @@ export const CreateOrder: any = createAsyncThunk(
   "orders/create",
   async (orderData: Order, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -79,7 +79,7 @@ export const GetAllOrders: any = createAsyncThunk(
   "orders/all",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ export const GetUserOrders: any = createAsyncThunk(
   "orders/user",
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -125,7 +125,7 @@ export const GetOrder: any = createAsyncThunk(
   "orders/get",
   async (_id: string, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -151,7 +151,7 @@ export const UpdateOrderStatus: any = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -179,7 +179,7 @@ export const CancelOrder: any = createAsyncThunk(
   "orders/cancel",
   async (_id: string, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = sessionStorage.getItem("token");
       const config = {
         headers: {
           Authorization: `Bearer ${token}`,
