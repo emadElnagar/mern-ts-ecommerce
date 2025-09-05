@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from "mongoose";
+import mongoose, { Schema, model, Document, Types } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 
 export const PaymentMethods = ["PayPal", "Stripe", "BankTransfer"] as const;
@@ -109,14 +109,42 @@ const orderSchema = new Schema<Order>(
   }
 );
 
-// Auto payment ID generation
+// pre-save hook
 orderSchema.pre("save", function (next) {
   const order = this as Order;
-  if (order.paymentResult && !order.paymentResult.id) {
-    order.paymentResult.id = uuidv4();
+  if (order.paymentResult) {
+    // Auto payment ID generation
+    if (!order.paymentResult.id) {
+      order.paymentResult.id = uuidv4();
+    }
+
+    // Update timestamp if paymentResult modified
+    if (this.isModified("paymentResult")) {
+      order.paymentResult.update_time = new Date().toISOString();
+    }
   }
   next();
 });
+
+// update the update_time field when paymentResult is updated via findOneAndUpdate
+orderSchema.pre(
+  "findOneAndUpdate",
+  function (this: mongoose.Query<any, any>, next) {
+    const update = this.getUpdate();
+    if (
+      update &&
+      typeof update === "object" &&
+      !Array.isArray(update) &&
+      (("paymentResult" in update && (update as any).paymentResult) ||
+        ("$set" in update &&
+          (update as any).$set &&
+          (update as any).$set.paymentResult))
+    ) {
+      this.set({ "paymentResult.update_time": new Date().toISOString() });
+    }
+    next();
+  }
+);
 
 const Order = model<Order>("Order", orderSchema);
 export default Order;
