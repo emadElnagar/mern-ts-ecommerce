@@ -1,5 +1,5 @@
 import Order from "../models/Order";
-import { RequestHandler } from "express";
+import Product from "../models/product";
 import { AuthenticatedRequest } from "../types/authTypes";
 import { Response } from "express";
 
@@ -7,25 +7,54 @@ import { Response } from "express";
 export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const customer = req.user._id;
-    const {
-      orderItems,
-      shippingAddress,
-      paymentResult,
-      taxPrice,
-      shippingPrice,
-      totalPrice,
-    } = req.body;
+    const { orderItems, shippingAddress, paymentResult } = req.body;
+
+    if (!orderItems || orderItems.length === 0) {
+      return res.status(400).json({ message: "No order items" });
+    }
+    if (!shippingAddress) {
+      return res.status(400).json({ message: "No shipping address" });
+    }
+    if (!paymentResult) {
+      return res.status(400).json({ message: "No payment result" });
+    }
+
+    const validatedItems = await Promise.all(
+      orderItems.map(async (item: any) => {
+        const product = await Product.findById(item.product);
+        if (!product) {
+          return res.status(404).json({ message: "Product not found" });
+        }
+        return {
+          product: product._id,
+          price: product.price,
+          quantity: item.quantity,
+        };
+      })
+    );
+
+    const orderPrice = validatedItems.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0
+    );
+
+    const taxPrice = 0.1 * orderPrice;
+    const shippingPrice = orderPrice > 500 ? 0 : 15;
+    const totalPrice = orderPrice + taxPrice + shippingPrice;
+
     const order = new Order({
       customer,
-      orderItems,
+      orderItems: validatedItems,
       shippingAddress,
       paymentResult,
       taxPrice,
       shippingPrice,
       totalPrice,
     });
-    const createdOrder = await order.save();
-    res.status(201).json(createdOrder);
+    await order.save();
+    res.status(201).json({
+      message: "Order created successfully",
+    });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
