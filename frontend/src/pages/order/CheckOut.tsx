@@ -14,13 +14,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreateOrder } from "../../features/OrderFeatures";
 
+type OrderItem = {
+  _id: string;
+  quantity: number;
+};
+
 const CheckOut = () => {
-  const [Country, setCountry] = useState("");
-  const [City, setCity] = useState("");
-  const [StreetAddress, setStreetAddress] = useState("");
-  const [PostalCode, setPostalCode] = useState("");
-  const [Phone, setPhone] = useState("");
-  const [Phone2, setPhone2] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [phone, setPhone] = useState("");
+  const [phone2, setPhone2] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("BankTransfer");
   const { user } = useSelector((state: any) => state.user);
   const { cart } = useSelector((state: any) => state.cart);
@@ -34,12 +39,38 @@ const CheckOut = () => {
   const taxPrice = 0.1 * cartPrice;
   const shippingPrice = cartPrice > 500 ? 0 : 15;
   const totalPrice = cartPrice + taxPrice + shippingPrice;
+
+  const orderItems = cart.map(({ _id, quantity }: OrderItem) => ({
+    product: _id,
+    quantity,
+  }));
+
   if (!user) {
     navigate("/users/login?next=/checkout");
   }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(CreateOrder());
+    dispatch(
+      CreateOrder({
+        orderItems,
+        shippingAddress: {
+          address: streetAddress,
+          country,
+          city,
+          postalCode,
+          phone,
+          phone2,
+        },
+        paymentResult: {
+          method: paymentMethod,
+        },
+      })
+    )
+      .unwrap()
+      .then((_res: any) => {
+        navigate(`/`);
+      });
   };
   return (
     <Fragment>
@@ -50,7 +81,7 @@ const CheckOut = () => {
         {cart && cart.length > 0 ? (
           <FlexBetweenRow>
             <Section style={{ width: "70%" }}>
-              <form onSubmit={handleSubmit}>
+              <form>
                 <Field>
                   <RoundedInput
                     type="text"
@@ -177,7 +208,9 @@ const CheckOut = () => {
                     </div>
                   </PaymentMethod>
                 </div>
-                <FullButtonRounded type="submit">Place Order</FullButtonRounded>
+                <FullButtonRounded onClick={handleSubmit}>
+                  Place Order
+                </FullButtonRounded>
               </Card>
             </Section>
           </FlexBetweenRow>

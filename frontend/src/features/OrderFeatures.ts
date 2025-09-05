@@ -61,7 +61,7 @@ export const CreateOrder: any = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.post(`${url}`, orderData, config);
+      const response = await axios.post(`${url}/create`, orderData, config);
       localStorage.removeItem("cart");
       return response.data;
     } catch (error: any) {
