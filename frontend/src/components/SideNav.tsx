@@ -23,6 +23,9 @@ const SideNav = () => {
           <IoAdd /> new product
         </NavButton>
       </Link>
+      <Link to="/admin/orders">
+        <NavButton>orders</NavButton>
+      </Link>
     </Nav>
   );
 };
