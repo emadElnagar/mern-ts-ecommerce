@@ -68,7 +68,9 @@ export const getAllOrders = async (
   res: Response
 ) => {
   try {
-    const orders = await Order.find();
+    const orders = await Order.find()
+      .populate("customer", "_id firstName lastName email image")
+      .populate("orderItems");
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: "No orders found" });
     }
