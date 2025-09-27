@@ -19,7 +19,6 @@
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.2",
-    "react-scripts": "5.0.1",
     "react-spinners": "^0.13.8",
     "styled-components": "^6.0.0-rc.2",
     "sweetalert2": "^11.7.5",
@@ -28,11 +27,10 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
+  "dev": "vite",
+  "build": "vite build",
+  "preview": "vite preview"
+},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -53,6 +51,8 @@
   },
   "devDependencies": {
     "@types/react-helmet": "^6.1.6",
-    "@types/styled-components": "^5.1.26"
+    "@types/styled-components": "^5.1.26",
+    "@vitejs/plugin-react": "^5.0.4",
+    "vite": "^7.1.7"
   }
 }
