@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-const url = process.env.REACT_APP_CART_URL;
-const wishlistUrl = process.env.REACT_APP_WISHLIST_URL;
+import { CART_API_URL } from "../API";
+import { WISHLIST_API_URL } from "../API";
+
+const url = CART_API_URL;
+const wishlistUrl = WISHLIST_API_URL;
 
 interface product {
   _id: object;

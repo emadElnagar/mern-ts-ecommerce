@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 import axios from "axios";
+import { USERS_API_URL } from "../API";
 
-const url = process.env.REACT_APP_USERS_URL;
+const url = USERS_API_URL;
 
 export interface User {
   _id?: object;

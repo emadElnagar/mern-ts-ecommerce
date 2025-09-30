@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-const url = process.env.REACT_APP_ORDER_URL;
+import { ORDERS_API_URL } from "../API";
+
+const url = ORDERS_API_URL;
 
 export interface Order {
   _id: object;

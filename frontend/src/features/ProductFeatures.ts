@@ -1,7 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { PRODUCTS_API_URL } from "../API";
 
-const url = process.env.REACT_APP_PRODUCTS_URL;
+const url = PRODUCTS_API_URL;
 
 export interface Product {
   _id?: object;
