@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { Key } from "react";
 import { useDispatch } from "react-redux";
 import { addToCart, addToWishlist } from "../features/CartFeatures";
+import { API_URL } from "../API";
 
 type productProps = {
   _id: Key;
@@ -41,7 +42,7 @@ function Product(product: productProps) {
           <ProductTitle>{product.name}</ProductTitle>
         </ProductHeader>
         <ProductImg
-          src={`${process.env.REACT_APP_URL}/${product.image}`}
+          src={`${API_URL}/${product.image}`}
           alt="There is a problem showing your photos"
         />
         {product.discount ? (

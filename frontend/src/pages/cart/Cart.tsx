@@ -22,6 +22,7 @@ import {
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link, useNavigate } from "react-router-dom";
+import { API_URL } from "../../API";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const Cart = () => {
                               >
                                 {product && product.images && (
                                   <ProductImage
-                                    src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
+                                    src={`${API_URL}/${product.images[0]}`}
                                     alt="There is a problem showing your photos"
                                   />
                                 )}

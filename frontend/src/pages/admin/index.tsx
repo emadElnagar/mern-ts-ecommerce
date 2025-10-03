@@ -20,6 +20,7 @@ import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi2";
 import swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../API";
 
 const AdminMainPage = () => {
   const navigate = useNavigate();
@@ -87,7 +88,7 @@ const AdminMainPage = () => {
                           <ProductTitle>{product.name}</ProductTitle>
                         </ProductHeader>
                         <ProductImg
-                          src={`${process.env.REACT_APP_URL}/${product.images?.[0]}`}
+                          src={`${API_URL}/${product.images?.[0]}`}
                           alt="There is a problem showing your photos"
                         />
                         {product.discount ? (

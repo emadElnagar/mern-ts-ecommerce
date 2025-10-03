@@ -37,6 +37,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../features/UserFeatures";
 import { Image } from "../styles/main";
+import { API_URL } from "../API";
 
 function NavBar() {
   const location = useLocation();
@@ -134,11 +135,8 @@ function NavBar() {
                     className="user-img-i"
                     src={`${
                       user.image
-                        ? `${process.env.REACT_APP_URL}/${user.image}`
-                        : `${
-                            process.env.PUBLIC_URL +
-                            "/user-icon-2098873_640.png"
-                          }`
+                        ? `${API_URL}/${user.image}`
+                        : "/user-icon-2098873_640.png"
                     }`}
                   />
                 }

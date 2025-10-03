@@ -15,6 +15,7 @@ import { FaCamera } from "react-icons/fa";
 import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
+import { API_URL } from "../../API";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -70,8 +71,8 @@ const ProfilePage = () => {
                 userImg
                   ? URL.createObjectURL(userImg)
                   : profile?.image
-                  ? `${process.env.REACT_APP_URL}/${profile.image}`
-                  : `${process.env.PUBLIC_URL + "/user-icon-2098873_640.png"}`
+                  ? `${API_URL}/${profile.image}`
+                  : "/user-icon-2098873_640.png"
               }
             />
             {user && user._id === profile?._id && (

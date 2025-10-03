@@ -20,6 +20,7 @@ import {
   removeFromWishlist,
 } from "../../features/CartFeatures";
 import { Link } from "react-router-dom";
+import { API_URL } from "../../API";
 
 const WishlistPage = () => {
   const dispatch = useDispatch();
@@ -87,7 +88,7 @@ const WishlistPage = () => {
                                   product.images &&
                                   product.images.length > 0 && (
                                     <img
-                                      src={`${process.env.REACT_APP_URL}/${product.images[0]}`}
+                                      src={`${API_URL}/${product.images[0]}`}
                                       alt="There is a problem showing your photos"
                                     />
                                   )}

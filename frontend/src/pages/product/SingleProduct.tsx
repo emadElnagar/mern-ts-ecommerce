@@ -28,6 +28,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import { AiOutlineMinus } from "react-icons/ai";
 import { addToCart } from "../../features/CartFeatures";
 import RatingPercentage from "../../components/RatingPercentage";
+import { API_URL } from "../../API";
 
 const SingleProduct = () => {
   const dispatch = useDispatch();
@@ -87,14 +88,14 @@ const SingleProduct = () => {
                     <div className="images">
                       <div className="thumbnail">
                         <Image
-                          src={`${process.env.REACT_APP_URL}/${product.images[imgIndex]}`}
+                          src={`${API_URL}/${product.images[imgIndex]}`}
                           alt="problem loading image"
                         />
                       </div>
                       <div className="images-min">
                         {product.images.map((image: string, index: number) => (
                           <Image
-                            src={`${process.env.REACT_APP_URL}/${image}`}
+                            src={`${API_URL}/${image}`}
                             alt="problem loading images"
                             className={`cursor-pointer ${
                               imgIndex === index && "selected"
@@ -231,7 +232,7 @@ const SingleProduct = () => {
                                         <img
                                           src={`${
                                             review.user.image
-                                              ? `${process.env.REACT_APP_URL}/${review.user.image}`
+                                              ? `${API_URL}/${review.user.image}`
                                               : `${
                                                   process.env.PUBLIC_URL +
                                                   "/user-icon-2098873_640.png"
