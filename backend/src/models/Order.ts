@@ -13,6 +13,7 @@ export type PaymentMethodType = (typeof PaymentMethods)[number];
 export type PaymentStatusType = (typeof PaymentStatuses)[number];
 
 export interface Order extends Document {
+  orderNumber: string;
   customer: Types.ObjectId;
   orderItems: {
     product: Types.ObjectId;
@@ -49,6 +50,10 @@ export interface Order extends Document {
 
 const orderSchema = new Schema<Order>(
   {
+    orderNumber: {
+      type: String,
+      unique: true,
+    },
     customer: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -110,7 +115,7 @@ const orderSchema = new Schema<Order>(
 );
 
 // pre-save hook
-orderSchema.pre("save", function (next) {
+orderSchema.pre("save", async function (next) {
   const order = this as Order;
   if (order.paymentResult) {
     // Auto payment ID generation
@@ -122,6 +127,11 @@ orderSchema.pre("save", function (next) {
     if (this.isModified("paymentResult")) {
       order.paymentResult.update_time = new Date().toISOString();
     }
+  }
+  // Auto-generate order number if not present
+  if (this.isNew) {
+    const count = await mongoose.model("Order").countDocuments();
+    this.orderNumber = `#${String(count + 1).padStart(4, "0")}`;
   }
   next();
 });
