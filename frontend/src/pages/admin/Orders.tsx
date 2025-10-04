@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { HeaderCenter, Main, Section } from "../../styles/main";
 import SideNav from "../../components/SideNav";
@@ -15,8 +15,15 @@ import { FaRegEye } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi";
 import { success, warning } from "../../styles/variables";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllOrders } from "../../features/OrderFeatures";
 
 const OrdersPage = () => {
+  const dispatch = useDispatch();
+  const { isLoading, error, orders } = useSelector((state: any) => state.order);
+  useEffect(() => {
+    dispatch(GetAllOrders());
+  }, [dispatch]);
   return (
     <Fragment>
       <Helmet>
@@ -43,36 +50,57 @@ const OrdersPage = () => {
                   </TableRow>
                 </TableHead>
                 <tbody>
-                  <TableRow>
-                    <TableData>#12345</TableData>
-                    <TableData>2023-10-01</TableData>
-                    <TableData>John Doe</TableData>
-                    <TableData>$150.00</TableData>
-                    <TableData style={{ color: success }}>Paid</TableData>
-                    <TableData style={{ color: success }}>Shipped</TableData>
-                    <TableData>3</TableData>
-                    <TableData style={{ color: success }}>Fulfilled</TableData>
-                    <TableData>
-                      <FaRegEye title="View" /> | <HiPencil title="Edit" /> |{" "}
-                      <MdDelete title="Delete" />
-                    </TableData>
-                  </TableRow>
-                  <TableRow>
-                    <TableData>#12346</TableData>
-                    <TableData>2023-10-02</TableData>
-                    <TableData>Jane Smith</TableData>
-                    <TableData>$200.00</TableData>
-                    <TableData style={{ color: warning }}>Pending</TableData>
-                    <TableData style={{ color: warning }}>Processing</TableData>
-                    <TableData>5</TableData>
-                    <TableData style={{ color: warning }}>
-                      Unfulfilled
-                    </TableData>
-                    <TableData>
-                      <FaRegEye title="View" /> | <HiPencil title="Edit" /> |{" "}
-                      <MdDelete title="Delete" />
-                    </TableData>
-                  </TableRow>
+                  {orders &&
+                    orders.length > 0 &&
+                    orders.map((order: any) => (
+                      <TableRow key={order._id}>
+                        <TableData>{order.orderNumber}</TableData>
+                        <TableData>
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </TableData>
+                        <TableData style={{ textTransform: "capitalize" }}>
+                          {order.customer.firstName} {order.customer.lastName}
+                        </TableData>
+                        <TableData>${order.totalPrice.toFixed(2)}</TableData>
+                        <TableData
+                          style={{ color: order.isPaid ? success : warning }}
+                        >
+                          {order.paymentResult && order.paymentResult.paidAt
+                            ? "Paid"
+                            : "pending"}
+                        </TableData>
+                        <TableData
+                          style={{
+                            color:
+                              order.shippingStatus &&
+                              order.shippingStatus === "Delivered"
+                                ? success
+                                : warning,
+                          }}
+                        >
+                          {order.shippingStatus}
+                        </TableData>
+                        <TableData>{order.orderItems.length}</TableData>
+                        <TableData
+                          style={{
+                            color:
+                              order.shippingStatus &&
+                              order.shippingStatus === "Delivered"
+                                ? success
+                                : warning,
+                          }}
+                        >
+                          {order.shippingStatus &&
+                          order.shippingStatus === "Delivered"
+                            ? "Fulfilled"
+                            : "Unfulfilled"}
+                        </TableData>
+                        <TableData>
+                          <FaRegEye title="View" /> | <HiPencil title="Edit" />{" "}
+                          | <MdDelete title="Delete" />
+                        </TableData>
+                      </TableRow>
+                    ))}
                 </tbody>
               </StyledTable>
             </TableWrapper>
