@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { GetAllOrders } from "../../features/OrderFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
+import { Link } from "react-router-dom";
 
 const OrdersPage = () => {
   const dispatch = useDispatch();
@@ -103,8 +104,10 @@ const OrdersPage = () => {
                               : "Unfulfilled"}
                           </TableData>
                           <TableData>
-                            <FaRegEye title="View" /> |{" "}
-                            <HiPencil title="Edit" /> |{" "}
+                            <Link to={`/admin/orders/${order._id}`}>
+                              <FaRegEye title="View" />
+                            </Link>{" "}
+                            | <HiPencil title="Edit" /> |{" "}
                             <MdDelete title="Delete" />
                           </TableData>
                         </TableRow>
