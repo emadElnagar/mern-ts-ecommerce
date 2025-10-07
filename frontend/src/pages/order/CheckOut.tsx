@@ -13,6 +13,7 @@ import { Field, Label, RoundedInput } from "../../styles/form";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreateOrder } from "../../features/OrderFeatures";
+import { clearCart } from "../../features/CartFeatures";
 
 type OrderItem = {
   _id: string;
@@ -69,6 +70,7 @@ const CheckOut = () => {
     )
       .unwrap()
       .then((_res: any) => {
+        dispatch(clearCart());
         navigate(`/`);
       });
   };
