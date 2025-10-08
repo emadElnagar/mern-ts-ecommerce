@@ -116,73 +116,36 @@ const AllUsers = () => {
       <Helmet>
         <title>Electronics-Admin</title>
       </Helmet>
-      <Main>
-        <SideNav />
-        <Content>
-          <Section>
-            <InlineForm
-              method="get"
-              onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
-                e.preventDefault()
+      <Content>
+        <Section>
+          <InlineForm
+            method="get"
+            onSubmit={(e: React.FormEvent<HTMLFormElement>) =>
+              e.preventDefault()
+            }
+          >
+            <BrdInput
+              type="text"
+              name="text"
+              placeholder="Search user"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleSearch(e.target.value)
               }
-            >
-              <BrdInput
-                type="text"
-                name="text"
-                placeholder="Search user"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  handleSearch(e.target.value)
-                }
-              />
-              <Button type="submit">
-                <IoIosSearch />
-              </Button>
-            </InlineForm>
-          </Section>
-          <Section>
-            <h1 className="text-center">all usres</h1>
-            {isLoading ? (
-              <LoadingBox />
-            ) : error ? (
-              <ErrorBox message={`Error loading users`} />
-            ) : search ? (
-              searchedUsers.users && searchedUsers.users.length >= 1 ? (
-                searchedUsers.users.map(
-                  (user: {
-                    role: string;
-                    firstName: string;
-                    lastName: string;
-                    _id: Key;
-                  }) => (
-                    <Slide key={user._id}>
-                      <div>
-                        <h4>
-                          {user.firstName} {user.lastName}
-                        </h4>
-                      </div>
-                      {user.role === "admin" && <Note>Admin</Note>}
-                      <div>
-                        <UpdateButton
-                          title="Update user"
-                          onClick={() => handleUpdate(user._id, user.role)}
-                        >
-                          <IoPencil />
-                        </UpdateButton>
-                        <DeleteButton
-                          title="delete user"
-                          onClick={() => handleDelete(user._id)}
-                        >
-                          <MdDelete />
-                        </DeleteButton>
-                      </div>
-                    </Slide>
-                  )
-                )
-              ) : (
-                <ErrorBox message={`No user found`} />
-              )
-            ) : (
-              users.map(
+            />
+            <Button type="submit">
+              <IoIosSearch />
+            </Button>
+          </InlineForm>
+        </Section>
+        <Section>
+          <h1 className="text-center">all usres</h1>
+          {isLoading ? (
+            <LoadingBox />
+          ) : error ? (
+            <ErrorBox message={`Error loading users`} />
+          ) : search ? (
+            searchedUsers.users && searchedUsers.users.length >= 1 ? (
+              searchedUsers.users.map(
                 (user: {
                   role: string;
                   firstName: string;
@@ -213,10 +176,44 @@ const AllUsers = () => {
                   </Slide>
                 )
               )
-            )}
-          </Section>
-        </Content>
-      </Main>
+            ) : (
+              <ErrorBox message={`No user found`} />
+            )
+          ) : (
+            users.map(
+              (user: {
+                role: string;
+                firstName: string;
+                lastName: string;
+                _id: Key;
+              }) => (
+                <Slide key={user._id}>
+                  <div>
+                    <h4>
+                      {user.firstName} {user.lastName}
+                    </h4>
+                  </div>
+                  {user.role === "admin" && <Note>Admin</Note>}
+                  <div>
+                    <UpdateButton
+                      title="Update user"
+                      onClick={() => handleUpdate(user._id, user.role)}
+                    >
+                      <IoPencil />
+                    </UpdateButton>
+                    <DeleteButton
+                      title="delete user"
+                      onClick={() => handleDelete(user._id)}
+                    >
+                      <MdDelete />
+                    </DeleteButton>
+                  </div>
+                </Slide>
+              )
+            )
+          )}
+        </Section>
+      </Content>
     </Fragment>
   );
 };

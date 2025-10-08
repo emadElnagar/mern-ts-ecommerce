@@ -150,179 +150,175 @@ const NewProductPage = () => {
       <Helmet>
         <title>Electronics-admin</title>
       </Helmet>
-      <Main>
-        <SideNav />
-        <Content>
-          <Section>
-            <HeaderCenter>add new product</HeaderCenter>
-            <form
-              method="POST"
-              onSubmit={handleSbmit}
-              className="product-form"
-              encType="multipart/form-data"
-              acceptCharset="*/images"
-            >
-              <Field>
+      <Content>
+        <Section>
+          <HeaderCenter>add new product</HeaderCenter>
+          <form
+            method="POST"
+            onSubmit={handleSbmit}
+            className="product-form"
+            encType="multipart/form-data"
+            acceptCharset="*/images"
+          >
+            <Field>
+              <Input
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setName(e.target.value)
+                }
+                type="text"
+                id="name"
+              />
+              <label htmlFor="name">name</label>
+            </Field>
+            <Field>
+              <Textarea
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setDescription(e.target.value)
+                }
+                id="description"
+              ></Textarea>
+              <label htmlFor="description">description</label>
+            </Field>
+            <Field>
+              <SpecialField>
                 <Input
                   onChange={(e: {
                     target: { value: SetStateAction<string> };
-                  }) => setName(e.target.value)}
+                  }) => setFeature(e.target.value)}
+                  value={feature}
                   type="text"
-                  id="name"
+                  id="features"
                 />
-                <label htmlFor="name">name</label>
-              </Field>
-              <Field>
-                <Textarea
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setDescription(e.target.value)}
-                  id="description"
-                ></Textarea>
-                <label htmlFor="description">description</label>
-              </Field>
-              <Field>
-                <SpecialField>
-                  <Input
-                    onChange={(e: {
-                      target: { value: SetStateAction<string> };
-                    }) => setFeature(e.target.value)}
-                    value={feature}
-                    type="text"
-                    id="features"
-                  />
-                  <Button type="button" onClick={handleAddFeature}>
-                    Add
-                  </Button>
-                </SpecialField>
-                <label htmlFor="features">features</label>
-              </Field>
-              {features.length > 0 && (
-                <>
-                  <ul>
-                    {features.map((feature: string, index: Key) => (
-                      <FeatureContainer key={index}>
-                        <span>{feature}</span>
-                        <CloseButtonCenter
-                          key={`${index}-close`}
-                          type="button"
-                          className="btn-close"
-                          onClick={() => {
-                            setFeatures((prevFeatures) =>
-                              prevFeatures.filter(
-                                (_feature, featureIndex) =>
-                                  featureIndex !== index
-                              )
-                            );
-                          }}
-                        >
-                          <IoCloseOutline />
-                        </CloseButtonCenter>
-                      </FeatureContainer>
-                    ))}
-                  </ul>
-                </>
-              )}
-              <Field>
-                <Input
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setBrand(e.target.value)}
-                  type="text"
-                  id="brand"
-                />
-                <label htmlFor="brand">brand</label>
-              </Field>
-              <Field>
-                <Input
-                  onChange={onPriceChange}
-                  type="number"
-                  min="0"
-                  id="price"
-                />
-                <label htmlFor="price">price</label>
-              </Field>
-              <Field>
-                <Input
-                  onChange={onDiscountChange}
-                  type="number"
-                  min="0"
-                  id="discount"
-                />
-                <label htmlFor="discount">discount</label>
-              </Field>
-              <Field>
-                <Input
-                  onChange={onCountInStockChange}
-                  type="number"
-                  min="0"
-                  id="countinstock"
-                />
-                <label htmlFor="countinstock">count in stock</label>
-              </Field>
-              <Field>
-                <Select
-                  onChange={(e: {
-                    target: { value: SetStateAction<string> };
-                  }) => setCategory(e.target.value)}
-                  name="category"
-                  id="category"
-                >
-                  {categories &&
-                    categories.length > 0 &&
-                    categories.map((category: { _id: Key; title: string }) => (
-                      <option key={category._id} value={`${category._id}`}>
-                        {category.title}
-                      </option>
-                    ))}
-                </Select>
-                <label htmlFor="category">category</label>
-              </Field>
-              <Field>
-                <Input
-                  onChange={onImagesChange}
-                  type="file"
-                  id="images"
-                  name="images"
-                  accept="image/*"
-                  multiple
-                />
-                <label htmlFor="images">images</label>
-              </Field>
-              {images.length > 0 && (
-                <ImagePreview>
-                  {images.map((image, index) => (
-                    // eslint-disable-next-line jsx-a11y/img-redundant-alt
-                    <ImageContainer key={index}>
-                      <ImgPreview
-                        key={index}
-                        src={URL.createObjectURL(image)}
-                        alt="problem showing image"
-                        className="img-preview"
-                      />
-                      <CloseButton
+                <Button type="button" onClick={handleAddFeature}>
+                  Add
+                </Button>
+              </SpecialField>
+              <label htmlFor="features">features</label>
+            </Field>
+            {features.length > 0 && (
+              <>
+                <ul>
+                  {features.map((feature: string, index: Key) => (
+                    <FeatureContainer key={index}>
+                      <span>{feature}</span>
+                      <CloseButtonCenter
                         key={`${index}-close`}
                         type="button"
                         className="btn-close"
                         onClick={() => {
-                          setImages((prevImages) =>
-                            prevImages.filter(
-                              (_img, imgIndex) => imgIndex !== index
+                          setFeatures((prevFeatures) =>
+                            prevFeatures.filter(
+                              (_feature, featureIndex) => featureIndex !== index
                             )
                           );
                         }}
                       >
                         <IoCloseOutline />
-                      </CloseButton>
-                    </ImageContainer>
+                      </CloseButtonCenter>
+                    </FeatureContainer>
                   ))}
-                </ImagePreview>
-              )}
-              <Button type="submit">submit</Button>
-            </form>
-          </Section>
-        </Content>
-      </Main>
+                </ul>
+              </>
+            )}
+            <Field>
+              <Input
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setBrand(e.target.value)
+                }
+                type="text"
+                id="brand"
+              />
+              <label htmlFor="brand">brand</label>
+            </Field>
+            <Field>
+              <Input
+                onChange={onPriceChange}
+                type="number"
+                min="0"
+                id="price"
+              />
+              <label htmlFor="price">price</label>
+            </Field>
+            <Field>
+              <Input
+                onChange={onDiscountChange}
+                type="number"
+                min="0"
+                id="discount"
+              />
+              <label htmlFor="discount">discount</label>
+            </Field>
+            <Field>
+              <Input
+                onChange={onCountInStockChange}
+                type="number"
+                min="0"
+                id="countinstock"
+              />
+              <label htmlFor="countinstock">count in stock</label>
+            </Field>
+            <Field>
+              <Select
+                onChange={(e: { target: { value: SetStateAction<string> } }) =>
+                  setCategory(e.target.value)
+                }
+                name="category"
+                id="category"
+              >
+                {categories &&
+                  categories.length > 0 &&
+                  categories.map((category: { _id: Key; title: string }) => (
+                    <option key={category._id} value={`${category._id}`}>
+                      {category.title}
+                    </option>
+                  ))}
+              </Select>
+              <label htmlFor="category">category</label>
+            </Field>
+            <Field>
+              <Input
+                onChange={onImagesChange}
+                type="file"
+                id="images"
+                name="images"
+                accept="image/*"
+                multiple
+              />
+              <label htmlFor="images">images</label>
+            </Field>
+            {images.length > 0 && (
+              <ImagePreview>
+                {images.map((image, index) => (
+                  // eslint-disable-next-line jsx-a11y/img-redundant-alt
+                  <ImageContainer key={index}>
+                    <ImgPreview
+                      key={index}
+                      src={URL.createObjectURL(image)}
+                      alt="problem showing image"
+                      className="img-preview"
+                    />
+                    <CloseButton
+                      key={`${index}-close`}
+                      type="button"
+                      className="btn-close"
+                      onClick={() => {
+                        setImages((prevImages) =>
+                          prevImages.filter(
+                            (_img, imgIndex) => imgIndex !== index
+                          )
+                        );
+                      }}
+                    >
+                      <IoCloseOutline />
+                    </CloseButton>
+                  </ImageContainer>
+                ))}
+              </ImagePreview>
+            )}
+            <Button type="submit">submit</Button>
+          </form>
+        </Section>
+      </Content>
     </Fragment>
   );
 };

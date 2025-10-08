@@ -24,36 +24,33 @@ const CategoriesPage = () => {
       <Helmet>
         <title>Electronics-admin</title>
       </Helmet>
-      <Main>
-        <SideNav />
-        <Content>
-          <Section>
-            <CategoryForm />
-          </Section>
-          <Section>
-            {isLoading ? (
-              <LoadingBox />
-            ) : error ? (
-              <ErrorBox message={error} />
-            ) : (
-              categories.length > 0 && (
-                <>
-                  <h1 className="text-center">all categories</h1>
-                  {categories.map(
-                    (category: { _id: React.Key; title: string }) => (
-                      <CategoryList
-                        key={category._id}
-                        title={category.title}
-                        _id={category._id}
-                      />
-                    )
-                  )}
-                </>
-              )
-            )}
-          </Section>
-        </Content>
-      </Main>
+      <Content>
+        <Section>
+          <CategoryForm />
+        </Section>
+        <Section>
+          {isLoading ? (
+            <LoadingBox />
+          ) : error ? (
+            <ErrorBox message={error} />
+          ) : (
+            categories.length > 0 && (
+              <>
+                <h1 className="text-center">all categories</h1>
+                {categories.map(
+                  (category: { _id: React.Key; title: string }) => (
+                    <CategoryList
+                      key={category._id}
+                      title={category.title}
+                      _id={category._id}
+                    />
+                  )
+                )}
+              </>
+            )
+          )}
+        </Section>
+      </Content>
     </Fragment>
   );
 };

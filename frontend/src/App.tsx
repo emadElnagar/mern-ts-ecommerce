@@ -23,6 +23,7 @@ import CheckOut from "./pages/order/CheckOut";
 import WishlistPage from "./pages/cart/Wishlist";
 import OrdersPage from "./pages/admin/Orders";
 import SingleOrder from "./pages/admin/SingleOrder";
+import AdminLayout from "./layouts/AdminLayout";
 
 function AppContent() {
   const { user } = useSelector((state: any) => state.user);
@@ -47,18 +48,15 @@ function AppContent() {
           <Route path="/users/profile/settings" element={<ProfileSettings />} />
         )}
         {user !== null && user.role === "admin" && (
-          <Fragment>
-            <Route path="/admin" element={<AdminMainPage />} />
-            <Route path="/admin/categories" element={<CategoriesPage />} />
-            <Route path="/admin/users/all" element={<AllUsers />} />
-            <Route path="/admin/products/new" element={<NewProductPage />} />
-            <Route path="/admin/orders" element={<OrdersPage />} />
-            <Route path="/admin/orders/:id" element={<SingleOrder />} />
-            <Route
-              path="/admin/products/update/:slug"
-              element={<UpdatePage />}
-            />
-          </Fragment>
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminMainPage />} />
+            <Route path="categories" element={<CategoriesPage />} />
+            <Route path="users/all" element={<AllUsers />} />
+            <Route path="products/new" element={<NewProductPage />} />
+            <Route path="orders" element={<OrdersPage />} />
+            <Route path="orders/:id" element={<SingleOrder />} />
+            <Route path="products/update/:slug" element={<UpdatePage />} />
+          </Route>
         )}
         <Route path="*" element={<ErrorPage />} />
       </Routes>

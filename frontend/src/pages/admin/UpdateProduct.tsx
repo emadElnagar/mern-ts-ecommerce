@@ -175,194 +175,191 @@ const UpdatePage = () => {
       <Helmet>
         <title>update product</title>
       </Helmet>
-      <Main>
-        <SideNav />
-        <Content>
-          {isLoading ? (
-            <LoadingBox />
-          ) : error ? (
-            <ErrorBox message={error.message} />
-          ) : (
-            product && (
-              <Section>
-                <HeaderCenter>update product</HeaderCenter>
-                <form
-                  method="POST"
-                  className="product-form"
-                  encType="multipart/form-data"
-                  acceptCharset="*/images"
-                  onSubmit={handleSubmit}
-                >
-                  <Field>
+      <Content>
+        {isLoading ? (
+          <LoadingBox />
+        ) : error ? (
+          <ErrorBox message={error.message} />
+        ) : (
+          product && (
+            <Section>
+              <HeaderCenter>update product</HeaderCenter>
+              <form
+                method="POST"
+                className="product-form"
+                encType="multipart/form-data"
+                acceptCharset="*/images"
+                onSubmit={handleSubmit}
+              >
+                <Field>
+                  <Input
+                    type="text"
+                    id="name"
+                    defaultValue={product.name}
+                    onChange={(e: {
+                      target: { value: SetStateAction<string> };
+                    }) => setName(e.target.value)}
+                  />
+                  <label htmlFor="name">name</label>
+                </Field>
+                <Field>
+                  <Textarea
+                    id="description"
+                    defaultValue={product.description}
+                    onChange={(e: {
+                      target: { value: SetStateAction<string> };
+                    }) => setDescription(e.target.value)}
+                  ></Textarea>
+                  <label htmlFor="description">description</label>
+                </Field>
+                <Field>
+                  <SpecialField>
                     <Input
+                      onChange={(e: {
+                        target: { value: SetStateAction<string> };
+                      }) => setFeature(e.target.value)}
+                      value={feature}
                       type="text"
-                      id="name"
-                      defaultValue={product.name}
-                      onChange={(e: {
-                        target: { value: SetStateAction<string> };
-                      }) => setName(e.target.value)}
+                      id="features"
                     />
-                    <label htmlFor="name">name</label>
-                  </Field>
-                  <Field>
-                    <Textarea
-                      id="description"
-                      defaultValue={product.description}
-                      onChange={(e: {
-                        target: { value: SetStateAction<string> };
-                      }) => setDescription(e.target.value)}
-                    ></Textarea>
-                    <label htmlFor="description">description</label>
-                  </Field>
-                  <Field>
-                    <SpecialField>
-                      <Input
-                        onChange={(e: {
-                          target: { value: SetStateAction<string> };
-                        }) => setFeature(e.target.value)}
-                        value={feature}
-                        type="text"
-                        id="features"
-                      />
-                      <Button type="button" onClick={handleAddFeature}>
-                        Add
-                      </Button>
-                    </SpecialField>
-                    <label htmlFor="features">features</label>
-                  </Field>
-                  {features.length > 0 && (
-                    <>
-                      <ul>
-                        {features.map((feature: string, index: Key) => (
-                          <FeatureContainer key={index}>
-                            <span>{feature}</span>
-                            <CloseButtonCenter
-                              key={`${index}-close`}
-                              type="button"
-                              className="btn-close"
-                              onClick={() => {
-                                setFeatures((prevFeatures) =>
-                                  prevFeatures.filter(
-                                    (_feature, featureIndex) =>
-                                      featureIndex !== index
-                                  )
-                                );
-                              }}
-                            >
-                              <IoCloseOutline />
-                            </CloseButtonCenter>
-                          </FeatureContainer>
-                        ))}
-                      </ul>
-                    </>
-                  )}
-                  <Field>
-                    <Input
-                      type="text"
-                      id="brand"
-                      defaultValue={product.brand}
-                      onChange={(e: {
-                        target: { value: SetStateAction<string> };
-                      }) => setBrand(e.target.value)}
-                    />
-                    <label htmlFor="brand">brand</label>
-                  </Field>
-                  <Field>
-                    <Input
-                      type="number"
-                      min="0"
-                      id="price"
-                      defaultValue={product.price}
-                      onChange={onPriceChange}
-                    />
-                    <label htmlFor="price">price</label>
-                  </Field>
-                  <Field>
-                    <Input
-                      type="number"
-                      min="0"
-                      id="discount"
-                      defaultValue={product.discount}
-                      onChange={onDiscountChange}
-                    />
-                    <label htmlFor="discount">discount</label>
-                  </Field>
-                  <Field>
-                    <Input
-                      type="number"
-                      min="0"
-                      id="countinstock"
-                      defaultValue={product.countInStock}
-                      onChange={onCountInStockChange}
-                    />
-                    <label htmlFor="countinstock">count in stock</label>
-                  </Field>
-                  <Field>
-                    <Select
-                      name="category"
-                      id="category"
-                      value={category}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setCategory(e.target.value)
-                      }
-                    >
-                      {categories.map((cat: { title: string; _id: Key }) => (
-                        <option key={cat._id} value={cat._id}>
-                          {cat.title}
-                        </option>
+                    <Button type="button" onClick={handleAddFeature}>
+                      Add
+                    </Button>
+                  </SpecialField>
+                  <label htmlFor="features">features</label>
+                </Field>
+                {features.length > 0 && (
+                  <>
+                    <ul>
+                      {features.map((feature: string, index: Key) => (
+                        <FeatureContainer key={index}>
+                          <span>{feature}</span>
+                          <CloseButtonCenter
+                            key={`${index}-close`}
+                            type="button"
+                            className="btn-close"
+                            onClick={() => {
+                              setFeatures((prevFeatures) =>
+                                prevFeatures.filter(
+                                  (_feature, featureIndex) =>
+                                    featureIndex !== index
+                                )
+                              );
+                            }}
+                          >
+                            <IoCloseOutline />
+                          </CloseButtonCenter>
+                        </FeatureContainer>
                       ))}
-                    </Select>
-                    <label htmlFor="category">category</label>
-                  </Field>
-                  <Field>
-                    <Input
-                      onChange={onImagesChange}
-                      type="file"
-                      id="images"
-                      name="images"
-                      accept="image/*"
-                      multiple
-                    />
-                    <label htmlFor="images">images</label>
-                  </Field>
-                  {images.length > 0 && (
-                    <ImagePreview>
-                      {images.map((image, index) => {
-                        if (!(image instanceof Blob)) {
-                          return null;
-                        }
-                        return (
-                          <ImageContainer key={index}>
-                            <ImgPreview
-                              src={URL.createObjectURL(image)}
-                              alt="problem showing image"
-                              className="img-preview"
-                            />
-                            <CloseButton
-                              type="button"
-                              className="btn-close"
-                              onClick={() => {
-                                setImages((prevImages) =>
-                                  prevImages.filter(
-                                    (_img, imgIndex) => imgIndex !== index
-                                  )
-                                );
-                              }}
-                            >
-                              <IoCloseOutline />
-                            </CloseButton>
-                          </ImageContainer>
-                        );
-                      })}
-                    </ImagePreview>
-                  )}
-                  <Button type="submit">submit</Button>
-                </form>
-              </Section>
-            )
-          )}
-        </Content>
-      </Main>
+                    </ul>
+                  </>
+                )}
+                <Field>
+                  <Input
+                    type="text"
+                    id="brand"
+                    defaultValue={product.brand}
+                    onChange={(e: {
+                      target: { value: SetStateAction<string> };
+                    }) => setBrand(e.target.value)}
+                  />
+                  <label htmlFor="brand">brand</label>
+                </Field>
+                <Field>
+                  <Input
+                    type="number"
+                    min="0"
+                    id="price"
+                    defaultValue={product.price}
+                    onChange={onPriceChange}
+                  />
+                  <label htmlFor="price">price</label>
+                </Field>
+                <Field>
+                  <Input
+                    type="number"
+                    min="0"
+                    id="discount"
+                    defaultValue={product.discount}
+                    onChange={onDiscountChange}
+                  />
+                  <label htmlFor="discount">discount</label>
+                </Field>
+                <Field>
+                  <Input
+                    type="number"
+                    min="0"
+                    id="countinstock"
+                    defaultValue={product.countInStock}
+                    onChange={onCountInStockChange}
+                  />
+                  <label htmlFor="countinstock">count in stock</label>
+                </Field>
+                <Field>
+                  <Select
+                    name="category"
+                    id="category"
+                    value={category}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                      setCategory(e.target.value)
+                    }
+                  >
+                    {categories.map((cat: { title: string; _id: Key }) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.title}
+                      </option>
+                    ))}
+                  </Select>
+                  <label htmlFor="category">category</label>
+                </Field>
+                <Field>
+                  <Input
+                    onChange={onImagesChange}
+                    type="file"
+                    id="images"
+                    name="images"
+                    accept="image/*"
+                    multiple
+                  />
+                  <label htmlFor="images">images</label>
+                </Field>
+                {images.length > 0 && (
+                  <ImagePreview>
+                    {images.map((image, index) => {
+                      if (!(image instanceof Blob)) {
+                        return null;
+                      }
+                      return (
+                        <ImageContainer key={index}>
+                          <ImgPreview
+                            src={URL.createObjectURL(image)}
+                            alt="problem showing image"
+                            className="img-preview"
+                          />
+                          <CloseButton
+                            type="button"
+                            className="btn-close"
+                            onClick={() => {
+                              setImages((prevImages) =>
+                                prevImages.filter(
+                                  (_img, imgIndex) => imgIndex !== index
+                                )
+                              );
+                            }}
+                          >
+                            <IoCloseOutline />
+                          </CloseButton>
+                        </ImageContainer>
+                      );
+                    })}
+                  </ImagePreview>
+                )}
+                <Button type="submit">submit</Button>
+              </form>
+            </Section>
+          )
+        )}
+      </Content>
     </Fragment>
   );
 };

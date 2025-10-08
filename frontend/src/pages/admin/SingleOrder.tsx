@@ -12,11 +12,9 @@ const SingleOrder = () => {
       <Helmet>
         <title>Voltaro - admin single order</title>
       </Helmet>
-      <Main>
-        <Content>
-          <h1>Single order</h1>
-        </Content>
-      </Main>
+      <Content>
+        <h1>Single order</h1>
+      </Content>
     </Fragment>
   );
 };
