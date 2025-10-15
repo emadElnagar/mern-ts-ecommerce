@@ -5,6 +5,7 @@ import {
   cancelOrder,
   createOrder,
   getAllOrders,
+  getOrderStats,
   getSingleOrder,
   getUserOrders,
   updateOrderStatus,
@@ -46,6 +47,14 @@ orderRouter.patch(
 // Cancel order
 orderRouter.patch("/:id/cancel", isAuth as RequestHandler, async (req, res) =>
   cancelOrder(req as AuthenticatedRequest, res)
+);
+
+// Get order statistics
+orderRouter.get(
+  "/stats",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => getOrderStats(req as AuthenticatedRequest, res)
 );
 
 export default orderRouter;
