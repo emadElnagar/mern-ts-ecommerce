@@ -131,8 +131,26 @@ export const updateOrderStatus = async (
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
-    (order as any).status = req.body.status;
+
+    const oldStatus = (order as any).status;
+    const newStatus = req.body.status;
+
+    // Update the order status
+    (order as any).status = newStatus;
     const updatedOrder = await order.save();
+
+    // When order becomes "Delivered", increment sold count for each product
+    if (newStatus === "Delivered" && oldStatus !== "Delivered") {
+      await Promise.all(
+        order.orderItems.map(async (item: any) => {
+          await Product.findByIdAndUpdate(
+            item.product,
+            { $inc: { sold: item.quantity } },
+            { new: true }
+          );
+        })
+      );
+    }
     res.status(200).json(updatedOrder);
   } catch (error: any) {
     res.status(500).json({
