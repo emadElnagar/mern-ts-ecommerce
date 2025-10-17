@@ -52,6 +52,20 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
       totalPrice,
     });
     await order.save();
+
+    // When order becomes "Paid", decrement countInStock count for each product
+    if (order.paymentResult?.status === "paid") {
+      await Promise.all(
+        order.orderItems.map(async (item: any) => {
+          await Product.findByIdAndUpdate(
+            item.product,
+            { $inc: { countInStock: -item.quantity } },
+            { new: true }
+          );
+        })
+      );
+    }
+
     res.status(201).json({
       message: "Order created successfully",
     });
