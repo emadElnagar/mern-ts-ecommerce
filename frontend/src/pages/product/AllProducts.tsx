@@ -1,11 +1,13 @@
 import { Fragment, Key, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { Container, Grid, Main, Section } from "../../styles/main";
+import { Button, Container, Grid, Main, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { GetAllProducts } from "../../features/ProductFeatures";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import Product from "../../components/product";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
@@ -53,6 +55,17 @@ const AllProducts = () => {
                   )}
               </Grid>
             )}
+            <div className="pagination-bar">
+              <Button>
+                <IoIosArrowBack />
+              </Button>
+              <Button>1</Button>
+              <Button>2</Button>
+              <Button>3</Button>
+              <Button>
+                <IoIosArrowForward />
+              </Button>
+            </div>
           </Section>
         </Container>
       </Main>
