@@ -14,14 +14,20 @@ export const getAllProducts: RequestHandler = async (req, res) => {
     const page = parseInt(req.query.page as string) || 1;
     const limit = 12;
     const skip = (page - 1) * limit;
+    const totalProducts = await Product.countDocuments();
     const products = await Product.find()
       .populate("category")
       .skip(skip)
       .limit(limit)
       .sort({ createdAt: -1 });
-    res.send(products);
-  } catch (error) {
-    res.send(error);
+    res.status(200).json({
+      products,
+      page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 };
 
