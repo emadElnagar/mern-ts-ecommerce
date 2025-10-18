@@ -23,7 +23,12 @@ export interface Product {
 }
 
 interface ProductState {
-  products: Product[];
+  data: {
+    products: Product[];
+    page: number | null;
+    pages: number | null;
+    totalProducts: number | null;
+  };
   searchedProducts: Product[];
   similarProducts: Product[];
   product: Product | null;
@@ -32,7 +37,12 @@ interface ProductState {
 }
 
 const initialState: ProductState = {
-  products: [],
+  data: {
+    products: [],
+    page: null,
+    pages: null,
+    totalProducts: null,
+  },
   searchedProducts: [],
   similarProducts: [],
   product: null,
@@ -218,7 +228,12 @@ const productSlice = createSlice({
     resetProductState: (state) => {
       state.isLoading = false;
       state.error = null;
-      state.products = [];
+      state.data = {
+        products: [],
+        page: null,
+        pages: null,
+        totalProducts: null,
+      };
       state.searchedProducts = [];
       state.similarProducts = [];
       state.product = null;
@@ -234,7 +249,7 @@ const productSlice = createSlice({
       .addCase(NewProduct.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.products.push(action.payload);
+        state.data.products.push(action.payload);
       })
       .addCase(NewProduct.rejected, (state, action) => {
         state.isLoading = false;
@@ -248,7 +263,7 @@ const productSlice = createSlice({
       .addCase(GetAllProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        state.products = action.payload;
+        state.data = action.payload;
       })
       .addCase(GetAllProducts.rejected, (state, action) => {
         state.isLoading = false;
@@ -292,7 +307,7 @@ const productSlice = createSlice({
         state.error = null;
         const { slug } = action.meta.arg;
         if (slug) {
-          state.products = state.products.map((product) =>
+          state.data.products = state.data.products.map((product) =>
             product.slug === slug ? action.payload : product
           );
         }
@@ -313,7 +328,7 @@ const productSlice = createSlice({
           arg: { _id },
         } = action.meta;
         if (_id) {
-          state.products = state.products.filter(
+          state.data.products = state.data.products.filter(
             (product) => product._id !== action.payload
           );
         }

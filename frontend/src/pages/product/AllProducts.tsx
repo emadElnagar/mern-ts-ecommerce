@@ -11,9 +11,7 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
-  const { products, error, isLoading } = useSelector(
-    (state: any) => state.product
-  );
+  const { data, error, isLoading } = useSelector((state: any) => state.product);
   useEffect(() => {
     dispatch(GetAllProducts());
   }, [dispatch]);
@@ -30,42 +28,44 @@ const AllProducts = () => {
             ) : isLoading ? (
               <LoadingBox />
             ) : (
-              <Grid>
-                {products &&
-                  products.length > 0 &&
-                  products.map(
-                    (product: {
-                      _id: Key;
-                      name: string;
-                      slug: string;
-                      images?: string[];
-                      price: number;
-                      discount: number;
-                    }) => (
-                      <Product
-                        key={product._id}
-                        _id={product._id}
-                        name={product.name}
-                        slug={product.slug}
-                        image={product.images?.[0] || "fallback.jpg"}
-                        price={product.price}
-                        discount={product.discount}
-                      />
-                    )
-                  )}
-              </Grid>
+              <>
+                <Grid>
+                  {data.products &&
+                    data.products.length > 0 &&
+                    data.products.map(
+                      (product: {
+                        _id: Key;
+                        name: string;
+                        slug: string;
+                        images?: string[];
+                        price: number;
+                        discount: number;
+                      }) => (
+                        <Product
+                          key={product._id}
+                          _id={product._id}
+                          name={product.name}
+                          slug={product.slug}
+                          image={product.images?.[0] || "fallback.jpg"}
+                          price={product.price}
+                          discount={product.discount}
+                        />
+                      )
+                    )}
+                </Grid>
+                <div className="pagination-bar">
+                  <Button>
+                    <IoIosArrowBack />
+                  </Button>
+                  <Button>1</Button>
+                  <Button>2</Button>
+                  <Button>3</Button>
+                  <Button>
+                    <IoIosArrowForward />
+                  </Button>
+                </div>
+              </>
             )}
-            <div className="pagination-bar">
-              <Button>
-                <IoIosArrowBack />
-              </Button>
-              <Button>1</Button>
-              <Button>2</Button>
-              <Button>3</Button>
-              <Button>
-                <IoIosArrowForward />
-              </Button>
-            </div>
           </Section>
         </Container>
       </Main>
