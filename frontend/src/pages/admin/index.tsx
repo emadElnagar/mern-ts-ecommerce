@@ -25,9 +25,7 @@ import { API_URL } from "../../API";
 const AdminMainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { products, error, isLoading } = useSelector(
-    (state: any) => state.product
-  );
+  const { data, error, isLoading } = useSelector((state: any) => state.product);
   useEffect(() => {
     dispatch(GetAllProducts());
   }, [dispatch]);
@@ -70,9 +68,9 @@ const AdminMainPage = () => {
             <LoadingBox />
           ) : (
             <Grid>
-              {products &&
-                products.length > 0 &&
-                products.map(
+              {data.products &&
+                data.products.length > 0 &&
+                data.products.map(
                   (product: {
                     _id: Key;
                     slug: string;
