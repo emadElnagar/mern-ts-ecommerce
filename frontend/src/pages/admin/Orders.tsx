@@ -12,7 +12,6 @@ import {
   TableWrapper,
 } from "../../styles/cart";
 import { FaRegEye } from "react-icons/fa";
-import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi";
 import { success, warning } from "../../styles/variables";
 import { useDispatch, useSelector } from "react-redux";
@@ -105,8 +104,7 @@ const OrdersPage = () => {
                           <Link to={`/admin/orders/${order._id}`}>
                             <FaRegEye title="View" />
                           </Link>{" "}
-                          | <HiPencil title="Edit" /> |{" "}
-                          <MdDelete title="Delete" />
+                          | <HiPencil title="Edit" />
                         </TableData>
                       </TableRow>
                     ))}
