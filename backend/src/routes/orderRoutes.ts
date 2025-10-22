@@ -8,6 +8,7 @@ import {
   getOrderStats,
   getSingleOrder,
   getUserOrders,
+  updateOrderPaymentStatus,
   updateOrderStatus,
 } from "../controllers/orderControllers";
 
@@ -42,6 +43,14 @@ orderRouter.patch(
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
   async (req, res) => updateOrderStatus(req as AuthenticatedRequest, res)
+);
+
+// Update order payment status
+orderRouter.patch(
+  "/:id/payment",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => updateOrderPaymentStatus(req as AuthenticatedRequest, res)
 );
 
 // Cancel order

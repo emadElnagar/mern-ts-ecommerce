@@ -173,6 +173,47 @@ export const updateOrderStatus = async (
   }
 };
 
+// Update order payment status ( admin or customer )
+export const updateOrderPaymentStatus = async (
+  req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+    if (
+      order.customer.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this order" });
+    }
+    (order as any).paymentResult = req.body.paymentResult;
+    await order.save();
+
+    // When order becomes "Paid", decrement countInStock count for each product
+    if (order.paymentResult?.status === "paid") {
+      await Promise.all(
+        order.orderItems.map(async (item: any) => {
+          await Product.findByIdAndUpdate(
+            item.product,
+            { $inc: { countInStock: -item.quantity } },
+            { new: true }
+          );
+        })
+      );
+    }
+    res.status(200).json({ message: "Payment status updated" });
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // Cancel order ( admin or customer )
 export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
   try {
