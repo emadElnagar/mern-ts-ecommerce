@@ -31,6 +31,21 @@ export const getAllProducts: RequestHandler = async (req, res) => {
   }
 };
 
+// Get best selling products
+export const getBestSellingProducts: RequestHandler = async (req, res) => {
+  try {
+    const products = await Product.find()
+      .populate("category")
+      .sort({ sold: -1 })
+      .limit(8);
+    res.status(200).json(products);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // Get cart products
 export const getCartProducts: RequestHandler = async (req, res) => {
   try {
