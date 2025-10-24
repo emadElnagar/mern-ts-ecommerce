@@ -7,6 +7,7 @@ import { AuthenticatedRequest } from "../types/authTypes";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
+import Order from "../models/Order";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
@@ -34,15 +35,68 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 // Get best selling products
 export const getBestSellingProducts: RequestHandler = async (req, res) => {
   try {
-    const products = await Product.find()
-      .populate("category")
-      .sort({ sold: -1 })
-      .limit(8);
-    res.status(200).json(products);
-  } catch (error: any) {
-    return res.status(500).json({
-      message: error.message,
+    const now = new Date();
+
+    const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const last90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+    const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+
+    const getTopProducts = async (startDate: Date) => {
+      const sales = await Order.aggregate([
+        { $match: { createdAt: { $gte: startDate } } },
+        { $unwind: "$orderItems" },
+        {
+          $group: {
+            _id: "$orderItems.product",
+            totalSold: { $sum: "$orderItems.quantity" },
+          },
+        },
+        { $sort: { totalSold: -1 } },
+        { $limit: 8 },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        { $unwind: "$product" },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "product.category",
+            foreignField: "_id",
+            as: "category",
+          },
+        },
+        { $unwind: "$category" },
+        {
+          $project: {
+            _id: 0,
+            product: 1,
+            category: 1,
+            totalSold: 1,
+          },
+        },
+      ]);
+
+      return sales;
+    };
+
+    const [best30Days, best90Days, bestYear] = await Promise.all([
+      getTopProducts(last30Days),
+      getTopProducts(last90Days),
+      getTopProducts(lastYear),
+    ]);
+
+    res.status(200).json({
+      last30Days: best30Days,
+      last90Days: best90Days,
+      lastYear: bestYear,
     });
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
   }
 };
 
