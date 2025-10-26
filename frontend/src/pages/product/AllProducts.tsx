@@ -1,4 +1,4 @@
-import { Fragment, Key, useEffect } from "react";
+import { Fragment, Key, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, Container, Grid, Main, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,13 +8,28 @@ import LoadingBox from "../../components/LoadingBox";
 import Product from "../../components/product";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
+import { useSearchParams } from "react-router-dom";
 
 const AllProducts = () => {
   const dispatch = useDispatch();
   const { data, error, isLoading } = useSelector((state: any) => state.product);
+  const { totalPages } = data;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromUrl = parseInt(searchParams.get("page") || "1");
+
+  const handleChangePage = (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+    setSearchParams({ page: pageNumber.toString() });
+    dispatch(GetAllProducts(pageNumber));
+  };
+
   useEffect(() => {
-    dispatch(GetAllProducts());
-  }, [dispatch]);
+    dispatch(GetAllProducts(pageFromUrl));
+    setCurrentPage(pageFromUrl);
+  }, [pageFromUrl, dispatch]);
+
   return (
     <Fragment>
       <Helmet>
@@ -54,13 +69,30 @@ const AllProducts = () => {
                     )}
                 </Grid>
                 <div className="pagination-bar">
-                  <Button>
+                  <Button
+                    disabled={currentPage === 1}
+                    onClick={() => handleChangePage(currentPage - 1)}
+                  >
                     <IoIosArrowBack />
                   </Button>
-                  <Button>1</Button>
-                  <Button>2</Button>
-                  <Button>3</Button>
-                  <Button>
+                  {totalPages &&
+                    totalPages > 0 &&
+                    Array.from(
+                      { length: totalPages },
+                      (_, index) => index + 1
+                    ).map((pageNumber) => (
+                      <Button
+                        key={pageNumber}
+                        className={pageNumber === currentPage ? "active" : ""}
+                        onClick={() => handleChangePage(pageNumber)}
+                      >
+                        {pageNumber}
+                      </Button>
+                    ))}
+                  <Button
+                    disabled={currentPage === totalPages}
+                    onClick={() => handleChangePage(currentPage + 1)}
+                  >
                     <IoIosArrowForward />
                   </Button>
                 </div>

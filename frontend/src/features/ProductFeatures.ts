@@ -76,9 +76,9 @@ export const NewProduct: any = createAsyncThunk(
 // Get all products
 export const GetAllProducts: any = createAsyncThunk(
   "products/all",
-  async (_, { rejectWithValue }) => {
+  async (page, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${url}/all`);
+      const response = await axios.get(`${url}/all?page=${page}`);
       return response.data;
     } catch (error: any) {
       const message =
