@@ -53,6 +53,9 @@ productRouter.get("/all", getAllProducts);
 // Get best selling products
 productRouter.get("/bestsellers/list", getBestSellingProducts);
 
+// Get best selling products by category
+productRouter.get("/bestsellers/category", getBestSellingProducts);
+
 // GET CART PRODUCTS
 productRouter.post("/cart", getCartProducts);
 

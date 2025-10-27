@@ -100,6 +100,50 @@ export const getBestSellingProducts: RequestHandler = async (req, res) => {
   }
 };
 
+// Get best seller by category
+export const getBestSellersByCategory: RequestHandler = async (req, res) => {
+  try {
+    const categories = await Category.find();
+    const result: any = {};
+    for (const category of categories) {
+      const topProducts = await Order.aggregate([
+        { $unwind: "$orderItems" },
+        {
+          $lookup: {
+            from: "products",
+            localField: "orderItems.product",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        { $unwind: "$product" },
+        { $match: { "product.category": category._id } },
+        {
+          $group: {
+            _id: "$orderItems.product",
+            totalSold: { $sum: "$orderItems.quantity" },
+          },
+        },
+        { $sort: { totalSold: -1 } },
+        { $limit: 6 },
+        {
+          $lookup: {
+            from: "products",
+            localField: "_id",
+            foreignField: "_id",
+            as: "product",
+          },
+        },
+        { $unwind: "$product" },
+      ]);
+      result[category.title] = topProducts;
+    }
+    res.status(200).json(result);
+  } catch (error: any) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 // Get cart products
 export const getCartProducts: RequestHandler = async (req, res) => {
   try {
