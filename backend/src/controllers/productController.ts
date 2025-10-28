@@ -35,8 +35,6 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 // Get best selling products
 export const getBestSellingProducts: RequestHandler = async (req, res) => {
   try {
-    const now = new Date();
-
     const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const last90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
     const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
@@ -141,6 +139,40 @@ export const getBestSellersByCategory: RequestHandler = async (req, res) => {
     res.status(200).json(result);
   } catch (error: any) {
     return res.status(500).json({ message: error.message });
+  }
+};
+
+// Get best selling categories
+export const getBestSellingCategories: RequestHandler = async (req, res) => {
+  try {
+    // Aggregate total sold count per category
+    const categorySales = await Product.aggregate([
+      {
+        $group: {
+          _id: "$category",
+          totalSold: { $sum: "$sold" },
+          totalProducts: { $sum: 1 },
+        },
+      },
+      { $sort: { totalSold: -1 } },
+    ]);
+
+    // Populate category info (since aggregate doesn't auto-populate)
+    const categoriesWithNames = await Category.populate(categorySales, {
+      path: "_id",
+      select: "name slug",
+    });
+
+    // Respond with formatted data
+    res.status(200).json(
+      (categoriesWithNames as any[]).map((cat: any) => ({
+        category: cat._id,
+        totalSold: cat.totalSold,
+        totalProducts: cat.totalProducts,
+      }))
+    );
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
   }
 };
 

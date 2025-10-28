@@ -3,6 +3,8 @@ import {
   createReview,
   deleteProduct,
   getAllProducts,
+  getBestSellersByCategory,
+  getBestSellingCategories,
   getBestSellingProducts,
   getCartProducts,
   getSimilarProducts,
@@ -54,7 +56,10 @@ productRouter.get("/all", getAllProducts);
 productRouter.get("/bestsellers/list", getBestSellingProducts);
 
 // Get best selling products by category
-productRouter.get("/bestsellers/category", getBestSellingProducts);
+productRouter.get("/bestsellers/bycategory", getBestSellersByCategory);
+
+// Get best selling categories
+productRouter.get("/bestsellers/categories", getBestSellingCategories);
 
 // GET CART PRODUCTS
 productRouter.post("/cart", getCartProducts);
