@@ -12,6 +12,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { CiLock } from "react-icons/ci";
 import { RiUser2Fill } from "react-icons/ri";
 import { IoSettingsSharp } from "react-icons/io5";
+import { TbUserPlus } from "react-icons/tb";
 import {
   Nav,
   Brand,
@@ -228,7 +229,7 @@ function NavBar() {
                         <FlexBetweenRow>
                           <span>register</span>
                           <span>
-                            <FaCashRegister />
+                            <TbUserPlus />
                           </span>
                         </FlexBetweenRow>
                       </NavButton>

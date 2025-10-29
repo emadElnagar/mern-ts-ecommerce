@@ -160,15 +160,15 @@ export const getBestSellingCategories: RequestHandler = async (req, res) => {
     // Populate category info (since aggregate doesn't auto-populate)
     const categoriesWithNames = await Category.populate(categorySales, {
       path: "_id",
-      select: "name slug",
+      select: "title",
     });
 
     // Respond with formatted data
     res.status(200).json(
-      (categoriesWithNames as any[]).map((cat: any) => ({
-        category: cat._id,
-        totalSold: cat.totalSold,
-        totalProducts: cat.totalProducts,
+      (categoriesWithNames as any[]).map((category: any) => ({
+        category: category._id,
+        totalSold: category.totalSold,
+        totalProducts: category.totalProducts,
       }))
     );
   } catch (error: any) {
