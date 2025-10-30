@@ -33,7 +33,7 @@ export const getAllProducts: RequestHandler = async (req, res) => {
 };
 
 // Get best selling products
-export const getBestSellingProducts: RequestHandler = async (req, res) => {
+export const getBestSellingProducts: RequestHandler = async (_req, res) => {
   try {
     const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
     const last90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
@@ -99,7 +99,7 @@ export const getBestSellingProducts: RequestHandler = async (req, res) => {
 };
 
 // Get best seller by category
-export const getBestSellersByCategory: RequestHandler = async (req, res) => {
+export const getBestSellersByCategory: RequestHandler = async (_req, res) => {
   try {
     const categories = await Category.find();
     const result: any = {};
@@ -143,7 +143,7 @@ export const getBestSellersByCategory: RequestHandler = async (req, res) => {
 };
 
 // Get best selling categories
-export const getBestSellingCategories: RequestHandler = async (req, res) => {
+export const getBestSellingCategories: RequestHandler = async (_req, res) => {
   try {
     // Aggregate total sold count per category
     const categorySales = await Product.aggregate([
