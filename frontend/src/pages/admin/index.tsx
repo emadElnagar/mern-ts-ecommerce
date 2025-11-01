@@ -1,5 +1,5 @@
-import { Fragment, Key, useEffect } from "react";
-import { Image, Section } from "../../styles/main";
+import { Fragment, Key, useEffect, useState } from "react";
+import { Button, Image, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteProduct, GetAllProducts } from "../../features/ProductFeatures";
 import { Helmet } from "react-helmet";
@@ -11,7 +11,7 @@ import { FlexBetweenRow } from "../../styles/main";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi2";
 import swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { API_URL } from "../../API";
 import {
   StyledTable,
@@ -21,14 +21,26 @@ import {
   TableRow,
   TableWrapper,
 } from "../../styles/cart";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 const AdminMainPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data, error, isLoading } = useSelector((state: any) => state.product);
+  const { totalPages } = data;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const pageFromUrl = parseInt(searchParams.get("page") || "1");
+  const handleChangePage = (pageNumber: number) => {
+    if (pageNumber < 1 || pageNumber > totalPages) return;
+    setCurrentPage(pageNumber);
+    setSearchParams({ page: pageNumber.toString() });
+    dispatch(GetAllProducts(pageNumber));
+  };
   useEffect(() => {
-    dispatch(GetAllProducts());
-  }, [dispatch]);
+    dispatch(GetAllProducts({ page: pageFromUrl, limit: 5 }));
+    setCurrentPage(pageFromUrl);
+  }, [pageFromUrl, dispatch]);
   // Delete product
   const handleDelete = (_id: Key) => {
     swal
@@ -127,6 +139,35 @@ const AdminMainPage = () => {
                 </tbody>
               </StyledTable>
             </TableWrapper>
+          )}
+          {totalPages > 1 && (
+            <div className="pagination-bar">
+              <Button
+                disabled={currentPage === 1}
+                onClick={() => handleChangePage(currentPage - 1)}
+              >
+                <IoIosArrowBack />
+              </Button>
+              {totalPages &&
+                totalPages > 0 &&
+                Array.from({ length: totalPages }, (_, index) => index + 1).map(
+                  (pageNumber) => (
+                    <Button
+                      key={pageNumber}
+                      className={pageNumber === currentPage ? "active" : ""}
+                      onClick={() => handleChangePage(pageNumber)}
+                    >
+                      {pageNumber}
+                    </Button>
+                  )
+                )}
+              <Button
+                disabled={currentPage === totalPages}
+                onClick={() => handleChangePage(currentPage + 1)}
+              >
+                <IoIosArrowForward />
+              </Button>
+            </div>
           )}
         </Section>
       </Content>
