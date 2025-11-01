@@ -1,20 +1,12 @@
 import { Fragment, Key, useEffect } from "react";
-import SideNav from "../../components/SideNav";
-import { Grid, Main, Section } from "../../styles/main";
+import { Image, Section } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
 import { DeleteProduct, GetAllProducts } from "../../features/ProductFeatures";
 import { Helmet } from "react-helmet";
 import { Content } from "../../styles/admin";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
-import {
-  ProductDiv,
-  ProductHeader,
-  ProductImg,
-  ProductTitle,
-  OriginalPrice,
-  IconButton,
-} from "../../styles/product";
+import { IconButton } from "../../styles/product";
 import { FlexBetweenRow } from "../../styles/main";
 import { MdDelete } from "react-icons/md";
 import { HiPencil } from "react-icons/hi2";
@@ -90,34 +82,48 @@ const AdminMainPage = () => {
                   </TableRow>
                 </TableHead>
                 <tbody>
-                  <TableRow>
-                    <TableData
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
-                    >
-                      <img src="https://placehold.co/50x50" />
-                      <span>product name</span>
-                    </TableData>
-                    <TableData>$100</TableData>
-                    <TableData>$10</TableData>
-                    <TableData>category</TableData>
-                    <TableData>brand</TableData>
-                    <TableData>100</TableData>
-                    <TableData>10</TableData>
-                    <TableData>
-                      <FlexBetweenRow>
-                        <IconButton>
-                          <HiPencil />
-                        </IconButton>
-                        <IconButton>
-                          <MdDelete />
-                        </IconButton>
-                      </FlexBetweenRow>
-                    </TableData>
-                  </TableRow>
+                  {data.products &&
+                    data.products.length > 0 &&
+                    data.products.map((product: any) => (
+                      <TableRow>
+                        <TableData
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "10px",
+                          }}
+                        >
+                          <Image
+                            src={`${API_URL}/${product.images?.[0]}`}
+                            alt="product from voltaro"
+                            style={{ width: "50px" }}
+                          />
+                          <span>{product.name}</span>
+                        </TableData>
+                        <TableData>${product.price}</TableData>
+                        <TableData>
+                          {product.discount ? "$" + product.discount : 0}
+                        </TableData>
+                        <TableData>{product.category.title}</TableData>
+                        <TableData>{product.brand}</TableData>
+                        <TableData>{product.countInStock}</TableData>
+                        <TableData>{product.sold}</TableData>
+                        <TableData>
+                          <FlexBetweenRow>
+                            <IconButton
+                              onClick={() => handleUpdate(product.slug)}
+                            >
+                              <HiPencil />
+                            </IconButton>
+                            <IconButton
+                              onClick={() => handleDelete(product._id)}
+                            >
+                              <MdDelete />
+                            </IconButton>
+                          </FlexBetweenRow>
+                        </TableData>
+                      </TableRow>
+                    ))}
                 </tbody>
               </StyledTable>
             </TableWrapper>
