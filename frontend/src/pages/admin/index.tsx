@@ -21,6 +21,14 @@ import { HiPencil } from "react-icons/hi2";
 import swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../API";
+import {
+  StyledTable,
+  TableData,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableWrapper,
+} from "../../styles/cart";
 
 const AdminMainPage = () => {
   const navigate = useNavigate();
@@ -67,50 +75,52 @@ const AdminMainPage = () => {
           ) : isLoading ? (
             <LoadingBox />
           ) : (
-            <Grid>
-              {data.products &&
-                data.products.length > 0 &&
-                data.products.map(
-                  (product: {
-                    _id: Key;
-                    slug: string;
-                    name: string;
-                    images?: string[];
-                    price: number;
-                    discount: number;
-                  }) => (
-                    <ProductDiv className="stable" key={product._id}>
-                      <ProductHeader>
-                        <ProductTitle>{product.name}</ProductTitle>
-                      </ProductHeader>
-                      <ProductImg
-                        src={`${API_URL}/${product.images?.[0]}`}
-                        alt="There is a problem showing your photos"
-                      />
-                      {product.discount ? (
-                        <FlexBetweenRow>
-                          <small>
-                            <OriginalPrice>{product.price}$</OriginalPrice>
-                          </small>
-                        </FlexBetweenRow>
-                      ) : (
-                        <FlexBetweenRow>
-                          <span>{product.price}$</span>
-                        </FlexBetweenRow>
-                      )}
-
+            <TableWrapper>
+              <StyledTable>
+                <TableHead>
+                  <TableRow>
+                    <TableHeader>Product</TableHeader>
+                    <TableHeader>Price</TableHeader>
+                    <TableHeader>Discount</TableHeader>
+                    <TableHeader>Category</TableHeader>
+                    <TableHeader>Brand</TableHeader>
+                    <TableHeader>Stock</TableHeader>
+                    <TableHeader>Sold</TableHeader>
+                    <TableHeader>Actions</TableHeader>
+                  </TableRow>
+                </TableHead>
+                <tbody>
+                  <TableRow>
+                    <TableData
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <img src="https://placehold.co/50x50" />
+                      <span>product name</span>
+                    </TableData>
+                    <TableData>$100</TableData>
+                    <TableData>$10</TableData>
+                    <TableData>category</TableData>
+                    <TableData>brand</TableData>
+                    <TableData>100</TableData>
+                    <TableData>10</TableData>
+                    <TableData>
                       <FlexBetweenRow>
-                        <IconButton onClick={() => handleUpdate(product.slug)}>
-                          update <HiPencil />
+                        <IconButton>
+                          <HiPencil />
                         </IconButton>
-                        <IconButton onClick={() => handleDelete(product._id)}>
-                          delete <MdDelete />
+                        <IconButton>
+                          <MdDelete />
                         </IconButton>
                       </FlexBetweenRow>
-                    </ProductDiv>
-                  )
-                )}
-            </Grid>
+                    </TableData>
+                  </TableRow>
+                </tbody>
+              </StyledTable>
+            </TableWrapper>
           )}
         </Section>
       </Content>
