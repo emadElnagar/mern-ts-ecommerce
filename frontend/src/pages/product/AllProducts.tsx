@@ -68,34 +68,36 @@ const AllProducts = () => {
                       )
                     )}
                 </Grid>
-                <div className="pagination-bar">
-                  <Button
-                    disabled={currentPage === 1}
-                    onClick={() => handleChangePage(currentPage - 1)}
-                  >
-                    <IoIosArrowBack />
-                  </Button>
-                  {totalPages &&
-                    totalPages > 0 &&
-                    Array.from(
-                      { length: totalPages },
-                      (_, index) => index + 1
-                    ).map((pageNumber) => (
-                      <Button
-                        key={pageNumber}
-                        className={pageNumber === currentPage ? "active" : ""}
-                        onClick={() => handleChangePage(pageNumber)}
-                      >
-                        {pageNumber}
-                      </Button>
-                    ))}
-                  <Button
-                    disabled={currentPage === totalPages}
-                    onClick={() => handleChangePage(currentPage + 1)}
-                  >
-                    <IoIosArrowForward />
-                  </Button>
-                </div>
+                {totalPages > 1 && (
+                  <div className="pagination-bar">
+                    <Button
+                      disabled={currentPage === 1}
+                      onClick={() => handleChangePage(currentPage - 1)}
+                    >
+                      <IoIosArrowBack />
+                    </Button>
+                    {totalPages &&
+                      totalPages > 0 &&
+                      Array.from(
+                        { length: totalPages },
+                        (_, index) => index + 1
+                      ).map((pageNumber) => (
+                        <Button
+                          key={pageNumber}
+                          className={pageNumber === currentPage ? "active" : ""}
+                          onClick={() => handleChangePage(pageNumber)}
+                        >
+                          {pageNumber}
+                        </Button>
+                      ))}
+                    <Button
+                      disabled={currentPage === totalPages}
+                      onClick={() => handleChangePage(currentPage + 1)}
+                    >
+                      <IoIosArrowForward />
+                    </Button>
+                  </div>
+                )}
               </>
             )}
           </Section>
