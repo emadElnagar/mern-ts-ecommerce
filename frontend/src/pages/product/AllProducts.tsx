@@ -26,7 +26,7 @@ const AllProducts = () => {
   };
 
   useEffect(() => {
-    dispatch(GetAllProducts(pageFromUrl));
+    dispatch(GetAllProducts({ page: pageFromUrl }));
     setCurrentPage(pageFromUrl);
   }, [pageFromUrl, dispatch]);
 

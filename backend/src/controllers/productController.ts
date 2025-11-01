@@ -13,7 +13,7 @@ import Order from "../models/Order";
 export const getAllProducts: RequestHandler = async (req, res) => {
   try {
     const page = parseInt(req.query.page as string) || 1;
-    const limit = 12;
+    const limit = req.query.limit ? parseInt(req.query.limit as string) : 12;
     const skip = (page - 1) * limit;
     const totalProducts = await Product.countDocuments();
     const products = await Product.find()

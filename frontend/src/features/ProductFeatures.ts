@@ -74,21 +74,23 @@ export const NewProduct: any = createAsyncThunk(
 );
 
 // Get all products
-export const GetAllProducts: any = createAsyncThunk(
-  "products/all",
-  async (page, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${url}/all?page=${page}`);
-      return response.data;
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message ||
-        error.message ||
-        "Something went wrong";
-      return rejectWithValue(message);
-    }
+export const GetAllProducts: any = createAsyncThunk<
+  any,
+  { page?: number; limit?: number }
+>("products/all", async (data = {}, { rejectWithValue }) => {
+  try {
+    const page = data.page;
+    const limitQuery = data.limit;
+    const response = await axios.get(
+      `${url}/all?page=${page ?? 1}${limitQuery ? `&limit=${limitQuery}` : ""}`
+    );
+    return response.data;
+  } catch (error: any) {
+    const message =
+      error.response?.data?.message || error.message || "Something went wrong";
+    return rejectWithValue(message);
   }
-);
+});
 
 // Get single product
 export const GetSingleProduct: any = createAsyncThunk(
