@@ -5,6 +5,7 @@ import userRouter from "./routes/userRoutes";
 import productRouter from "./routes/productRoutes";
 import categoryRouter from "./routes/categoryRoutes";
 import orderRouter from "./routes/orderRoutes";
+import analysisRouter from "./routes/analysisRoutes";
 require("dotenv").config();
 
 const app = express();
@@ -25,6 +26,7 @@ app.use("/api/users", userRouter);
 app.use("/api/products", productRouter);
 app.use("/api/categories", categoryRouter);
 app.use("/api/orders", orderRouter);
+app.use("/api/analysis", analysisRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
