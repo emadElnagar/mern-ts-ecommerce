@@ -116,7 +116,6 @@ export const getBestSellersByCategory: RequestHandler = async (_req, res) => {
 // Get best selling categories
 export const getBestSellingCategories: RequestHandler = async (_req, res) => {
   try {
-    // Aggregate total sold count per category
     const categorySales = await Product.aggregate([
       {
         $group: {
@@ -128,13 +127,11 @@ export const getBestSellingCategories: RequestHandler = async (_req, res) => {
       { $sort: { totalSold: -1 } },
     ]);
 
-    // Populate category info (since aggregate doesn't auto-populate)
     const categoriesWithNames = await Category.populate(categorySales, {
       path: "_id",
       select: "title",
     });
 
-    // Respond with formatted data
     res.status(200).json(
       (categoriesWithNames as any[]).map((category: any) => ({
         category: category._id,
