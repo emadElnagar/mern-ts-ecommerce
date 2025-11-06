@@ -229,19 +229,33 @@ export const updateProduct: RequestHandler = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
-    const product = await Product.findOne({ slug: req.params.slug }).session(
-      session
-    );
+    const { slug } = req.params;
+    const {
+      name,
+      description,
+      brand,
+      price,
+      discount = 0,
+      countInStock,
+      category,
+      features = [],
+      imgnames = [],
+      removeImages = [],
+    } = req.body;
+
+    const product = await Product.findOne({ slug }).session(session);
     if (!product) {
+      await session.abortTransaction();
       return res.status(404).json({ message: "Product not found" });
     }
 
-    if (req.body.name && req.body.name !== product.name) {
+    if (name && name !== product.name) {
       const foundProductName = await Product.findOne({
-        name: { $regex: `^${req.body.name}$`, $options: "i" },
+        name: { $regex: `^${name}`, $options: "i" },
         _id: { $ne: product._id },
       }).session(session);
       if (foundProductName) {
+        await session.abortTransaction();
         return res
           .status(400)
           .json({ message: "This product already exists, try another name" });
@@ -260,55 +274,50 @@ export const updateProduct: RequestHandler = async (req, res) => {
       (field) => req.body[field] == null
     );
     if (missingField) {
+      await session.abortTransaction();
       return res
         .status(400)
         .json({ message: `Please enter the ${missingField}` });
     }
 
-    const {
-      name,
-      description,
-      brand,
-      price,
-      discount = 0,
-      countInStock,
-      category,
-      features = [],
-      imgnames = [],
-      removeImages = [],
-    } = req.body;
-
-    if (price < 0)
+    if (price < 0) {
+      await session.abortTransaction();
       return res.status(400).json({ message: "Price cannot be negative" });
-    if (discount < 0)
+    }
+    if (discount < 0) {
+      await session.abortTransaction();
       return res.status(400).json({ message: "Discount cannot be negative" });
-    if (discount > price)
+    }
+    if (discount > price) {
+      await session.abortTransaction();
       return res
         .status(400)
         .json({ message: "Discount cannot be more than price" });
-    if (countInStock < 0)
+    }
+    if (countInStock < 0) {
+      await session.abortTransaction();
       return res
         .status(400)
         .json({ message: "Count in stock cannot be negative" });
+    }
 
     let updatedImages = product.images || [];
 
     if (Array.isArray(removeImages) && removeImages.length > 0) {
-      updatedImages = updatedImages.filter(
-        (img) => !removeImages.includes(img)
-      );
-      for (const image of removeImages) {
+      const imageDeletionPromises = removeImages.map((image: any) => {
         const imagePath = path.resolve(
           __dirname,
           "../../uploads/images",
           image
         );
-        fs.promises.unlink(imagePath).catch((err) => {
-          return res.status(500).json({
-            message: `Failed to delete image (${image}): ${err.message}`,
-          });
+        return fs.promises.unlink(imagePath).catch((err) => {
+          console.warn(`Failed to delete image (${image}):`, err.message);
         });
-      }
+      });
+      await Promise.all(imageDeletionPromises);
+      updatedImages = updatedImages.filter(
+        (img) => !removeImages.includes(img)
+      );
     }
 
     if (Array.isArray(imgnames) && imgnames.length > 0) {
@@ -328,19 +337,23 @@ export const updateProduct: RequestHandler = async (req, res) => {
       images: updatedImages,
     };
 
-    const updatedProduct = await Product.findOneAndUpdate(
-      { slug: req.params.slug },
+    await Product.updateOne(
+      { slug },
       { $set: updatedProductData },
-      { new: true, session }
+      { session }
     );
+
     await session.commitTransaction();
     res.status(200).json({
       message: "Product updated successfully",
     });
   } catch (error: any) {
+    await session.abortTransaction();
     return res.status(500).json({
       message: error.message,
     });
+  } finally {
+    session.endSession();
   }
 };
 
