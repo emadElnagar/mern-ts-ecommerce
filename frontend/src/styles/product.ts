@@ -1,24 +1,32 @@
 import styled from "styled-components";
 import * as vars from "./variables";
 
-export const ProductDiv = styled.div`
-  padding: 1.5rem 0;
-  width: 100%;
-  transition: 0.3s all ease;
+export const ProductCard = styled.div`
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  width: 260px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-align: center;
+  padding: 20px;
   &:hover {
-    box-shadow: 0 0 2px ${vars.secondary};
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    background-color: #fafafa;
   }
 `;
-export const ProductHeader = styled.div`
-  padding: 0;
-`;
 
-export const ProductTitle = styled.h2`
-  text-align: center;
+export const ProductName = styled.div`
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 10px 0;
 `;
 
 export const ProductImg = styled.img`
-  max-width: 100%;
+  width: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
 `;
 
 export const OriginalPrice = styled.span`
@@ -26,22 +34,31 @@ export const OriginalPrice = styled.span`
   text-decoration: line-through;
 `;
 
-export const IconButton = styled.button`
-  cursor: pointer;
+export const CardButton = styled.button`
   border: none;
-  width: calc(50% - 2.5px);
-  padding: 0.5rem;
-  font-size: 1rem;
-  background: ${vars.secondary};
-  color: #fff;
-  transition: 0.3s all ease;
-  &:hover {
-    color: ${vars.primary};
+  border-radius: 10px;
+  cursor: pointer;
+  padding: 8px 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  &.cart-btn {
+    background-color: ${vars.primary};
+    color: #fff;
+    &:hover {
+      background-color: #d97706;
+    }
+  }
+  &.wish-btn {
+    background-color: #f0f0f0;
+    &:hover {
+      background-color: #e0e0e0;
+    }
   }
 `;
 
 export const Price = styled.div`
-  font-size: 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 `;
 
 export const FinalPrice = styled.span`
@@ -49,5 +66,8 @@ export const FinalPrice = styled.span`
 `;
 
 export const OldPrice = styled.span`
-  color: #b71c1c;
+  color: #aaa;
+  text-decoration: line-through;
+  margin-left: 6px;
+  font-size: 0.9rem;
 `;

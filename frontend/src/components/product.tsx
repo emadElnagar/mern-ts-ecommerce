@@ -1,14 +1,14 @@
 import { FlexBetweenRow } from "../styles/main";
 import {
-  ProductDiv,
-  ProductHeader,
+  ProductCard,
   ProductImg,
-  ProductTitle,
-  OriginalPrice,
-  IconButton,
+  ProductName,
+  CardButton,
+  Price,
+  OldPrice,
 } from "../styles/product";
-import { FaCartArrowDown } from "react-icons/fa";
-import { AiOutlineHeart } from "react-icons/ai";
+import { FaShoppingCart } from "react-icons/fa";
+import { IoMdHeart } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { Key } from "react";
 import { useDispatch } from "react-redux";
@@ -36,37 +36,33 @@ function Product(product: productProps) {
   };
   const realPrice = product.price - product.discount;
   return (
-    <ProductDiv>
+    <ProductCard>
       <Link to={`/products/${product.slug}`}>
-        <ProductHeader>
-          <ProductTitle>{product.name}</ProductTitle>
-        </ProductHeader>
         <ProductImg
           src={`${API_URL}/${product.image}`}
           alt="There is a problem showing your photos"
         />
+        <ProductName>{product.name}</ProductName>
         {product.discount ? (
           <FlexBetweenRow>
-            <span>{realPrice}$</span>
-            <small>
-              <OriginalPrice>{product.price}$</OriginalPrice>
-            </small>
+            <Price>{realPrice}$</Price>
+            <OldPrice>{product.price}$</OldPrice>
           </FlexBetweenRow>
         ) : (
           <FlexBetweenRow>
-            <span>{product.price}$</span>
+            <Price>{product.price}$</Price>
           </FlexBetweenRow>
         )}
       </Link>
       <FlexBetweenRow>
-        <IconButton onClick={() => hanldeAddToCart()}>
-          <FaCartArrowDown /> add to cart
-        </IconButton>
-        <IconButton onClick={() => handleAddWishList()}>
-          <AiOutlineHeart /> wishlist
-        </IconButton>
+        <CardButton className="cart-btn" onClick={() => hanldeAddToCart()}>
+          <FaShoppingCart /> add to cart
+        </CardButton>
+        <CardButton className="wish-btn" onClick={() => handleAddWishList()}>
+          <IoMdHeart />
+        </CardButton>
       </FlexBetweenRow>
-    </ProductDiv>
+    </ProductCard>
   );
 }
 
