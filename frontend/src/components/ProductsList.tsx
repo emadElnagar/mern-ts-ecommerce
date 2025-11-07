@@ -8,10 +8,16 @@ import {
   TableRow,
   TableWrapper,
 } from "../styles/cart";
-import { FlexBetweenRow, Section, Image, Button } from "../styles/main";
+import {
+  FlexBetweenRow,
+  Section,
+  Image,
+  Button,
+  UpdateButton,
+  DeleteButton,
+} from "../styles/main";
 import ErrorBox from "./ErrorBox";
 import LoadingBox from "./LoadingBox";
-import { IconButton } from "../styles/product";
 import { MdDelete } from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -115,12 +121,14 @@ const ProductsList = () => {
                     <TableData>{product.sold}</TableData>
                     <TableData>
                       <FlexBetweenRow>
-                        <IconButton onClick={() => handleUpdate(product.slug)}>
+                        <UpdateButton
+                          onClick={() => handleUpdate(product.slug)}
+                        >
                           <HiPencil />
-                        </IconButton>
-                        <IconButton onClick={() => handleDelete(product._id)}>
+                        </UpdateButton>
+                        <DeleteButton onClick={() => handleDelete(product._id)}>
                           <MdDelete />
-                        </IconButton>
+                        </DeleteButton>
                       </FlexBetweenRow>
                     </TableData>
                   </TableRow>
@@ -129,7 +137,7 @@ const ProductsList = () => {
           </StyledTable>
         </TableWrapper>
       )}
-      {totalPages > 1 && (
+      {!isLoading && totalPages > 1 && (
         <div className="pagination-bar">
           <Button
             disabled={currentPage === 1}
