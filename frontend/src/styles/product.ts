@@ -2,6 +2,7 @@ import styled from "styled-components";
 import * as vars from "./variables";
 
 export const ProductCard = styled.div`
+  position: relative;
   background: #fff;
   border-radius: 16px;
   overflow: hidden;
@@ -11,7 +12,6 @@ export const ProductCard = styled.div`
   text-align: center;
   padding: 20px;
   &:hover {
-    transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     background-color: #fafafa;
   }
@@ -29,11 +29,6 @@ export const ProductImg = styled.img`
   transition: transform 0.3s ease;
 `;
 
-export const OriginalPrice = styled.span`
-  color: #b71c1c;
-  text-decoration: line-through;
-`;
-
 export const CardButton = styled.button`
   border: none;
   border-radius: 10px;
@@ -43,7 +38,7 @@ export const CardButton = styled.button`
   transition: all 0.3s ease;
   &.cart-btn {
     background-color: ${vars.primary};
-    color: #fff;
+    color: #000;
     &:hover {
       background-color: #d97706;
     }
@@ -70,4 +65,18 @@ export const OldPrice = styled.span`
   text-decoration: line-through;
   margin-left: 6px;
   font-size: 0.9rem;
+`;
+
+export const Badge = styled.span`
+  position: absolute;
+  top: 22px;
+  left: 22px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  &.discount {
+    background: #e63946;
+    color: #fff;
+  }
 `;

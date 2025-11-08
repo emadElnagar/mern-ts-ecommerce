@@ -6,6 +6,7 @@ import {
   CardButton,
   Price,
   OldPrice,
+  Badge,
 } from "../styles/product";
 import { FaShoppingCart } from "react-icons/fa";
 import { IoMdHeart } from "react-icons/io";
@@ -35,9 +36,13 @@ function Product(product: productProps) {
     dispatch(addToWishlist({ _id: product._id }));
   };
   const realPrice = product.price - product.discount;
+  const discountPercentage = (product.discount / product.price) * 100;
   return (
     <ProductCard>
       <Link to={`/products/${product.slug}`}>
+        {product.discount && (
+          <Badge className="discount">-{discountPercentage.toFixed(0)}%</Badge>
+        )}
         <ProductImg
           src={`${API_URL}/${product.image}`}
           alt="There is a problem showing your photos"
