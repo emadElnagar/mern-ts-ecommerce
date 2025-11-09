@@ -233,10 +233,7 @@ const SingleProduct = () => {
                                           src={`${
                                             review.user.image
                                               ? `${API_URL}/${review.user.image}`
-                                              : `${
-                                                  process.env.PUBLIC_URL +
-                                                  "/user-icon-2098873_640.png"
-                                                }`
+                                              : `${"/user-icon-2098873_640.png"}`
                                           }`}
                                           alt="user"
                                         />

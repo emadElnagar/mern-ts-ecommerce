@@ -39,6 +39,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../features/UserFeatures";
 import { Image } from "../styles/main";
 import { API_URL } from "../API";
+import { getCart } from "../features/CartFeatures";
 
 function NavBar() {
   const location = useLocation();
@@ -105,6 +106,10 @@ function NavBar() {
       document.removeEventListener("click", handleClickOutside);
     };
   }, []);
+  // Load the cart
+  useEffect(() => {
+    dispatch(getCart());
+  }, [dispatch]);
   return (
     <Fragment>
       <Nav>
