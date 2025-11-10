@@ -11,10 +11,15 @@ import {
 import { FaShoppingCart } from "react-icons/fa";
 import { IoMdHeart } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { Key } from "react";
-import { useDispatch } from "react-redux";
-import { addToCart, addToWishlist } from "../features/CartFeatures";
+import { Key, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToCart,
+  addToWishlist,
+  getWithlist,
+} from "../features/CartFeatures";
 import { API_URL } from "../API";
+import { danger } from "../styles/variables";
 
 type productProps = {
   _id: Key;
@@ -27,6 +32,7 @@ type productProps = {
 
 function Product(product: productProps) {
   const dispatch = useDispatch();
+  const { wishlist } = useSelector((state: any) => state.cart);
   // Add to cart
   const hanldeAddToCart = () => {
     dispatch(addToCart({ _id: product._id, quantity: 1 }));
@@ -37,6 +43,10 @@ function Product(product: productProps) {
   };
   const realPrice = product.price - product.discount;
   const discountPercentage = (product.discount / product.price) * 100;
+  // Get wishlist items
+  useEffect(() => {
+    dispatch(getWithlist());
+  }, [dispatch]);
   return (
     <ProductCard>
       <Link to={`/products/${product.slug}`}>
@@ -64,7 +74,13 @@ function Product(product: productProps) {
           <FaShoppingCart /> add to cart
         </CardButton>
         <CardButton className="wish-btn" onClick={() => handleAddWishList()}>
-          <IoMdHeart />
+          <IoMdHeart
+            style={
+              wishlist.find(
+                (item: { _id: Key }) => item._id === product._id
+              ) && { color: danger }
+            }
+          />
         </CardButton>
       </FlexBetweenRow>
     </ProductCard>

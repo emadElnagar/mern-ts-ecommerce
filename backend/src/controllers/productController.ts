@@ -7,7 +7,6 @@ import { AuthenticatedRequest } from "../types/authTypes";
 import path from "path";
 import fs from "fs";
 import mongoose from "mongoose";
-import Order from "../models/Order";
 
 // GET ALL PRODUCTS
 export const getAllProducts: RequestHandler = async (req, res) => {
