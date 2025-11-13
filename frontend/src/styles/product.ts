@@ -3,6 +3,7 @@ import * as vars from "./variables";
 
 export const ProductCard = styled.div`
   position: relative;
+  z-index: 1;
   background: #fff;
   border-radius: 16px;
   overflow: hidden;

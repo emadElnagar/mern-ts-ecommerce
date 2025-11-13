@@ -124,6 +124,7 @@ export const DropDownButton = styled.button`
 
 export const DropDown = styled.div`
   position: relative;
+  z-index: 999;
 `;
 
 export const DropDownContent = styled.ul`
