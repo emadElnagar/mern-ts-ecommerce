@@ -1,7 +1,6 @@
 import { Fragment, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { HeaderCenter, Main, Section } from "../../styles/main";
-import SideNav from "../../components/SideNav";
 import { Content } from "../../styles/admin";
 import {
   StyledTable,
@@ -19,10 +18,41 @@ import { GetAllOrders } from "../../features/OrderFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
+type UpdateOrder = {
+  deliveryStatus: string;
+  paymentStatus: string;
+};
 const OrdersPage = () => {
   const dispatch = useDispatch();
   const { isLoading, error, orders } = useSelector((state: any) => state.order);
+  // Update order
+  const handleUpdate = (id: string) => {
+    Swal.fire<UpdateOrder>({
+      title: "Update Order",
+      html: `
+        <h3>delivery Status</h3>
+        <div class="select">
+          <select name="deliveryStatus" id="deliveryStatus">
+            <option value="Pending">Pending</option>
+            <option value="Processing">Processing</option>
+            <option value="Out for Delivery">Out for Delivery</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+        </div>
+        <h3>Payment Status</h3>
+        <div class="select">
+          <select name="paymentStatus" id="paymentStatus">
+            <option value="notPaid">not paid</option>
+            <option value="Pending">paid</option>
+          </select>
+        </div>
+      `,
+    });
+  };
+  // Get all orders
   useEffect(() => {
     dispatch(GetAllOrders());
   }, [dispatch]);
@@ -104,7 +134,12 @@ const OrdersPage = () => {
                           <Link to={`/admin/orders/${order._id}`}>
                             <FaRegEye title="View" />
                           </Link>{" "}
-                          | <HiPencil title="Edit" />
+                          |{" "}
+                          <HiPencil
+                            title="Edit"
+                            style={{ cursor: "pointer" }}
+                            onClick={() => handleUpdate(order._id)}
+                          />
                         </TableData>
                       </TableRow>
                     ))}
