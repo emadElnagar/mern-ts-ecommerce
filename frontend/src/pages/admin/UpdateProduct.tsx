@@ -234,7 +234,7 @@ const UpdatePage = () => {
                 <Input
                   type="number"
                   min="0"
-                  value={discount ?? ""}
+                  defaultValue={discount ?? ""}
                   onChange={(e) => setDiscount(Number(e.target.value))}
                 />
                 <label htmlFor="discount">Discount</label>

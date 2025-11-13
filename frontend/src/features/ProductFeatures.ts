@@ -154,7 +154,7 @@ export const UpdateProduct: any = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.put(
+      const response = await axios.post(
         `${url}/${product.slug}/update`,
         product.data,
         config

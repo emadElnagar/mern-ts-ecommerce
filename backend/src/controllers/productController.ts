@@ -225,8 +225,6 @@ export const newProduct = async (req: AuthenticatedRequest, res: Response) => {
 
 // Update product
 export const updateProduct: RequestHandler = async (req, res) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
   try {
     const { slug } = req.params;
     const {
@@ -242,25 +240,26 @@ export const updateProduct: RequestHandler = async (req, res) => {
       removeImages = [],
     } = req.body;
 
-    const product = await Product.findOne({ slug }).session(session);
+    // 1️⃣ Find product
+    const product = await Product.findOne({ slug });
     if (!product) {
-      await session.abortTransaction();
       return res.status(404).json({ message: "Product not found" });
     }
 
+    // 2️⃣ Check for duplicate name
     if (name && name !== product.name) {
       const foundProductName = await Product.findOne({
-        name: { $regex: `^${name}`, $options: "i" },
+        name: { $regex: `^${name}$`, $options: "i" },
         _id: { $ne: product._id },
-      }).session(session);
+      });
       if (foundProductName) {
-        await session.abortTransaction();
         return res
           .status(400)
           .json({ message: "This product already exists, try another name" });
       }
     }
 
+    // 3️⃣ Validate required fields
     const requiredFields = [
       "name",
       "description",
@@ -273,57 +272,54 @@ export const updateProduct: RequestHandler = async (req, res) => {
       (field) => req.body[field] == null
     );
     if (missingField) {
-      await session.abortTransaction();
       return res
         .status(400)
         .json({ message: `Please enter the ${missingField}` });
     }
 
-    if (price < 0) {
-      await session.abortTransaction();
+    // 4️⃣ Validate numeric values
+    if (price < 0)
       return res.status(400).json({ message: "Price cannot be negative" });
-    }
-    if (discount < 0) {
-      await session.abortTransaction();
+    if (discount < 0)
       return res.status(400).json({ message: "Discount cannot be negative" });
-    }
-    if (discount > price) {
-      await session.abortTransaction();
+    if (discount > price)
       return res
         .status(400)
         .json({ message: "Discount cannot be more than price" });
-    }
-    if (countInStock < 0) {
-      await session.abortTransaction();
+    if (countInStock < 0)
       return res
         .status(400)
         .json({ message: "Count in stock cannot be negative" });
-    }
 
+    // 5️⃣ Handle images
     let updatedImages = product.images || [];
 
+    // Remove old images
     if (Array.isArray(removeImages) && removeImages.length > 0) {
-      const imageDeletionPromises = removeImages.map((image: any) => {
+      const deletionPromises = removeImages.map((image: string) => {
         const imagePath = path.resolve(
           __dirname,
           "../../uploads/images",
           image
         );
         return fs.promises.unlink(imagePath).catch((err) => {
-          console.warn(`Failed to delete image (${image}):`, err.message);
+          console.warn(`⚠️ Failed to delete image (${image}):`, err.message);
         });
       });
-      await Promise.all(imageDeletionPromises);
+      await Promise.all(deletionPromises);
+
       updatedImages = updatedImages.filter(
         (img) => !removeImages.includes(img)
       );
     }
 
+    // Add new uploaded image names
     if (Array.isArray(imgnames) && imgnames.length > 0) {
       updatedImages.push(...imgnames);
     }
 
-    const updatedProductData: any = {
+    // 6️⃣ Prepare update data
+    const updatedProductData = {
       name,
       slug: slugify(name, { replacement: "-", lower: true, strict: true }),
       description,
@@ -336,23 +332,18 @@ export const updateProduct: RequestHandler = async (req, res) => {
       images: updatedImages,
     };
 
-    await Product.updateOne(
-      { slug },
-      { $set: updatedProductData },
-      { session }
-    );
+    // 7️⃣ Update product
+    await Product.updateOne({ slug }, { $set: updatedProductData });
 
-    await session.commitTransaction();
-    res.status(200).json({
+    // 8️⃣ Respond success
+    return res.status(200).json({
       message: "Product updated successfully",
     });
   } catch (error: any) {
-    await session.abortTransaction();
+    console.error("❌ Update Product Error:", error.message);
     return res.status(500).json({
       message: error.message,
     });
-  } finally {
-    session.endSession();
   }
 };
 

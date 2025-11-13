@@ -27,7 +27,7 @@ productRouter.post(
 );
 
 // UPDATE PRODUCT
-productRouter.put(
+productRouter.post(
   "/:slug/update",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
