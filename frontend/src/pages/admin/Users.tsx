@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from "react-redux";
-import SideNav from "../../components/SideNav";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import {

@@ -1,6 +1,6 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, Key, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import { HeaderCenter, Main, Section } from "../../styles/main";
+import { HeaderCenter, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
 import {
   StyledTable,
@@ -28,18 +28,32 @@ const OrdersPage = () => {
   const dispatch = useDispatch();
   const { isLoading, error, orders } = useSelector((state: any) => state.order);
   // Update order
-  const handleUpdate = (id: string) => {
+  const handleUpdate = (
+    id: Key,
+    deliveryStatus: string,
+    paymentStatus: string
+  ) => {
     Swal.fire<UpdateOrder>({
       title: "Update Order",
       html: `
         <h3>delivery Status</h3>
         <div class="select">
           <select name="deliveryStatus" id="deliveryStatus">
-            <option value="Pending">Pending</option>
-            <option value="Processing">Processing</option>
-            <option value="Out for Delivery">Out for Delivery</option>
-            <option value="Delivered">Delivered</option>
-            <option value="Canceled">Canceled</option>
+            <option value="Pending" ${
+              deliveryStatus === "Pending" && "selected"
+            }>Pending</option>
+            <option value="Processing" ${
+              deliveryStatus === "Processing" && "selected"
+            }>Processing</option>
+            <option value="Out for Delivery" ${
+              deliveryStatus === "Out for Delivery" && "selected"
+            }>Out for Delivery</option>
+            <option value="Delivered" ${
+              deliveryStatus === "Delivered" && "selected"
+            }>Delivered</option>
+            <option value="Canceled" ${
+              deliveryStatus === "Canceled" && "selected"
+            }>Canceled</option>
           </select>
         </div>
         <h3>Payment Status</h3>
@@ -138,7 +152,13 @@ const OrdersPage = () => {
                           <HiPencil
                             title="Edit"
                             style={{ cursor: "pointer" }}
-                            onClick={() => handleUpdate(order._id)}
+                            onClick={() =>
+                              handleUpdate(
+                                order._id,
+                                order.shippingStatus,
+                                order.isPaid ? "paid" : "not paid"
+                              )
+                            }
                           />
                         </TableData>
                       </TableRow>

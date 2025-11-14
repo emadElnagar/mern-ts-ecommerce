@@ -231,7 +231,7 @@ export const CancelOrder: any = createAsyncThunk(
 );
 
 const orderSlice = createSlice({
-  name: "category",
+  name: "order",
   initialState,
   reducers: {},
   extraReducers: (builder) => {

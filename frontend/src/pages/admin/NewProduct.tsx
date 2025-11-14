@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  Fragment,
-  Key,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, Fragment, Key, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Button, HeaderCenter, Section } from "../../styles/main";
 import { Content } from "../../styles/admin";
