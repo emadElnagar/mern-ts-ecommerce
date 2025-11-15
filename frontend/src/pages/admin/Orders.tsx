@@ -14,7 +14,7 @@ import { FaRegEye } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
 import { success, warning } from "../../styles/variables";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllOrders } from "../../features/OrderFeatures";
+import { GetAllOrders, UpdateOrderStatus } from "../../features/OrderFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link } from "react-router-dom";
@@ -22,48 +22,64 @@ import Swal from "sweetalert2";
 
 type UpdateOrder = {
   deliveryStatus: string;
-  paymentStatus: string;
 };
 const OrdersPage = () => {
   const dispatch = useDispatch();
   const { isLoading, error, orders } = useSelector((state: any) => state.order);
   // Update order
-  const handleUpdate = (
-    id: Key,
-    deliveryStatus: string,
-    paymentStatus: string
-  ) => {
+  let DeliveryStatusInput: HTMLInputElement;
+  const handleUpdate = (id: Key, OrderDeliveryStatus: string) => {
     Swal.fire<UpdateOrder>({
-      title: "Update Order",
+      title: "Delivery Status",
       html: `
-        <h3>delivery Status</h3>
         <div class="select">
           <select name="deliveryStatus" id="deliveryStatus">
             <option value="Pending" ${
-              deliveryStatus === "Pending" && "selected"
+              OrderDeliveryStatus === "Pending" && "selected"
             }>Pending</option>
             <option value="Processing" ${
-              deliveryStatus === "Processing" && "selected"
+              OrderDeliveryStatus === "Processing" && "selected"
             }>Processing</option>
             <option value="Out for Delivery" ${
-              deliveryStatus === "Out for Delivery" && "selected"
+              OrderDeliveryStatus === "Out for Delivery" && "selected"
             }>Out for Delivery</option>
             <option value="Delivered" ${
-              deliveryStatus === "Delivered" && "selected"
+              OrderDeliveryStatus === "Delivered" && "selected"
             }>Delivered</option>
             <option value="Canceled" ${
-              deliveryStatus === "Canceled" && "selected"
+              OrderDeliveryStatus === "Canceled" && "selected"
             }>Canceled</option>
           </select>
         </div>
-        <h3>Payment Status</h3>
-        <div class="select">
-          <select name="paymentStatus" id="paymentStatus">
-            <option value="notPaid">not paid</option>
-            <option value="Pending">paid</option>
-          </select>
-        </div>
       `,
+      showCancelButton: true,
+      confirmButtonText: "Confirm",
+      focusConfirm: false,
+      didOpen: () => {
+        const popup = Swal.getPopup()!;
+        DeliveryStatusInput = popup.querySelector(
+          "#deliveryStatus"
+        ) as HTMLInputElement;
+        DeliveryStatusInput.onkeyup = (event) =>
+          event.key === "Enter" && Swal.clickConfirm();
+      },
+      preConfirm: () => {
+        const deliveryStatus = DeliveryStatusInput.value;
+        if (!deliveryStatus) {
+          Swal.showValidationMessage(`Please Choose user role`);
+        }
+        return { deliveryStatus };
+      },
+    }).then((result) => {
+      const deliveryStatus = result.value?.deliveryStatus;
+      if (result.isConfirmed) {
+        dispatch(
+          UpdateOrderStatus({
+            _id: id,
+            status: deliveryStatus,
+          })
+        );
+      }
     });
   };
   // Get all orders
@@ -153,11 +169,7 @@ const OrdersPage = () => {
                             title="Edit"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                              handleUpdate(
-                                order._id,
-                                order.shippingStatus,
-                                order.isPaid ? "paid" : "not paid"
-                              )
+                              handleUpdate(order._id, order.shippingStatus)
                             }
                           />
                         </TableData>

@@ -165,8 +165,11 @@ export const UpdateOrderStatus: any = createAsyncThunk(
         { status },
         config
       );
+      console.log("response", response);
+      console.log("response.data", response.data);
       return response.data;
     } catch (error: any) {
+      console.log("error", error);
       const message =
         error.response?.data?.message ||
         error.message ||

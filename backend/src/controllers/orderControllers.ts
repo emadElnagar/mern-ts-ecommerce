@@ -146,11 +146,11 @@ export const updateOrderStatus = async (
       return res.status(404).json({ message: "Order not found" });
     }
 
-    const oldStatus = (order as any).status;
+    const oldStatus = (order as any).shippingStatus;
     const newStatus = req.body.status;
 
     // Update the order status
-    (order as any).status = newStatus;
+    (order as any).shippingStatus = newStatus;
     const updatedOrder = await order.save();
 
     // When order becomes "Delivered", increment sold count for each product
