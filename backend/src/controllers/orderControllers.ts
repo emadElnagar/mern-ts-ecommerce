@@ -191,7 +191,7 @@ export const updateOrderPaymentStatus = async (
         .status(403)
         .json({ message: "Not authorized to update this order" });
     }
-    (order as any).paymentResult = req.body.paymentResult;
+    (order as any).paymentResult.status = req.body.paymentStatus;
     await order.save();
 
     // When order becomes "Paid", decrement countInStock count for each product
