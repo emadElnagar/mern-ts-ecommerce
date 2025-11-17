@@ -183,34 +183,47 @@ export const updateOrderPaymentStatus = async (
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
+
     if (
       order.customer.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
     ) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to update this order" });
+      return res.status(403).json({ message: "Not authorized" });
     }
-    (order as any).paymentResult.status = req.body.paymentStatus;
+
+    // Allowed statuses
+    const newStatus = req.body.paymentStatus;
+
+    // Track previous status BEFORE update
+    const wasPaidBefore = order.paymentResult?.status === "paid";
+
+    // Ensure paymentResult exists
+    if (!order.paymentResult) {
+      (order as any).paymentResult = { status: newStatus };
+    } else {
+      order.paymentResult.status = newStatus;
+    }
+
     await order.save();
 
-    // When order becomes "Paid", decrement countInStock count for each product
-    if (order.paymentResult?.status === "paid") {
+    // Only run stock decrement when status transitions to paid
+    if (!wasPaidBefore && newStatus === "paid") {
       await Promise.all(
         order.orderItems.map(async (item: any) => {
-          await Product.findByIdAndUpdate(
-            item.product,
-            { $inc: { countInStock: -item.quantity } },
-            { new: true }
+          await Product.updateOne(
+            {
+              _id: item.product,
+              countInStock: { $gte: item.quantity }, // prevent negative stock
+            },
+            { $inc: { countInStock: -item.quantity } }
           );
         })
       );
     }
+
     res.status(200).json({ message: "Payment status updated" });
   } catch (error: any) {
-    res.status(500).json({
-      message: error.message,
-    });
+    res.status(500).json({ message: error.message });
   }
 };
 
