@@ -14,7 +14,11 @@ import { FaRegEye } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
 import { success, warning } from "../../styles/variables";
 import { useDispatch, useSelector } from "react-redux";
-import { GetAllOrders, UpdateOrderStatus } from "../../features/OrderFeatures";
+import {
+  GetAllOrders,
+  UpdateOrderPaymentStatus,
+  UpdateOrderStatus,
+} from "../../features/OrderFeatures";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link } from "react-router-dom";
@@ -22,15 +26,21 @@ import Swal from "sweetalert2";
 
 type UpdateOrder = {
   deliveryStatus: string;
+  paymentStatus: string;
 };
 const OrdersPage = () => {
   const dispatch = useDispatch();
   const { isLoading, error, orders } = useSelector((state: any) => state.order);
   // Update order
   let DeliveryStatusInput: HTMLInputElement;
-  const handleUpdate = (id: Key, OrderDeliveryStatus: string) => {
+  let PymentStatusInput: HTMLInputElement;
+  const handleUpdate = (
+    id: Key,
+    OrderDeliveryStatus: string,
+    paymentStatus: string
+  ) => {
     Swal.fire<UpdateOrder>({
-      title: "Delivery Status",
+      title: "Delivery and payment status",
       html: `
         <div class="select">
           <select name="deliveryStatus" id="deliveryStatus">
@@ -51,6 +61,16 @@ const OrdersPage = () => {
             }>Canceled</option>
           </select>
         </div>
+        <div class="select">
+          <select name="paymentStatus" id="paymentStatus">
+            <option value="notPaid" ${
+              paymentStatus === "notPaid" && "selected"
+            }>Not paid</option>
+            <option value="paid" ${
+              paymentStatus === "paid" && "selected"
+            }>Paid</option>
+          </select>
+        </div>
       `,
       showCancelButton: true,
       confirmButtonText: "Confirm",
@@ -60,25 +80,45 @@ const OrdersPage = () => {
         DeliveryStatusInput = popup.querySelector(
           "#deliveryStatus"
         ) as HTMLInputElement;
+        PymentStatusInput = popup.querySelector(
+          "#paymentStatus"
+        ) as HTMLInputElement;
         DeliveryStatusInput.onkeyup = (event) =>
+          event.key === "Enter" && Swal.clickConfirm();
+        PymentStatusInput.onkeyup = (event) =>
           event.key === "Enter" && Swal.clickConfirm();
       },
       preConfirm: () => {
         const deliveryStatus = DeliveryStatusInput.value;
+        const paymentStatus = PymentStatusInput.value;
         if (!deliveryStatus) {
-          Swal.showValidationMessage(`Please Choose user role`);
+          Swal.showValidationMessage(`Please Choose delivery status`);
         }
-        return { deliveryStatus };
+        if (!paymentStatus) {
+          Swal.showValidationMessage(`Please Choose payment status`);
+        }
+        return { deliveryStatus, paymentStatus };
       },
     }).then((result) => {
       const deliveryStatus = result.value?.deliveryStatus;
+      const paymentStatus = result.value?.paymentStatus;
       if (result.isConfirmed) {
-        dispatch(
-          UpdateOrderStatus({
-            _id: id,
-            status: deliveryStatus,
-          })
-        );
+        Promise.all([
+          dispatch(
+            UpdateOrderStatus({
+              _id: id,
+              status: deliveryStatus,
+            })
+          ),
+          dispatch(
+            UpdateOrderPaymentStatus({
+              _id: id,
+              paymentResult: paymentStatus,
+            })
+          ),
+        ]).then(() => {
+          dispatch(GetAllOrders());
+        });
       }
     });
   };
@@ -128,9 +168,16 @@ const OrdersPage = () => {
                         </TableData>
                         <TableData>${order.totalPrice.toFixed(2)}</TableData>
                         <TableData
-                          style={{ color: order.isPaid ? success : warning }}
+                          style={{
+                            color:
+                              order.paymentResult &&
+                              order.paymentResult.status === "paid"
+                                ? success
+                                : warning,
+                          }}
                         >
-                          {order.paymentResult && order.paymentResult.paidAt
+                          {order.paymentResult &&
+                          order.paymentResult.status === "paid"
                             ? "Paid"
                             : "pending"}
                         </TableData>
@@ -169,7 +216,11 @@ const OrdersPage = () => {
                             title="Edit"
                             style={{ cursor: "pointer" }}
                             onClick={() =>
-                              handleUpdate(order._id, order.shippingStatus)
+                              handleUpdate(
+                                order._id,
+                                order.shippingStatus,
+                                order.paymentResult?.status
+                              )
                             }
                           />
                         </TableData>

@@ -165,8 +165,6 @@ export const UpdateOrderStatus: any = createAsyncThunk(
         { status },
         config
       );
-      console.log("response", response);
-      console.log("response.data", response.data);
       return response.data;
     } catch (error: any) {
       console.log("error", error);
@@ -183,7 +181,7 @@ export const UpdateOrderStatus: any = createAsyncThunk(
 export const UpdateOrderPaymentStatus: any = createAsyncThunk(
   "orders/updatePaymentStatus",
   async (
-    { _id, paymentResult }: { _id: string; paymentResult: object },
+    { _id, paymentResult }: { _id: string; paymentResult: string },
     { rejectWithValue }
   ) => {
     try {
@@ -196,9 +194,11 @@ export const UpdateOrderPaymentStatus: any = createAsyncThunk(
       };
       const response = await axios.patch(
         `${url}/${_id}/payment`,
-        { paymentResult },
+        { paymentStatus: paymentResult },
         config
       );
+      console.log("payment", paymentResult);
+      console.log("response.data", response.data);
       return response.data;
     } catch (error: any) {
       const message =
