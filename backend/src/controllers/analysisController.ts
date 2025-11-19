@@ -143,3 +143,17 @@ export const getBestSellingCategories: RequestHandler = async (_req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get total sales and orders
+export const getTotalSalesAndOrders: RequestHandler = async (_req, res) => {
+  try {
+    const totalSalesResult = await Order.aggregate([
+      { $group: { _id: null, totalSales: { $sum: "$totalPrice" } } },
+    ]);
+    const totalSales = totalSalesResult[0] ? totalSalesResult[0].totalSales : 0;
+    const totalOrders = await Order.countDocuments();
+    res.status(200).json({ totalSales, totalOrders });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
