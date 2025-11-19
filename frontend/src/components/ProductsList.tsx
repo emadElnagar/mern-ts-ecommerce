@@ -73,10 +73,10 @@ const ProductsList = () => {
   };
   return (
     <Section>
-      {error ? (
-        <ErrorBox message="Error getting products" />
-      ) : isLoading ? (
+      {isLoading ? (
         <LoadingBox />
+      ) : error ? (
+        <ErrorBox message={error.message} />
       ) : (
         <TableWrapper>
           <StyledTable>

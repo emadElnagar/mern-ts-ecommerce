@@ -191,7 +191,6 @@ export const updateOrderPaymentStatus = async (
       return res.status(403).json({ message: "Not authorized" });
     }
 
-    // Allowed statuses
     const newStatus = req.body.paymentStatus;
 
     // Track previous status BEFORE update
@@ -242,9 +241,21 @@ export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
         .status(403)
         .json({ message: "Not authorized to cancel this order" });
     }
-    (order as any).status = "Canceled";
-    const updatedOrder = await order.save();
-    res.status(200).json(updatedOrder);
+    (order as any).shippingStatus = "Canceled";
+    await order.save();
+    // If the order was already paid, restock the products
+    if (order.paymentResult?.status === "paid") {
+      await Promise.all(
+        order.orderItems.map(async (item: any) => {
+          await Product.findByIdAndUpdate(
+            item.product,
+            { $inc: { countInStock: item.quantity } },
+            { new: true }
+          );
+        })
+      );
+    }
+    res.status(200).json({ message: "Order Canceled successfully" });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
