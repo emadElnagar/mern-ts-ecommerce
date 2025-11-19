@@ -1,7 +1,8 @@
-import { RequestHandler } from "express";
+import { RequestHandler, Response } from "express";
 import Order from "../models/Order";
 import Category from "../models/category";
 import Product from "../models/product";
+import { AuthenticatedRequest } from "../types/authTypes";
 
 // Get best selling products
 export const getBestSellingProducts: RequestHandler = async (_req, res) => {
@@ -144,15 +145,35 @@ export const getBestSellingCategories: RequestHandler = async (_req, res) => {
   }
 };
 
-// Get total sales and orders
-export const getTotalSalesAndOrders: RequestHandler = async (_req, res) => {
+// Get order statistics ( admin only )
+export const getOrderStats = async (
+  _req: AuthenticatedRequest,
+  res: Response
+) => {
   try {
+    const totalOrders = await Order.countDocuments();
     const totalSalesResult = await Order.aggregate([
       { $group: { _id: null, totalSales: { $sum: "$totalPrice" } } },
     ]);
     const totalSales = totalSalesResult[0] ? totalSalesResult[0].totalSales : 0;
-    const totalOrders = await Order.countDocuments();
-    res.status(200).json({ totalSales, totalOrders });
+    const ordersByStatus = await Order.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } },
+    ]);
+    const monthlyOrders = await Order.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m", date: "$createdAt" } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+    res.status(200).json({
+      totalOrders,
+      totalSales,
+      ordersByStatus,
+      monthlyOrders,
+    });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }

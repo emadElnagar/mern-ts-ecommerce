@@ -1,9 +1,12 @@
-import { Router } from "express";
+import { RequestHandler, Router } from "express";
 import {
   getBestSellersByCategory,
   getBestSellingCategories,
   getBestSellingProducts,
+  getOrderStats,
 } from "../controllers/analysisController";
+import { isAdmin, isAuth } from "../middlewares/auth";
+import { AuthenticatedRequest } from "../types/authTypes";
 
 const analysisRouter = Router();
 
@@ -15,5 +18,13 @@ analysisRouter.get("/bestsellers/bycategory", getBestSellersByCategory);
 
 // Get best selling categories
 analysisRouter.get("/bestsellers/categories", getBestSellingCategories);
+
+// Get order statistics
+analysisRouter.get(
+  "/stats",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => getOrderStats(req as AuthenticatedRequest, res)
+);
 
 export default analysisRouter;
