@@ -230,9 +230,11 @@ export const updateOrderPaymentStatus = async (
 export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const order = await Order.findById(req.params.id);
+    // Check if order exists
     if (!order) {
       return res.status(404).json({ message: "Order not found" });
     }
+    // Authorization check
     if (
       order.customer.toString() !== req.user._id.toString() &&
       req.user.role !== "admin"
@@ -241,7 +243,20 @@ export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
         .status(403)
         .json({ message: "Not authorized to cancel this order" });
     }
-    (order as any).shippingStatus = "Canceled";
+    // Prevent canceling already canceled orders
+    if (order.shippingStatus === "Canceled") {
+      return res.status(400).json({ message: "Order is already canceled" });
+    }
+    // Only pending or processing orders can be canceled
+    if (
+      order.shippingStatus !== "Pending" &&
+      order.shippingStatus !== "Processing"
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Only pending or processing orders can be canceled" });
+    }
+    order.shippingStatus = "Canceled";
     await order.save();
     // If the order was already paid, restock the products
     if (order.paymentResult?.status === "paid") {
