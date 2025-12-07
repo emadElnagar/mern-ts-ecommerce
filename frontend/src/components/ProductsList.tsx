@@ -115,7 +115,9 @@ const ProductsList = () => {
                     <TableData>
                       {product.discount ? "$" + product.discount : 0}
                     </TableData>
-                    <TableData>{product.category.title}</TableData>
+                    {product.category && (
+                      <TableData>{product.category.title}</TableData>
+                    )}
                     <TableData>{product.brand}</TableData>
                     <TableData>{product.countInStock}</TableData>
                     <TableData>{product.sold}</TableData>
