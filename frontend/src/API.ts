@@ -7,3 +7,4 @@ export const PRODUCTS_API_URL = API_URL + "/api/products";
 export const CART_API_URL = API_URL + "/api/products/cart";
 export const WISHLIST_API_URL = API_URL + "/api/products/wishlist";
 export const ORDERS_API_URL = API_URL + "/api/orders";
+export const ANALYSIS_API_URL = API_URL + "/api/analysis";
