@@ -3,8 +3,9 @@ import axios from "axios";
 import { ANALYSIS_API_URL } from "../API";
 
 interface AnalysisState {
-  topProducts: any;
-  topProductsByCategory?: any;
+  topProducts: [] | null;
+  topProductsByCategory?: [] | null;
+  topCategories?: [] | null;
   isLoading: boolean;
   error: string | null;
 }
@@ -12,6 +13,7 @@ interface AnalysisState {
 const initialState: AnalysisState = {
   topProducts: null,
   topProductsByCategory: null,
+  topCategories: null,
   isLoading: false,
   error: null,
 };
@@ -40,6 +42,25 @@ export const fetchBestSellersByCategory = createAsyncThunk(
     try {
       const response = await axios.get(
         `${ANALYSIS_API_URL}/bestsellers/category`
+      );
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
+// Get best selling categories
+export const fetchBestCategories = createAsyncThunk(
+  "analysis/BestSellersByCategory",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${ANALYSIS_API_URL}/bestsellers/categories`
       );
       return response.data;
     } catch (error: any) {
@@ -81,6 +102,19 @@ const analysisSlice = createSlice({
         state.topProductsByCategory = action.payload;
       })
       .addCase(fetchBestSellersByCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Get best selling categories
+      .addCase(fetchBestCategories.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchBestCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.topCategories = action.payload;
+      })
+      .addCase(fetchBestCategories.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
