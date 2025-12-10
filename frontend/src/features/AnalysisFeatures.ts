@@ -36,7 +36,19 @@ const analysisSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder;
+    builder
+      .addCase(fetchTopProducts.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchTopProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.topProducts = action.payload;
+      })
+      .addCase(fetchTopProducts.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 export default analysisSlice.reducer;
