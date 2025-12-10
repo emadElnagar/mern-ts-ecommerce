@@ -4,12 +4,14 @@ import { ANALYSIS_API_URL } from "../API";
 
 interface AnalysisState {
   topProducts: any;
+  topProductsByCategory?: any;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AnalysisState = {
   topProducts: null,
+  topProductsByCategory: null,
   isLoading: false,
   error: null,
 };
@@ -31,12 +33,32 @@ export const fetchTopProducts = createAsyncThunk(
   }
 );
 
+// Get best sellers by category
+export const fetchBestSellersByCategory = createAsyncThunk(
+  "analysis/BestSellersByCategory",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(
+        `${ANALYSIS_API_URL}/bestsellers/category`
+      );
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const analysisSlice = createSlice({
   name: "analysis",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Get best seller products
       .addCase(fetchTopProducts.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -48,7 +70,21 @@ const analysisSlice = createSlice({
       .addCase(fetchTopProducts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+      })
+      // Get best sellers by category
+      .addCase(fetchBestSellersByCategory.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchBestSellersByCategory.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.topProductsByCategory = action.payload;
+      })
+      .addCase(fetchBestSellersByCategory.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
       });
   },
 });
+
 export default analysisSlice.reducer;

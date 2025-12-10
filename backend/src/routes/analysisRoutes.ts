@@ -14,7 +14,7 @@ const analysisRouter = Router();
 analysisRouter.get("/bestsellers/list", getBestSellingProducts);
 
 // Get best selling products by category
-analysisRouter.get("/bestsellers/bycategory", getBestSellersByCategory);
+analysisRouter.get("/bestsellers/category", getBestSellersByCategory);
 
 // Get best selling categories
 analysisRouter.get("/bestsellers/categories", getBestSellingCategories);
