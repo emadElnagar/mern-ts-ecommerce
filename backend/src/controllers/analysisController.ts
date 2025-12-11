@@ -178,3 +178,43 @@ export const getOrderStats = async (
     res.status(500).json({ message: error.message });
   }
 };
+
+// Get all orders income (admin only)
+export const getAllOrdersIncome = async (
+  _req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const last30Days = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+    const last90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+    const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
+
+    const getIncomeSince = async (startDate: Date) => {
+      const incomeData = await Order.aggregate([
+        { $match: { createdAt: { $gte: startDate } } },
+        { $group: { _id: null, totalIncome: { $sum: "$totalPrice" } } },
+      ]);
+      return incomeData[0] ? incomeData[0].totalIncome : 0;
+    };
+
+    const [income30Days, income90Days, incomeYear] = await Promise.all([
+      getIncomeSince(last30Days),
+      getIncomeSince(last90Days),
+      getIncomeSince(lastYear),
+    ]);
+    // Get total income
+    const totalIncome = await Order.aggregate([
+      { $group: { _id: null, totalIncome: { $sum: "$totalPrice" } } },
+    ]);
+    const totalIncomeValue = totalIncome[0] ? totalIncome[0].totalIncome : 0;
+
+    res.status(200).json({
+      incomeLast30Days: income30Days,
+      incomeLast90Days: income90Days,
+      incomeLastYear: incomeYear,
+      totalIncome: totalIncomeValue,
+    });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};

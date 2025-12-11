@@ -1,5 +1,6 @@
 import { RequestHandler, Router } from "express";
 import {
+  getAllOrdersIncome,
   getBestSellersByCategory,
   getBestSellingCategories,
   getBestSellingProducts,
@@ -25,6 +26,14 @@ analysisRouter.get(
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
   async (req, res) => getOrderStats(req as AuthenticatedRequest, res)
+);
+
+// Get all orders income
+analysisRouter.get(
+  "/income",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => getAllOrdersIncome(req as AuthenticatedRequest, res)
 );
 
 export default analysisRouter;
