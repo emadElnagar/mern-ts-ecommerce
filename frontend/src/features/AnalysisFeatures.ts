@@ -56,7 +56,7 @@ export const fetchBestSellersByCategory = createAsyncThunk(
 
 // Get best selling categories
 export const fetchBestCategories = createAsyncThunk(
-  "analysis/BestSellersByCategory",
+  "analysis/BestSellersCategories",
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(
