@@ -3,17 +3,19 @@ import axios from "axios";
 import { ANALYSIS_API_URL } from "../API";
 
 interface AnalysisState {
-  topProducts: [] | null;
-  topProductsByCategory?: [] | null;
-  topCategories?: [] | null;
+  topProducts: [];
+  topProductsByCategory?: [];
+  topCategories?: [];
+  orders?: [];
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AnalysisState = {
-  topProducts: null,
-  topProductsByCategory: null,
-  topCategories: null,
+  topProducts: [],
+  topProductsByCategory: [],
+  topCategories: [],
+  orders: [],
   isLoading: false,
   error: null,
 };
@@ -73,6 +75,23 @@ export const fetchBestCategories = createAsyncThunk(
   }
 );
 
+// Get order statistics
+export const fetchOrderStats = createAsyncThunk(
+  "analysis/OrderStats",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${ANALYSIS_API_URL}/stats`);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const analysisSlice = createSlice({
   name: "analysis",
   initialState,
@@ -115,6 +134,19 @@ const analysisSlice = createSlice({
         state.topCategories = action.payload;
       })
       .addCase(fetchBestCategories.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Get order statistics
+      .addCase(fetchOrderStats.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderStats.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.orders = action.payload;
+      })
+      .addCase(fetchOrderStats.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
