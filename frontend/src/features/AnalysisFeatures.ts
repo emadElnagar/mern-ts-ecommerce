@@ -7,6 +7,7 @@ interface AnalysisState {
   topProductsByCategory?: [];
   topCategories?: [];
   orders?: [];
+  income?: object;
   isLoading: boolean;
   error: string | null;
 }
@@ -16,6 +17,7 @@ const initialState: AnalysisState = {
   topProductsByCategory: [],
   topCategories: [],
   orders: [],
+  income: {},
   isLoading: false,
   error: null,
 };
@@ -92,6 +94,23 @@ export const fetchOrderStats = createAsyncThunk(
   }
 );
 
+// Get orders income
+export const fetchOrderIncome = createAsyncThunk(
+  "analysis/OrderIncome",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${ANALYSIS_API_URL}/income`);
+      return response.data;
+    } catch (error: any) {
+      const message =
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong";
+      return rejectWithValue(message);
+    }
+  }
+);
+
 const analysisSlice = createSlice({
   name: "analysis",
   initialState,
@@ -147,6 +166,19 @@ const analysisSlice = createSlice({
         state.orders = action.payload;
       })
       .addCase(fetchOrderStats.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload as string;
+      })
+      // Get orders income
+      .addCase(fetchOrderIncome.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchOrderIncome.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.income = action.payload;
+      })
+      .addCase(fetchOrderIncome.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
