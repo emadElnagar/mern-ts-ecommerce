@@ -3,20 +3,20 @@ import axios from "axios";
 import { ANALYSIS_API_URL } from "../API";
 
 interface AnalysisState {
-  topProducts: [];
-  topProductsByCategory?: [];
-  topCategories?: [];
-  orders?: [];
+  topProducts: object;
+  topProductsByCategory?: object;
+  topCategories?: object;
+  orders?: object;
   income?: object;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AnalysisState = {
-  topProducts: [],
-  topProductsByCategory: [],
-  topCategories: [],
-  orders: [],
+  topProducts: {},
+  topProductsByCategory: {},
+  topCategories: {},
+  orders: {},
   income: {},
   isLoading: false,
   error: null,
