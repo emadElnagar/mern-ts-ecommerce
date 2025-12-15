@@ -24,6 +24,7 @@ import WishlistPage from "./pages/cart/Wishlist";
 import OrdersPage from "./pages/admin/Orders";
 import SingleOrder from "./pages/admin/SingleOrder";
 import AdminLayout from "./layouts/AdminLayout";
+import BestSellingPage from "./pages/product/BestSelling";
 
 function AppContent() {
   const { user } = useSelector((state: any) => state.user);
@@ -44,6 +45,7 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/checkout" element={<CheckOut />} />
+        <Route path="/bestselling" element={<BestSellingPage />} />
         {user !== null && (
           <Route path="/users/profile/settings" element={<ProfileSettings />} />
         )}

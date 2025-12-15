@@ -126,7 +126,7 @@ function NavBar() {
             <Link to="/products">products</Link>
           </ListItem>
           <ListItem>
-            <Link to="/collections">collections</Link>
+            <Link to="/bestselling">best selling</Link>
           </ListItem>
         </ListContainer>
         <ListContainerIcon>
