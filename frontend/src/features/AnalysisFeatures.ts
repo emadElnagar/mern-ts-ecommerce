@@ -2,22 +2,66 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { ANALYSIS_API_URL } from "../API";
 
+interface BestSellingProduct {
+  product: any;
+  category: any;
+  totalSold: number;
+}
+
+interface OrderStats {
+  totalOrders: number;
+  totalSales: number;
+  ordersByStatus: {
+    _id: string;
+    count: number;
+  }[];
+  monthlyOrders: {
+    _id: string;
+    count: number;
+  }[];
+}
+
+interface IncomeStats {
+  incomeLast30Days: number;
+  incomeLast90Days: number;
+  incomeLastYear: number;
+  totalIncome: number;
+}
+
 interface AnalysisState {
-  topProducts: object;
-  topProductsByCategory?: object;
-  topCategories?: object;
-  orders?: object;
-  income?: object;
+  topProducts: {
+    last30Days: BestSellingProduct[];
+    last90Days: BestSellingProduct[];
+    lastYear: BestSellingProduct[];
+  };
+  topProductsByCategory: Record<string, any[]>;
+  topCategories: any[];
+  orders: OrderStats;
+  income: IncomeStats;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: AnalysisState = {
-  topProducts: {},
+  topProducts: {
+    last30Days: [],
+    last90Days: [],
+    lastYear: [],
+  },
   topProductsByCategory: {},
-  topCategories: {},
-  orders: {},
-  income: {},
+  topCategories: [],
+  orders: {
+    totalOrders: 0,
+    totalSales: 0,
+    ordersByStatus: [],
+    monthlyOrders: [],
+  },
+  income: {
+    incomeLast30Days: 0,
+    incomeLast90Days: 0,
+    incomeLastYear: 0,
+    totalIncome: 0,
+  },
   isLoading: false,
   error: null,
 };
