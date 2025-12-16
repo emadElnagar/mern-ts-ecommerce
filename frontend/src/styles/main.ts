@@ -225,6 +225,9 @@ export const Grid = styled.div`
 
 export const Tabs = styled.div`
   display: flex;
+  &.center {
+    justify-content: center;
+  }
 `;
 
 export const Tab = styled.button`
