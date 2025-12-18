@@ -126,7 +126,13 @@ export const fetchOrderStats = createAsyncThunk(
   "analysis/OrderStats",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${ANALYSIS_API_URL}/stats`);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${ANALYSIS_API_URL}/stats`, config);
       return response.data;
     } catch (error: any) {
       const message =
@@ -143,7 +149,13 @@ export const fetchOrderIncome = createAsyncThunk(
   "analysis/OrderIncome",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${ANALYSIS_API_URL}/income`);
+      const token = sessionStorage.getItem("token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const response = await axios.get(`${ANALYSIS_API_URL}/income`, config);
       return response.data;
     } catch (error: any) {
       const message =
