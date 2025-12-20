@@ -275,3 +275,11 @@ export const PaymentMethod = styled.div`
     margin-inline-start: 10px;
   }
 `;
+
+export const AnalysisCard = styled.div`
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+`;
