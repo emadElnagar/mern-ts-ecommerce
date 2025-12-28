@@ -240,6 +240,16 @@ export const Tab = styled.button`
   }
 `;
 
+export const TabButton = styled.button`
+  background: transparent;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  &.active {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  }
+`;
+
 export const QuantityInput = styled.input`
   border: 1px solid ${vars.primary};
   text-align: center;
