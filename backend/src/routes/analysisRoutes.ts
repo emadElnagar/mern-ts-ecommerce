@@ -4,7 +4,7 @@ import {
   getBestSellersByCategory,
   getBestSellingCategories,
   getBestSellingProducts,
-  getOrderStats,
+  getOrdersCount,
 } from "../controllers/analysisController";
 import { isAdmin, isAuth } from "../middlewares/auth";
 import { AuthenticatedRequest } from "../types/authTypes";
@@ -20,12 +20,12 @@ analysisRouter.get("/bestsellers/category", getBestSellersByCategory);
 // Get best selling categories
 analysisRouter.get("/bestsellers/categories", getBestSellingCategories);
 
-// Get order statistics
+// Get orders count
 analysisRouter.get(
-  "/stats",
+  "/count",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
-  async (req, res) => getOrderStats(req as AuthenticatedRequest, res)
+  async (req, res) => getOrdersCount(req as AuthenticatedRequest, res)
 );
 
 // Get all orders income
