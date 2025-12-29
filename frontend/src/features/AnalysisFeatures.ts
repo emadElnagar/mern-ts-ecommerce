@@ -9,16 +9,10 @@ interface BestSellingProduct {
 }
 
 interface OrderStats {
+  ordersLast30Days: number;
+  ordersLast90Days: number;
+  ordersLastYear: number;
   totalOrders: number;
-  totalSales: number;
-  ordersByStatus: {
-    _id: string;
-    count: number;
-  }[];
-  monthlyOrders: {
-    _id: string;
-    count: number;
-  }[];
 }
 
 interface IncomeStats {
@@ -38,6 +32,7 @@ interface AnalysisState {
   topCategories: any[];
   orders: OrderStats;
   income: IncomeStats;
+  ordersByStatus: any[];
   isLoading: boolean;
   error: string | null;
 }
@@ -51,10 +46,10 @@ const initialState: AnalysisState = {
   topProductsByCategory: {},
   topCategories: [],
   orders: {
+    ordersLast30Days: 0,
+    ordersLast90Days: 0,
+    ordersLastYear: 0,
     totalOrders: 0,
-    totalSales: 0,
-    ordersByStatus: [],
-    monthlyOrders: [],
   },
   income: {
     incomeLast30Days: 0,
@@ -62,6 +57,7 @@ const initialState: AnalysisState = {
     incomeLastYear: 0,
     totalIncome: 0,
   },
+  ordersByStatus: [],
   isLoading: false,
   error: null,
 };
