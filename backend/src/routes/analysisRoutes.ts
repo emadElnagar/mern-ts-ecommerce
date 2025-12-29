@@ -4,6 +4,7 @@ import {
   getBestSellersByCategory,
   getBestSellingCategories,
   getBestSellingProducts,
+  getOrdersByStatus,
   getOrdersCount,
 } from "../controllers/analysisController";
 import { isAdmin, isAuth } from "../middlewares/auth";
@@ -34,6 +35,14 @@ analysisRouter.get(
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
   async (req, res) => getAllOrdersIncome(req as AuthenticatedRequest, res)
+);
+
+// Get order by status
+analysisRouter.get(
+  "/status",
+  isAuth as RequestHandler,
+  isAdmin as RequestHandler,
+  async (req, res) => getOrdersByStatus(req as AuthenticatedRequest, res)
 );
 
 export default analysisRouter;

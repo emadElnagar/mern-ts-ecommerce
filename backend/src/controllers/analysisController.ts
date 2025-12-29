@@ -160,9 +160,6 @@ export const getOrdersCount = async (
     };
     // Total orders
     const totalOrders = await Order.countDocuments();
-    res.status(200).json({
-      totalOrders,
-    });
     const [orders30Days, orders90Days, ordersYear] = await Promise.all([
       getOrdersCountSince(last30Days),
       getOrdersCountSince(last90Days),
@@ -214,6 +211,21 @@ export const getAllOrdersIncome = async (
       incomeLastYear: incomeYear,
       totalIncome: totalIncomeValue,
     });
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get orders by status (admin only)
+export const getOrdersByStatus = async (
+  _req: AuthenticatedRequest,
+  res: Response
+) => {
+  try {
+    const ordersByStatus = await Order.aggregate([
+      { $group: { _id: "$shippingStatus", count: { $sum: 1 } } },
+    ]);
+    res.status(200).json(ordersByStatus);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
