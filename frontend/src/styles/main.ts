@@ -228,6 +228,11 @@ export const Tabs = styled.div`
   &.center {
     justify-content: center;
   }
+  &.underline {
+    border-bottom: 2px solid ${vars.shadow};
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
 `;
 
 export const Tab = styled.button`

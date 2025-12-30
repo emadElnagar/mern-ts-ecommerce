@@ -5,15 +5,7 @@ import {
   fetchOrderStats,
 } from "../features/AnalysisFeatures";
 import type { AppDispatch, RootState } from "../store";
-import {
-  AnalysisCard,
-  FlexRow,
-  Grid,
-  Section,
-  Tab,
-  TabButton,
-  Tabs,
-} from "../styles/main";
+import { AnalysisCard, FlexRow, TabButton, Tabs } from "../styles/main";
 import ErrorBox from "./ErrorBox";
 import LoadingBox from "./LoadingBox";
 
@@ -28,14 +20,14 @@ const MainAnalysis = () => {
     dispatch(fetchOrderIncome());
   }, [dispatch]);
   return (
-    <Section>
+    <>
       {isLoading ? (
         <LoadingBox />
       ) : error ? (
         <ErrorBox message={error} />
       ) : (
-        <div>
-          <Tabs className="center">
+        <div className="paper-container">
+          <Tabs className="center underline">
             <TabButton
               className={activeTab === "1 month" ? "active" : ""}
               onClick={() => setActiveTab("1 month")}
@@ -77,7 +69,7 @@ const MainAnalysis = () => {
           </FlexRow>
         </div>
       )}
-    </Section>
+    </>
   );
 };
 

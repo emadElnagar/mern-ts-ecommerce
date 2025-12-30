@@ -128,7 +128,7 @@ export const fetchOrderStats = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const response = await axios.get(`${ANALYSIS_API_URL}/stats`, config);
+      const response = await axios.get(`${ANALYSIS_API_URL}/count`, config);
       return response.data;
     } catch (error: any) {
       const message =
