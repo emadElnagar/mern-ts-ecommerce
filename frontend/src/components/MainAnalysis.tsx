@@ -57,13 +57,26 @@ const MainAnalysis = () => {
             <AnalysisCard>
               <h3>Total Orders</h3>
               <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-                {orders?.totalOrders}
+                {activeTab === "1 month"
+                  ? orders?.ordersLast30Days
+                  : activeTab === "90 days"
+                  ? orders?.ordersLast90Days
+                  : activeTab === "1 year"
+                  ? orders?.ordersLastYear
+                  : orders?.totalOrders}
               </p>
             </AnalysisCard>
             <AnalysisCard>
               <h3>Total Income</h3>
               <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-                ${income?.totalIncome?.toFixed(2)}
+                $
+                {activeTab === "1 month"
+                  ? income?.incomeLast30Days?.toFixed(2)
+                  : activeTab === "90 days"
+                  ? income?.incomeLast90Days?.toFixed(2)
+                  : activeTab === "1 year"
+                  ? income?.incomeLastYear?.toFixed(2)
+                  : income?.totalIncome?.toFixed(2)}
               </p>
             </AnalysisCard>
           </FlexRow>
