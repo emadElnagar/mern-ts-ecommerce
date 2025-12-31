@@ -10,7 +10,7 @@ import ErrorBox from "./ErrorBox";
 import LoadingBox from "./LoadingBox";
 
 const MainAnalysis = () => {
-  const { error, isLoading, orders, income } = useSelector(
+  const { error, isLoading, ordersData, income } = useSelector(
     (state: RootState) => state.analysis
   );
   const [activeTab, setActiveTab] = useState("1 month");
@@ -19,6 +19,7 @@ const MainAnalysis = () => {
     dispatch(fetchOrderStats());
     dispatch(fetchOrderIncome());
   }, [dispatch]);
+  console.log(ordersData);
   return (
     <>
       {isLoading ? (
@@ -58,12 +59,24 @@ const MainAnalysis = () => {
               <h3>Total Orders</h3>
               <p style={{ fontSize: "24px", fontWeight: "bold" }}>
                 {activeTab === "1 month"
-                  ? orders?.ordersLast30Days
+                  ? ordersData.orders?.ordersLast30Days
                   : activeTab === "90 days"
-                  ? orders?.ordersLast90Days
+                  ? ordersData.orders?.ordersLast90Days
                   : activeTab === "1 year"
-                  ? orders?.ordersLastYear
-                  : orders?.totalOrders}
+                  ? ordersData.orders?.ordersLastYear
+                  : ordersData.orders?.totalOrders}
+              </p>
+            </AnalysisCard>
+            <AnalysisCard>
+              <h3>Completed Orders</h3>
+              <p style={{ fontSize: "24px", fontWeight: "bold" }}>
+                {activeTab === "1 month"
+                  ? ordersData.completedOrders?.completedLast30Days
+                  : activeTab === "90 days"
+                  ? ordersData.completedOrders?.completedLast90Days
+                  : activeTab === "1 year"
+                  ? ordersData.completedOrders?.completedLastYear
+                  : ordersData.completedOrders?.totalDeliveredOrders}
               </p>
             </AnalysisCard>
             <AnalysisCard>

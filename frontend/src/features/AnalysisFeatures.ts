@@ -9,10 +9,18 @@ interface BestSellingProduct {
 }
 
 interface OrderStats {
-  ordersLast30Days: number;
-  ordersLast90Days: number;
-  ordersLastYear: number;
-  totalOrders: number;
+  orders: {
+    ordersLast30Days: number;
+    ordersLast90Days: number;
+    ordersLastYear: number;
+    totalOrders: number;
+  };
+  completedOrders: {
+    completedLast30Days: number;
+    completedLast90Days: number;
+    completedLastYear: number;
+    totalDeliveredOrders: number;
+  };
 }
 
 interface IncomeStats {
@@ -30,7 +38,7 @@ interface AnalysisState {
   };
   topProductsByCategory: Record<string, any[]>;
   topCategories: any[];
-  orders: OrderStats;
+  ordersData: OrderStats;
   income: IncomeStats;
   ordersByStatus: any[];
   isLoading: boolean;
@@ -45,11 +53,25 @@ const initialState: AnalysisState = {
   },
   topProductsByCategory: {},
   topCategories: [],
-  orders: {
-    ordersLast30Days: 0,
-    ordersLast90Days: 0,
-    ordersLastYear: 0,
-    totalOrders: 0,
+  // orders: {
+  //   ordersLast30Days: 0,
+  //   ordersLast90Days: 0,
+  //   ordersLastYear: 0,
+  //   totalOrders: 0,
+  // },
+  ordersData: {
+    orders: {
+      ordersLast30Days: 0,
+      ordersLast90Days: 0,
+      ordersLastYear: 0,
+      totalOrders: 0,
+    },
+    completedOrders: {
+      completedLast30Days: 0,
+      completedLast90Days: 0,
+      completedLastYear: 0,
+      totalDeliveredOrders: 0,
+    },
   },
   income: {
     incomeLast30Days: 0,
@@ -215,7 +237,7 @@ const analysisSlice = createSlice({
       })
       .addCase(fetchOrderStats.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.orders = action.payload;
+        state.ordersData = action.payload;
       })
       .addCase(fetchOrderStats.rejected, (state, action) => {
         state.isLoading = false;
