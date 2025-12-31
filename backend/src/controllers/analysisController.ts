@@ -189,6 +189,7 @@ export const getAllOrdersIncome = async (
     const getIncomeSince = async (startDate: Date) => {
       const incomeData = await Order.aggregate([
         { $match: { createdAt: { $gte: startDate } } },
+        { $match: { shippingStatus: "Delivered" } },
         { $group: { _id: null, totalIncome: { $sum: "$totalPrice" } } },
       ]);
       return incomeData[0] ? incomeData[0].totalIncome : 0;
@@ -201,6 +202,7 @@ export const getAllOrdersIncome = async (
     ]);
     // Get total income
     const totalIncome = await Order.aggregate([
+      { $match: { shippingStatus: "Delivered" } },
       { $group: { _id: null, totalIncome: { $sum: "$totalPrice" } } },
     ]);
     const totalIncomeValue = totalIncome[0] ? totalIncome[0].totalIncome : 0;
