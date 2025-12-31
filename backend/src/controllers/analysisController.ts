@@ -155,9 +155,28 @@ export const getOrdersCount = async (
     const last90Days = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
     const lastYear = new Date(Date.now() - 365 * 24 * 60 * 60 * 1000);
 
+    // Get all orders count
     const getOrdersCountSince = async (startDate: Date) => {
       return await Order.countDocuments({ createdAt: { $gte: startDate } });
     };
+
+    // Get delivered orders
+    const getDeliveredOrders = async (startDate: Date) => {
+      const deliveredOrders = await Order.aggregate([
+        { $match: { createdAt: { $gte: startDate } } },
+        { $match: { shippingStatus: "Delivered" } },
+      ]);
+      return deliveredOrders.length;
+    };
+
+    // Get total delivered orders count
+    const getAllDeliveredOrders = async () => {
+      const allDeliveredOrders = await Order.aggregate([
+        { $match: { shippingStatus: "Delivered" } },
+      ]);
+      return allDeliveredOrders.length;
+    };
+
     // Total orders
     const totalOrders = await Order.countDocuments();
     const [orders30Days, orders90Days, ordersYear] = await Promise.all([
@@ -165,11 +184,28 @@ export const getOrdersCount = async (
       getOrdersCountSince(last90Days),
       getOrdersCountSince(lastYear),
     ]);
+    // Completed orders
+    const totalDeliveredOrders = await getAllDeliveredOrders();
+    const [deliveredOrders30Days, deliveredOrders90Days, deliveredOrdersYear] =
+      await Promise.all([
+        getDeliveredOrders(last30Days),
+        getDeliveredOrders(last90Days),
+        getDeliveredOrders(lastYear),
+      ]);
+
     res.status(200).json({
-      ordersLast30Days: orders30Days,
-      ordersLast90Days: orders90Days,
-      ordersLastYear: ordersYear,
-      totalOrders,
+      orders: {
+        ordersLast30Days: orders30Days,
+        ordersLast90Days: orders90Days,
+        ordersLastYear: ordersYear,
+        totalOrders,
+      },
+      completedOrders: {
+        completedLast30Days: deliveredOrders30Days,
+        completedLast90Days: deliveredOrders90Days,
+        completedLastYear: deliveredOrdersYear,
+        totalDeliveredOrders,
+      },
     });
   } catch (error: any) {
     res.status(500).json({ message: error.message });
