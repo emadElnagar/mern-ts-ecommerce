@@ -6,6 +6,7 @@ const url = ORDERS_API_URL;
 
 export interface Order {
   _id: object;
+  orderNumber: string;
   customer: object;
   orderItems: Array<{
     product: object;
