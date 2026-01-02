@@ -6,7 +6,8 @@ import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import { Link, useParams } from "react-router-dom";
 import { GetOrder } from "../../features/OrderFeatures";
-import { FlexRow, HeaderCenter, Section } from "../../styles/main";
+import { FlexRow, HeaderCenter, Image, Section } from "../../styles/main";
+import { API_URL } from "../../API";
 
 const SingleOrder = () => {
   const { id } = useParams();
@@ -15,8 +16,6 @@ const SingleOrder = () => {
   useEffect(() => {
     dispatch(GetOrder(id));
   }, [dispatch, id]);
-  console.log(id);
-  console.log(order);
   return (
     <Fragment>
       <Helmet>
@@ -29,17 +28,41 @@ const SingleOrder = () => {
           ) : error ? (
             <ErrorBox message={error.message} />
           ) : (
-            <>
-              <HeaderCenter>Order number {order.orderNumber}</HeaderCenter>
-              <FlexRow>
-                <h3 className="text-center">Order customer : </h3>
-                <Link to={`/users/profile/${order.customer._id}`}>
-                  <h3 className="text-center">
+            order && (
+              <>
+                <HeaderCenter>Order number {order.orderNumber}</HeaderCenter>
+                <h3 className="text-center">
+                  Order customer:{" "}
+                  <Link to={`/users/profile/${order.customer._id}`}>
                     {order.customer.firstName} {order.customer.lastName}
-                  </h3>
-                </Link>
-              </FlexRow>
-            </>
+                  </Link>
+                </h3>
+                {order.orderItems.map((item: any) => (
+                  <div key={item._id}>
+                    <Link
+                      style={{ margin: "auto" }}
+                      to={`/products/${item.product._id}`}
+                    >
+                      <div style={{ width: "100px", margin: "20px auto" }}>
+                        <Image
+                          src={`${API_URL}/${item.product.images[0]}`}
+                          alt={item.product.name}
+                        />
+                      </div>
+                      <h3 className="text-center">{item.product.name}</h3>
+                    </Link>
+                    <h3 className="text-center">Qty: {item.quantity}</h3>
+                    <h3 className="text-center">Price: ${item.price}</h3>
+                    <h3 className="text-center">
+                      Total price: ${`${item.price * item.quantity}`}
+                    </h3>
+                  </div>
+                ))}
+                <h3 className="text-center">
+                  Order Total price: ${order.totalPrice}
+                </h3>
+              </>
+            )
           )}
         </Section>
       </Content>
