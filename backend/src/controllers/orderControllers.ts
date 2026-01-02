@@ -25,9 +25,13 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
         if (!product) {
           return res.status(404).json({ message: "Product not found" });
         }
+        let itemPrice;
+        product.discount
+          ? (itemPrice = product.price - product.discount)
+          : (itemPrice = product.price);
         return {
           product: product._id,
-          price: product.price,
+          price: itemPrice,
           quantity: item.quantity,
         };
       })

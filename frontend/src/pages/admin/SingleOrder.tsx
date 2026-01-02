@@ -41,7 +41,7 @@ const SingleOrder = () => {
                   <div key={item._id}>
                     <Link
                       style={{ margin: "auto" }}
-                      to={`/products/${item.product._id}`}
+                      to={`/products/${item.product.slug}`}
                     >
                       <div style={{ width: "100px", margin: "20px auto" }}>
                         <Image
