@@ -1,7 +1,7 @@
 import Order from "../models/Order";
 import Product from "../models/product";
 import { AuthenticatedRequest } from "../types/authTypes";
-import { Response } from "express";
+import { RequestHandler, Response } from "express";
 
 // Create a new order
 export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
@@ -102,12 +102,9 @@ export const getAllOrders = async (
 };
 
 // Get user orders ( user specific )
-export const getUserOrders = async (
-  req: AuthenticatedRequest,
-  res: Response
-) => {
+export const getUserOrders: RequestHandler = async (req, res) => {
   try {
-    const orders = await Order.find({ customer: req.user._id });
+    const orders = await Order.find({ customer: req.params.id });
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: "No orders found for this user" });
     }

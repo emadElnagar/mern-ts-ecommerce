@@ -103,15 +103,9 @@ export const GetAllOrders: any = createAsyncThunk(
 // Get user orders
 export const GetUserOrders: any = createAsyncThunk(
   "orders/user",
-  async (_, { rejectWithValue }) => {
+  async (id: string, { rejectWithValue }) => {
     try {
-      const token = sessionStorage.getItem("token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const response = await axios.get(`${url}/user`, config);
+      const response = await axios.get(`${url}/user/${id}`);
       return response.data;
     } catch (error: any) {
       const message =

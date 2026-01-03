@@ -16,6 +16,7 @@ import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import { API_URL } from "../../API";
+import { GetUserOrders } from "../../features/OrderFeatures";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -23,10 +24,12 @@ const ProfilePage = () => {
   const { user, profile, isLoading, error } = useSelector(
     (state: any) => state.user
   );
+  const { userOrders } = useSelector((state: any) => state.order);
   const dispatch = useDispatch();
   // Get profile data
   useEffect(() => {
     dispatch(GetProfile(id));
+    dispatch(GetUserOrders(id));
   }, [dispatch, id]);
   // Handel image upload
   const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {

@@ -27,9 +27,7 @@ orderRouter.get(
 );
 
 // Get user orders
-orderRouter.get("/user", isAuth as RequestHandler, async (req, res) =>
-  getUserOrders(req as AuthenticatedRequest, res)
-);
+orderRouter.get("/user/:id", getUserOrders);
 
 // Get specific order
 orderRouter.get("/:id", isAuth as RequestHandler, async (req, res) =>
