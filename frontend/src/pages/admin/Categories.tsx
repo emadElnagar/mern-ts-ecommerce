@@ -21,7 +21,7 @@ const CategoriesPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-admin</title>
+        <title>Voltaro-admin</title>
       </Helmet>
       <Content>
         <Section>

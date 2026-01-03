@@ -6,7 +6,7 @@ function Home() {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics</title>
+        <title>Voltaro</title>
       </Helmet>
       <Container></Container>
     </Fragment>

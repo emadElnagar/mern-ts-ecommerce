@@ -60,7 +60,7 @@ const ProfilePage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-profile</title>
+        <title>Voltaro-profile</title>
       </Helmet>
       {isLoading ? (
         <LoadingBox />

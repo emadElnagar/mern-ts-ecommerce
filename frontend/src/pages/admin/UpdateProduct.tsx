@@ -144,7 +144,7 @@ const UpdatePage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Update Product</title>
+        <title>Voltaro - Update Product</title>
       </Helmet>
       <Content>
         {product && (

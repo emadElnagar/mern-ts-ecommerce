@@ -50,7 +50,7 @@ const Cart = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-cart</title>
+        <title>Voltaro-cart</title>
       </Helmet>
       <Container>
         <Section>

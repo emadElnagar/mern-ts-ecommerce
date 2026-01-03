@@ -72,7 +72,7 @@ const SingleProduct = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-product</title>
+        <title>Voltaro-product</title>
       </Helmet>
       <Main>
         <Container>

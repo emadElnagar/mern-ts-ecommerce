@@ -52,7 +52,7 @@ function RegisterPage() {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-register</title>
+        <title>Voltaro-register</title>
       </Helmet>
       {isLoading ? (
         <LoadingBox />

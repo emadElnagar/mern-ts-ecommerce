@@ -8,7 +8,7 @@ const AdminMainPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-Admin</title>
+        <title>Voltaro-Admin</title>
       </Helmet>
       <Content>
         <MainAnalysis />

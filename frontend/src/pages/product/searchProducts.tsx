@@ -20,7 +20,7 @@ const SearchProductsPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>electronics-search</title>
+        <title>Voltaro-search</title>
       </Helmet>
       <Main>
         <Container>

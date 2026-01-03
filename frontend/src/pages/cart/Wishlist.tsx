@@ -41,7 +41,7 @@ const WishlistPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>wishlist</title>
+        <title>Voltaro-wishlist</title>
       </Helmet>
       <Container>
         <Section>

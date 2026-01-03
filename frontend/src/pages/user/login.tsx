@@ -40,7 +40,7 @@ function LoginPage() {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-login</title>
+        <title>Voltaro-login</title>
       </Helmet>
       {isLoading ? (
         <LoadingBox />

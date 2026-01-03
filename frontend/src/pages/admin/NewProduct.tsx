@@ -144,7 +144,7 @@ const NewProductPage = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Add New Product</title>
+        <title>Voltaro-Add New Product</title>
       </Helmet>
 
       <Content>

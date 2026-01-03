@@ -77,7 +77,7 @@ const CheckOut = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>checkout</title>
+        <title>Voltaro-checkout</title>
       </Helmet>
       <Container>
         {cart && cart.length > 0 ? (

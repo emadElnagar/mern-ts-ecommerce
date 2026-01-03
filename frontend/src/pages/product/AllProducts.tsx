@@ -33,7 +33,7 @@ const AllProducts = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-products</title>
+        <title>Voltaro-products</title>
       </Helmet>
       <Main>
         <Container>

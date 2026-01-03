@@ -113,7 +113,7 @@ const AllUsers = () => {
   return (
     <Fragment>
       <Helmet>
-        <title>Electronics-Admin</title>
+        <title>Voltaro-Admin</title>
       </Helmet>
       <Content>
         <Section>
