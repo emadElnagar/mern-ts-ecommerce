@@ -15,7 +15,10 @@ import {
   ButtonRoundedEnd,
 } from "../../styles/main";
 import { useDispatch, useSelector } from "react-redux";
-import { GetSingleProduct } from "../../features/ProductFeatures";
+import {
+  GetSimilarProducts,
+  GetSingleProduct,
+} from "../../features/ProductFeatures";
 import { useParams } from "react-router-dom";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
@@ -50,6 +53,7 @@ const SingleProduct = () => {
   // Get single product
   useEffect(() => {
     dispatch(GetSingleProduct(slug));
+    dispatch(GetSimilarProducts(slug));
   }, [dispatch, slug]);
   // Product price calculation
   const finalprice = product && product.price - product.discount;
