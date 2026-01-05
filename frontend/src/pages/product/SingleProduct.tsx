@@ -19,7 +19,7 @@ import {
   GetSimilarProducts,
   GetSingleProduct,
 } from "../../features/ProductFeatures";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import RelatedProducts from "../../components/RelatedProducts";
@@ -34,6 +34,7 @@ import RatingPercentage from "../../components/RatingPercentage";
 import { API_URL } from "../../API";
 
 const SingleProduct = () => {
+  const reviewsRange = 2;
   const dispatch = useDispatch();
   const [imgIndex, setImgIndex] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
@@ -229,8 +230,9 @@ const SingleProduct = () => {
                             product.reviews &&
                             product.reviews.length > 0 && (
                               <div className="reviews">
-                                {product.reviews.map(
-                                  (review: any, index: number) => (
+                                {product.reviews
+                                  .slice(0, reviewsRange)
+                                  .map((review: any, index: number) => (
                                     <div className="review" key={index}>
                                       <div className="review-user">
                                         <img
@@ -258,7 +260,16 @@ const SingleProduct = () => {
                                         <p>{review.comment}</p>
                                       </div>
                                     </div>
-                                  )
+                                  ))}
+                                {product.reviews.length > reviewsRange && (
+                                  <>
+                                    <Link
+                                      to={`/${product.slug}/reviews`}
+                                      className="all-reviews-link"
+                                    >
+                                      See all reviews
+                                    </Link>
+                                  </>
                                 )}
                               </div>
                             )}
