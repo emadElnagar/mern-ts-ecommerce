@@ -32,6 +32,7 @@ import { AiOutlineMinus } from "react-icons/ai";
 import { addToCart } from "../../features/CartFeatures";
 import RatingPercentage from "../../components/RatingPercentage";
 import { API_URL } from "../../API";
+import ReviewItem from "../../components/ProductReview";
 
 const SingleProduct = () => {
   const reviewsRange = 2;
@@ -233,33 +234,7 @@ const SingleProduct = () => {
                                 {product.reviews
                                   .slice(0, reviewsRange)
                                   .map((review: any, index: number) => (
-                                    <div className="review" key={index}>
-                                      <div className="review-user">
-                                        <img
-                                          src={`${
-                                            review.user.image
-                                              ? `${API_URL}/${review.user.image}`
-                                              : `${"/user-icon-2098873_640.png"}`
-                                          }`}
-                                          alt="user"
-                                        />
-                                        <span className="user-name">
-                                          {review.user.firstName}{" "}
-                                          {review.user.lastName}
-                                        </span>
-                                        <span className="review-date">
-                                          {new Date(
-                                            review.createdAt
-                                          ).toLocaleDateString()}
-                                        </span>
-                                      </div>
-                                      <div className="review-content">
-                                        <p>
-                                          <RatingStars rating={review.rating} />
-                                        </p>
-                                        <p>{review.comment}</p>
-                                      </div>
-                                    </div>
+                                    <ReviewItem {...review} index={index} key={index} />
                                   ))}
                                 {product.reviews.length > reviewsRange && (
                                   <>
