@@ -9,7 +9,7 @@ type productProps = {
   slug: string;
 };
 
-const Review = (product: productProps) => {
+const ReviewForm = (product: productProps) => {
   const { slug } = product;
   const dispatch = useDispatch();
   const [rating, setRating] = useState<number | null>(null);
@@ -70,4 +70,4 @@ const Review = (product: productProps) => {
   );
 };
 
-export default Review;
+export default ReviewForm;

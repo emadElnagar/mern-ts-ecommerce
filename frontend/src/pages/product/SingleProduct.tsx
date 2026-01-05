@@ -24,7 +24,6 @@ import LoadingBox from "../../components/LoadingBox";
 import ErrorBox from "../../components/ErrorBox";
 import RelatedProducts from "../../components/RelatedProducts";
 import { FinalPrice, OldPrice, Price } from "../../styles/product";
-import Review from "../../components/ReviewProduct";
 import RatingStars from "../../components/RatingStars";
 import { FaCartArrowDown } from "react-icons/fa";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -33,6 +32,7 @@ import { addToCart } from "../../features/CartFeatures";
 import RatingPercentage from "../../components/RatingPercentage";
 import { API_URL } from "../../API";
 import ReviewItem from "../../components/ProductReview";
+import ReviewForm from "../../components/ReviewProduct";
 
 const SingleProduct = () => {
   const reviewsRange = 2;
@@ -234,7 +234,11 @@ const SingleProduct = () => {
                                 {product.reviews
                                   .slice(0, reviewsRange)
                                   .map((review: any, index: number) => (
-                                    <ReviewItem {...review} index={index} key={index} />
+                                    <ReviewItem
+                                      {...review}
+                                      index={index}
+                                      key={index}
+                                    />
                                   ))}
                                 {product.reviews.length > reviewsRange && (
                                   <>
@@ -249,7 +253,7 @@ const SingleProduct = () => {
                               </div>
                             )}
                         </div>
-                        <Review slug={slug ?? ""} />
+                        <ReviewForm slug={slug ?? ""} />
                       </div>
                     </>
                   )}
