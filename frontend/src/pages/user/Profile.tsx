@@ -5,10 +5,35 @@ import { GetProfile, changeUserImage } from "../../features/UserFeatures";
 import { Helmet } from "react-helmet";
 import {
   Button,
+  CardHeader,
   Container,
   Image,
+  ImageWrapper,
   ImgContainer,
+  OrderCard,
+  OrderDate,
+  OrderId,
+  OrderInfo,
+  ProductImages,
+  ProductSection,
+  Section,
   UserForm,
+  MoreBadge,
+  Status,
+  ProductDetails,
+  ProductName,
+  MoreItems,
+  Divider,
+  Summary,
+  SummaryItem,
+  Value,
+  Delivery,
+  Actions,
+  SecondaryButton,
+  PrimaryButton,
+  OrdersList,
+  CancelButton,
+  SectionHeading,
 } from "../../styles/main";
 import { FileInput, Label } from "../../styles/form";
 import { FaCamera } from "react-icons/fa";
@@ -68,46 +93,123 @@ const ProfilePage = () => {
         <ErrorBox message={error} />
       ) : (
         <Container>
-          <ImgContainer>
-            <Image
-              src={
-                userImg
-                  ? URL.createObjectURL(userImg)
-                  : profile?.image
-                  ? `${API_URL}/${profile.image}`
-                  : "/user-icon-2098873_640.png"
-              }
-            />
-            {user && user._id === profile?._id && (
-              <UserForm onSubmit={handleSubmit}>
-                {userImg ? (
-                  <div>
-                    <Button className="mi-5" type="submit">
-                      <IoMdCheckmark />
-                    </Button>
-                    <Button onClick={close}>
-                      <IoMdClose />
-                    </Button>
-                  </div>
-                ) : (
-                  <>
-                    <FileInput
-                      type="file"
-                      id="img"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                    />
-                    <Label htmlFor="img">
-                      <FaCamera className="icon" />
-                    </Label>
-                  </>
-                )}
-              </UserForm>
-            )}
-          </ImgContainer>
-          <h3 className="text-center">
-            {profile?.firstName} {profile?.lastName}
-          </h3>
+          <Section>
+            <ImgContainer>
+              <Image
+                src={
+                  userImg
+                    ? URL.createObjectURL(userImg)
+                    : profile?.image
+                    ? `${API_URL}/${profile.image}`
+                    : "/user-icon-2098873_640.png"
+                }
+              />
+              {user && user._id === profile?._id && (
+                <UserForm onSubmit={handleSubmit}>
+                  {userImg ? (
+                    <div>
+                      <Button type="submit">
+                        <IoMdCheckmark />
+                      </Button>
+                      <Button onClick={close}>
+                        <IoMdClose />
+                      </Button>
+                    </div>
+                  ) : (
+                    <>
+                      <FileInput
+                        type="file"
+                        id="img"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                      />
+                      <Label htmlFor="img">
+                        <FaCamera className="icon" />
+                      </Label>
+                    </>
+                  )}
+                </UserForm>
+              )}
+            </ImgContainer>
+            <SectionHeading>
+              {profile?.firstName} {profile?.lastName}
+            </SectionHeading>
+          </Section>
+
+          {userOrders && userOrders.length > 0 && (
+            <Section>
+              <SectionHeading>
+                {profile?.firstName} {profile?.lastName} orders
+              </SectionHeading>
+              <OrdersList>
+                {userOrders.map((order: any) => (
+                  <OrderCard key={order._id}>
+                    <CardHeader>
+                      <OrderInfo>
+                        <OrderId>ORDER: #0007</OrderId>
+                        <OrderDate>Placed on: 12 Jan 2026</OrderDate>
+                      </OrderInfo>
+                      <Status>Delivered</Status>
+                    </CardHeader>
+
+                    {/* Product Preview */}
+                    <ProductSection>
+                      <ProductImages>
+                        <ImageWrapper>
+                          <img src="https://placehold.co/70" alt="product" />
+                          <MoreBadge>+2</MoreBadge>
+                        </ImageWrapper>
+                      </ProductImages>
+
+                      <ProductDetails>
+                        <ProductName>iPhone 15 Pro Max</ProductName>
+                        <MoreItems>and 2 more items</MoreItems>
+                      </ProductDetails>
+                    </ProductSection>
+
+                    <Divider />
+
+                    {/* Summary */}
+                    <Summary>
+                      <SummaryItem>
+                        <Label>Items</Label>
+                        <Value>3</Value>
+                      </SummaryItem>
+
+                      <SummaryItem>
+                        <Label>Total</Label>
+                        <Value>$1,420</Value>
+                      </SummaryItem>
+
+                      <SummaryItem>
+                        <Label>Payment</Label>
+                        <Value>Visa •••• 4242</Value>
+                      </SummaryItem>
+                    </Summary>
+
+                    <Divider />
+
+                    {/* Delivery */}
+                    <Delivery>
+                      <span>
+                        Delivered to: <strong>Home Address</strong>
+                      </span>
+                      <span>
+                        Delivered on: <strong>15 Jan</strong>
+                      </span>
+                    </Delivery>
+
+                    {/* Actions */}
+                    <Actions>
+                      <CancelButton>Cancel Order</CancelButton>
+                      <SecondaryButton>Track Order</SecondaryButton>
+                      <PrimaryButton>View Details</PrimaryButton>
+                    </Actions>
+                  </OrderCard>
+                ))}
+              </OrdersList>
+            </Section>
+          )}
         </Container>
       )}
     </Fragment>
