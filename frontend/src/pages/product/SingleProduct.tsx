@@ -243,7 +243,7 @@ const SingleProduct = () => {
                                 {product.reviews.length > reviewsRange && (
                                   <>
                                     <Link
-                                      to={`/${product.slug}/reviews`}
+                                      to={`reviews`}
                                       className="all-reviews-link"
                                     >
                                       See all reviews

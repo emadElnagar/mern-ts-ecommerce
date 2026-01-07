@@ -25,6 +25,7 @@ import OrdersPage from "./pages/admin/Orders";
 import SingleOrder from "./pages/admin/SingleOrder";
 import AdminLayout from "./layouts/AdminLayout";
 import BestSellingPage from "./pages/product/BestSelling";
+import AllReviews from "./pages/product/AllReviews";
 
 function AppContent() {
   const { user } = useSelector((state: any) => state.user);
@@ -41,6 +42,7 @@ function AppContent() {
         <Route path="/users/profile/:id" element={<ProfilePage />} />
         <Route path="/products" element={<AllProducts />} />
         <Route path="/products/:slug" element={<SingleProduct />} />
+        <Route path="/products/:slug/reviews" element={<AllReviews />} />
         <Route path="/search/:keyword" element={<SearchProductsPage />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<WishlistPage />} />
