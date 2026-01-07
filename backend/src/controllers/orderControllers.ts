@@ -104,7 +104,10 @@ export const getAllOrders = async (
 // Get user orders ( user specific )
 export const getUserOrders: RequestHandler = async (req, res) => {
   try {
-    const orders = await Order.find({ customer: req.params.id });
+    const orders = await Order.find({ customer: req.params.id }).populate({
+      path: "orderItems.product",
+      select: "name images",
+    });
     if (!orders || orders.length === 0) {
       return res.status(404).json({ message: "No orders found for this user" });
     }

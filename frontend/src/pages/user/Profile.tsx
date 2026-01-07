@@ -42,6 +42,7 @@ import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import { API_URL } from "../../API";
 import { GetUserOrders } from "../../features/OrderFeatures";
+import DeliveryInfo from "../../components/DeliveryInfo";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -81,6 +82,14 @@ const ProfilePage = () => {
   // Close form
   const close = () => {
     setUserImg(undefined);
+  };
+  // Order colors
+  const statusColors = {
+    Pending: "#f1c40f",
+    Processing: "#e67e22",
+    "Out for Delivery": "#3498db",
+    Delivered: "#2ecc71",
+    Cancelled: "#e74c3c",
   };
   return (
     <Fragment>
@@ -146,24 +155,50 @@ const ProfilePage = () => {
                   <OrderCard key={order._id}>
                     <CardHeader>
                       <OrderInfo>
-                        <OrderId>ORDER: #0007</OrderId>
-                        <OrderDate>Placed on: 12 Jan 2026</OrderDate>
+                        <OrderId>ORDER: {order.orderNumber}</OrderId>
+                        <OrderDate>Placed on: {order.createdAt}</OrderDate>
                       </OrderInfo>
-                      <Status>Delivered</Status>
+                      <Status
+                        style={{
+                          backgroundColor:
+                            statusColors[
+                              order.shippingStatus as keyof typeof statusColors
+                            ] || statusColors.Delivered,
+                        }}
+                      >
+                        {order.shippingStatus}
+                      </Status>
                     </CardHeader>
 
                     {/* Product Preview */}
                     <ProductSection>
                       <ProductImages>
                         <ImageWrapper>
-                          <img src="https://placehold.co/70" alt="product" />
-                          <MoreBadge>+2</MoreBadge>
+                          <Image
+                            src={
+                              order.orderItems?.[0]?.product?.images?.[0]
+                                ? `${API_URL}/${order.orderItems[0].product.images[0]}`
+                                : "/placeholder-product.png"
+                            }
+                            alt="product"
+                          />
+                          {order.orderItems.length > 1 && (
+                            <MoreBadge>
+                              +{order.orderItems.length - 1}
+                            </MoreBadge>
+                          )}
                         </ImageWrapper>
                       </ProductImages>
 
                       <ProductDetails>
-                        <ProductName>iPhone 15 Pro Max</ProductName>
-                        <MoreItems>and 2 more items</MoreItems>
+                        <ProductName>
+                          {order.orderItems?.[0]?.product?.name}
+                        </ProductName>
+                        {order.orderItems.length > 1 && (
+                          <MoreItems>
+                            and {order.orderItems.length - 1} more items
+                          </MoreItems>
+                        )}
                       </ProductDetails>
                     </ProductSection>
 
@@ -173,31 +208,24 @@ const ProfilePage = () => {
                     <Summary>
                       <SummaryItem>
                         <Label>Items</Label>
-                        <Value>3</Value>
+                        <Value>{order.orderItems.length}</Value>
                       </SummaryItem>
 
                       <SummaryItem>
                         <Label>Total</Label>
-                        <Value>$1,420</Value>
+                        <Value>${order.totalPrice}</Value>
                       </SummaryItem>
 
                       <SummaryItem>
                         <Label>Payment</Label>
-                        <Value>Visa •••• 4242</Value>
+                        <Value>{order.paymentResult?.method}</Value>
                       </SummaryItem>
                     </Summary>
 
                     <Divider />
 
                     {/* Delivery */}
-                    <Delivery>
-                      <span>
-                        Delivered to: <strong>Home Address</strong>
-                      </span>
-                      <span>
-                        Delivered on: <strong>15 Jan</strong>
-                      </span>
-                    </Delivery>
+                    <DeliveryInfo order={order} />
 
                     {/* Actions */}
                     <Actions>

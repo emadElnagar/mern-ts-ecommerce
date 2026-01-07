@@ -344,7 +344,6 @@ export const OrderDate = styled.span`
 `;
 
 export const Status = styled.span`
-  background: #2ecc71;
   color: #fff;
   padding: 6px 14px;
   border-radius: 20px;
