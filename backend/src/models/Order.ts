@@ -133,6 +133,14 @@ orderSchema.pre("save", async function (next) {
     const count = await mongoose.model("Order").countDocuments();
     this.orderNumber = `#${String(count + 1).padStart(4, "0")}`;
   }
+  // If shippingStatus changed to Delivered set deliveredAt
+  if (
+    order.isModified("shippingStatus") &&
+    order.shippingStatus === "Delivered" &&
+    !order.deliveredAt
+  ) {
+    order.deliveredAt = new Date();
+  }
   next();
 });
 
