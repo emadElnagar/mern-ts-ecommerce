@@ -156,7 +156,10 @@ const ProfilePage = () => {
                     <CardHeader>
                       <OrderInfo>
                         <OrderId>ORDER: {order.orderNumber}</OrderId>
-                        <OrderDate>Placed on: {order.createdAt}</OrderDate>
+                        <OrderDate>
+                          Placed on:{" "}
+                          {new Date(order.createdAt).toLocaleDateString()}
+                        </OrderDate>
                       </OrderInfo>
                       <Status
                         style={{

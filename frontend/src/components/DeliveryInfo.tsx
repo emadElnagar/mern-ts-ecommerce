@@ -17,7 +17,12 @@ const DeliveryInfo = ({ order }: { order: Order }): JSX.Element => {
             Delivered to: <strong>{order.shippingAddress?.address}</strong>
           </span>
           <span>
-            Delivered on: <strong>{order.deliveredAt}</strong>
+            Delivered on:{" "}
+            <strong>
+              {order.deliveredAt
+                ? new Date(order.deliveredAt).toLocaleDateString()
+                : "Unknown"}
+            </strong>
           </span>
         </Delivery>
       );
