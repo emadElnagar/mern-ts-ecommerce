@@ -27,7 +27,6 @@ import {
   Summary,
   SummaryItem,
   Value,
-  Delivery,
   Actions,
   SecondaryButton,
   PrimaryButton,
@@ -41,8 +40,9 @@ import { IoMdCheckmark, IoMdClose } from "react-icons/io";
 import ErrorBox from "../../components/ErrorBox";
 import LoadingBox from "../../components/LoadingBox";
 import { API_URL } from "../../API";
-import { GetUserOrders } from "../../features/OrderFeatures";
+import { CancelOrder, GetUserOrders } from "../../features/OrderFeatures";
 import DeliveryInfo from "../../components/DeliveryInfo";
+import Swal from "sweetalert2";
 
 const ProfilePage = () => {
   const [userImg, setUserImg] = useState<File | undefined>();
@@ -90,6 +90,19 @@ const ProfilePage = () => {
     "Out for Delivery": "#3498db",
     Delivered: "#2ecc71",
     Cancelled: "#e74c3c",
+  };
+
+  // Handle order cancellation
+  const handleCancelOrder = (orderId: any) => {
+    if (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: error,
+      });
+      return;
+    }
+    dispatch(CancelOrder(orderId));
   };
   return (
     <Fragment>
@@ -232,7 +245,18 @@ const ProfilePage = () => {
 
                     {/* Actions */}
                     <Actions>
-                      <CancelButton>Cancel Order</CancelButton>
+                      {(user &&
+                        user._id === order.customer &&
+                        order.shippingStatus === "Pending") ||
+                        (user &&
+                          user._id === order.customer &&
+                          order.shippingStatus === "Processing" && (
+                            <CancelButton
+                              onClick={() => handleCancelOrder(order._id)}
+                            >
+                              Cancel Order
+                            </CancelButton>
+                          ))}
                       <SecondaryButton>Track Order</SecondaryButton>
                       <PrimaryButton>View Details</PrimaryButton>
                     </Actions>
