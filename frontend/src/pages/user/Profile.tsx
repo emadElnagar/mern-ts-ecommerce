@@ -89,7 +89,7 @@ const ProfilePage = () => {
     Processing: "#e67e22",
     "Out for Delivery": "#3498db",
     Delivered: "#2ecc71",
-    Cancelled: "#e74c3c",
+    Canceled: "#e74c3c",
   };
 
   // Handle order cancellation
@@ -256,7 +256,11 @@ const ProfilePage = () => {
                               Cancel Order
                             </CancelButton>
                           ))}
-                      <SecondaryButton>Track Order</SecondaryButton>
+                      <SecondaryButton>
+                        <Link to={`/orders/track/${order._id}`}>
+                          Track Order
+                        </Link>
+                      </SecondaryButton>
                       <PrimaryButton>
                         <Link to={`/orders/details/${order._id}`}>
                           View Details

@@ -514,3 +514,36 @@ export const ItemPrice = styled.div`
 export const SectionTitle = styled.h3`
   margin-bottom: 12px;
 `;
+
+export const Timeline = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow-x: auto;
+`;
+
+export const Step = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+`;
+
+export const Circle = styled.div<{ active?: boolean }>`
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: ${({ active }) => (active ? "#4CAF50" : "#ccc")};
+`;
+
+export const Line = styled.div<{ active?: boolean }>`
+  width: 80px;
+  height: 2px;
+  background: ${({ active }) => (active ? "#4CAF50" : "#ccc")};
+`;
+
+export const StepLabel = styled.span<{ active?: boolean }>`
+  margin-left: 8px;
+  font-size: 14px;
+  color: ${({ active }) => (active ? "#000" : "#999")};
+  white-space: nowrap;
+`;
