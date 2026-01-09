@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import "./App.css";
 import NavBar from "./components/NavBar";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
@@ -26,6 +25,7 @@ import SingleOrder from "./pages/admin/SingleOrder";
 import AdminLayout from "./layouts/AdminLayout";
 import BestSellingPage from "./pages/product/BestSelling";
 import AllReviews from "./pages/product/AllReviews";
+import OrderDetails from "./pages/order/OrderDetails";
 
 function AppContent() {
   const { user } = useSelector((state: any) => state.user);
@@ -47,6 +47,7 @@ function AppContent() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/wishlist" element={<WishlistPage />} />
         <Route path="/checkout" element={<CheckOut />} />
+        <Route path="/orders/details/:id" element={<OrderDetails />} />
         <Route path="/bestselling" element={<BestSellingPage />} />
         {user !== null && (
           <Route path="/users/profile/settings" element={<ProfileSettings />} />

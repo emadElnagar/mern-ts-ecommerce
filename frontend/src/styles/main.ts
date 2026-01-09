@@ -478,3 +478,39 @@ export const CancelButton = styled(Button)`
     background: #a20c0c;
   }
 `;
+
+export const InfoRow = styled.div`
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+`;
+
+export const Item = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+
+  img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+`;
+
+export const ItemInfo = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+`;
+
+export const ItemPrice = styled.div`
+  font-weight: bold;
+`;
+
+export const SectionTitle = styled.h3`
+  margin-bottom: 12px;
+`;

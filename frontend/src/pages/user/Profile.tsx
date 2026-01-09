@@ -1,6 +1,6 @@
 import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { GetProfile, changeUserImage } from "../../features/UserFeatures";
 import { Helmet } from "react-helmet";
 import {
@@ -192,9 +192,8 @@ const ProfilePage = () => {
                         <ImageWrapper>
                           <Image
                             src={
-                              order.orderItems?.[0]?.product?.images?.[0]
-                                ? `${API_URL}/${order.orderItems[0].product.images[0]}`
-                                : "/placeholder-product.png"
+                              order.orderItems?.[0]?.product?.images?.[0] &&
+                              `${API_URL}/${order.orderItems[0].product.images[0]}`
                             }
                             alt="product"
                           />
@@ -258,7 +257,11 @@ const ProfilePage = () => {
                             </CancelButton>
                           ))}
                       <SecondaryButton>Track Order</SecondaryButton>
-                      <PrimaryButton>View Details</PrimaryButton>
+                      <PrimaryButton>
+                        <Link to={`/orders/details/${order._id}`}>
+                          View Details
+                        </Link>
+                      </PrimaryButton>
                     </Actions>
                   </OrderCard>
                 ))}
