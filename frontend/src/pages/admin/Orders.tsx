@@ -12,7 +12,7 @@ import {
 } from "../../styles/cart";
 import { FaRegEye } from "react-icons/fa";
 import { HiPencil } from "react-icons/hi";
-import { success, warning } from "../../styles/variables";
+import { danger, success, warning } from "../../styles/variables";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GetAllOrders,
@@ -122,6 +122,14 @@ const OrdersPage = () => {
       }
     });
   };
+  // Status colors
+  const statusColors = {
+    Pending: "#f1c40f",
+    Processing: "#e67e22",
+    "Out for Delivery": "#3498db",
+    Delivered: "#2ecc71",
+    Canceled: "#e74c3c",
+  };
   // Get all orders
   useEffect(() => {
     dispatch(GetAllOrders());
@@ -184,10 +192,9 @@ const OrdersPage = () => {
                         <TableData
                           style={{
                             color:
-                              order.shippingStatus &&
-                              order.shippingStatus === "Delivered"
-                                ? success
-                                : warning,
+                              statusColors[
+                                order.shippingStatus as keyof typeof statusColors
+                              ] || statusColors.Delivered,
                           }}
                         >
                           {order.shippingStatus}
