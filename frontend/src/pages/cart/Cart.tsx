@@ -12,6 +12,7 @@ import {
   QuantityInput,
   RemoveButton,
   CheckoutButton,
+  CheckoutWrapper,
 } from "../../styles/cart";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -121,29 +122,34 @@ const Cart = () => {
                     })}
                     <TableRow>
                       <TableData colSpan={3}>
+                        <RemoveButton
+                          className="clear"
+                          onClick={() => clearTheCart()}
+                        >
+                          Clear Cart
+                        </RemoveButton>
+                      </TableData>
+                      <TableData>
                         <strong>Total:</strong>
                       </TableData>
                       <TableData>
                         <strong>${totalPrice}</strong>
                       </TableData>
-                      <TableData>
-                        <RemoveButton onClick={() => clearTheCart()}>
-                          Clear Cart
-                        </RemoveButton>
-                      </TableData>
                     </TableRow>
                   </tbody>
                 </StyledTable>
               </TableWrapper>
-              <CheckoutButton
-                onClick={() =>
-                  navigate(
-                    `${user ? "/checkout" : "/users/login?next=/checkout"}`
-                  )
-                }
-              >
-                procced to checkout
-              </CheckoutButton>
+              <CheckoutWrapper>
+                <CheckoutButton
+                  onClick={() =>
+                    navigate(
+                      `${user ? "/checkout" : "/users/login?next=/checkout"}`
+                    )
+                  }
+                >
+                  procced to checkout
+                </CheckoutButton>
+              </CheckoutWrapper>
             </>
           )}
         </Section>

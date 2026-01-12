@@ -62,24 +62,36 @@ export const RemoveButton = styled.button`
   &:hover {
     background-color: ${danger};
   }
+  &.clear {
+    background-color: transparent;
+    color: #000;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+`;
+
+export const CheckoutWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 `;
 
 export const CheckoutButton = styled.button`
-  background-color: ${primary};
+  background-color: #ffd400;
   color: #000;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 14px 36px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 14px;
-  font-size: 1.2rem;
-  margin-top: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
   &:hover {
-    background-color: ${secondary};
-    color: #fff;
+    background-color: #e6bf00;
+    transform: translateY(-1px);
   }
-  text-align: center;
-  display: block;
 `;
 
 export const ImageContainer = styled.div`
