@@ -11,7 +11,7 @@ import {
 import { FaShoppingCart } from "react-icons/fa";
 import { IoMdHeart } from "react-icons/io";
 import { Link } from "react-router-dom";
-import { Key, useEffect } from "react";
+import { Key, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -33,10 +33,27 @@ type productProps = {
 function Product(product: productProps) {
   const dispatch = useDispatch();
   const { wishlist } = useSelector((state: any) => state.cart);
+  const [cartState, setCartState] = useState<"idle" | "loading" | "added">(
+    "idle",
+  );
   // Add to cart
   const hanldeAddToCart = () => {
+    if (cartState !== "idle") return;
+
+    setCartState("loading");
+
     dispatch(addToCart({ _id: product._id, quantity: 1 }));
+
+    // simulate request finishing
+    setTimeout(() => {
+      setCartState("added");
+
+      setTimeout(() => {
+        setCartState("idle");
+      }, 2000);
+    }, 600);
   };
+
   // Add to wishlist
   const handleAddWishList = () => {
     dispatch(addToWishlist({ _id: product._id }));
@@ -70,14 +87,27 @@ function Product(product: productProps) {
         )}
       </Link>
       <FlexBetweenRow>
-        <CardButton className="cart-btn" onClick={() => hanldeAddToCart()}>
-          <FaShoppingCart /> add to cart
+        <CardButton
+          className="cart-btn"
+          onClick={hanldeAddToCart}
+          disabled={cartState === "loading"}
+        >
+          {cartState === "idle" && (
+            <>
+              <FaShoppingCart /> add to cart
+            </>
+          )}
+
+          {cartState === "loading" && "loading..."}
+
+          {cartState === "added" && "added ✓"}
         </CardButton>
+
         <CardButton className="wish-btn" onClick={() => handleAddWishList()}>
           <IoMdHeart
             style={
               wishlist.find(
-                (item: { _id: Key }) => item._id === product._id
+                (item: { _id: Key }) => item._id === product._id,
               ) && { color: danger }
             }
           />
