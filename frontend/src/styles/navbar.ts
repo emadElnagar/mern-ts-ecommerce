@@ -1,122 +1,242 @@
 import styled from "styled-components";
 import * as vars from "./variables";
+import { NavLink as Link } from "react-router-dom";
 
 export const Nav = styled.nav`
-  color: #000;
-  padding: 0 30px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.75);
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+`;
+
+export const Container = styled.div`
   height: 70px;
+  padding: 0 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid ${vars.shadow};
 `;
 
-export const Brand = styled.li`
-  width: 120px;
-`;
-
-export const ListContainer = styled.div`
+export const Brand = styled(Link)`
   display: flex;
-  // MEDIUM SCREEN SIZE
-  @media (max-width: 991px) {
-    z-index: -1;
-    width: 0;
-    height: 100vh;
-    transition: width 0.5s ease;
-    padding-left: 20px;
-    // WHEN CLASS ACTIVE IS ADDED
-    &.active {
-      display: flex;
-      flex-direction: column;
-      background: ${vars.light};
-      color: #000;
-      position: fixed;
+  align-items: center;
+`;
+
+export const Logo = styled.img`
+  width: 110px;
+`;
+
+export const NavLinks = styled.div<{ $open: boolean }>`
+  display: flex;
+  gap: 20px;
+
+  a {
+    text-decoration: none;
+    color: #111;
+    font-weight: 500;
+    position: relative;
+
+    &.active::after {
+      content: "";
+      position: absolute;
       left: 0;
-      top: 0;
-      width: 200px;
-      z-index: 999;
-      li {
-        margin-top: 20px;
-        &:first-child {
-          margin-top: 80px;
-        }
-      }
+      bottom: -6px;
+      width: 100%;
+      height: 2px;
+      background: ${vars.primary};
     }
+  }
+
+  @media (max-width: 900px) {
+    display: ${(p) => (p.$open ? "flex" : "none")};
+    position: fixed;
+    inset: 0;
+    flex-direction: column;
+    padding: 80px 30px;
+    background: white;
   }
 `;
 
-export const ListContainerIcon = styled.div`
+export const NavActions = styled.div`
   display: flex;
+  align-items: center;
+  gap: 12px;
 `;
 
-export const ListItem = styled.li`
-  text-transform: capitalize;
-  padding: 0 10px;
-  transition: all 0.3s ease;
-  cursor: pointer;
-  &:hover {
-    color: ${vars.primary};
-  }
-`;
+export const IconButton = styled.button`
+  position: relative;
 
-export const CartCount = styled.span`
-  background: ${vars.primary};
-  color: #000;
-  padding: 2px 5px;
+  width: 42px;
+  height: 42px;
+
   border-radius: 50%;
-  font-size: 0.8rem;
-`;
+  border: none;
+  background: transparent;
 
-export const Humburger = styled.div`
-  display: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   cursor: pointer;
-  transition: all 0.3s ease;
-  @media (max-width: 991px) {
-    display: inline;
-    margin-left: 0.8rem;
-    &.active {
-      div:first-child {
-        display: none;
-      }
-      div:nth-child(2) {
-        transform: translateY(3px) rotate(45deg);
-      }
-      div:nth-child(3) {
-        transform: translateY(-3px) rotate(-45deg);
-      }
-    }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
   }
 `;
 
-export const HumburgerDiv = styled.div`
-  height: 2px;
-  width: 20px;
-  background: #000;
-  margin-top: 4px;
+export const CartBadge = styled.span`
+  position: absolute;
+  top: -3px;
+  right: -3px;
+
+  width: 18px;
+  height: 18px;
+
+  border-radius: 50%;
+
+  background: #ff3b3b;
+  color: white;
+
+  font-size: 11px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
-export const SearchForm = styled.form`
-  height: 35px;
-  width: 100%;
+export const SearchBox = styled.div<{ $open: boolean }>`
+  display: ${(p) => (p.$open ? "flex" : "none")};
+
+  position: absolute;
+  top: 75px;
+  right: 24px;
+
+  background: white;
+  padding: 8px;
+  border-radius: 999px;
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+
+  input {
+    border: none;
+    outline: none;
+    padding: 6px 10px;
+    width: 220px;
+  }
+
+  button {
+    border: none;
+    background: #111;
+    color: white;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+  }
+`;
+
+export const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+`;
+
+export const Dropdown = styled.div`
+  position: absolute;
+  right: 0;
+  top: 55px;
+
+  width: 180px;
+
+  background: white;
+  border-radius: 12px;
+
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+`;
+
+export const DropdownItem = styled(Link)<any>`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+
+  padding: 12px 14px;
+  text-decoration: none;
+  color: #111;
+
+  cursor: pointer;
+
+  &:hover {
+    background: #f5f5f5;
+  }
+`;
+
+export const Hamburger = styled.div`
   display: none;
-  padding: 5px 0;
-  &.active {
+  flex-direction: column;
+  gap: 4px;
+
+  cursor: pointer;
+
+  @media (max-width: 900px) {
     display: flex;
   }
 `;
 
-export const SearchInput = styled.input`
-  width: 100%;
-  padding: 0 5px;
-  &:focus {
-    outline: none;
+export const HamburgerLine = styled.div`
+  width: 22px;
+  height: 2px;
+  background: #111;
+`;
+
+export const MobileMenu = styled.div`
+  position: fixed;
+  inset: 70px 0 0 0;
+
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(12px);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 30px;
+  gap: 20px;
+
+  z-index: 9999;
+
+  a {
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    color: #111;
+
+    padding: 10px 0;
+
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
   }
 `;
 
-export const SearchButton = styled.button`
-  color: #000;
-  padding: 0 20px;
-  background: ${vars.primary};
-  border: 1px solid ${vars.primary};
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 40px;
+  height: 40px;
+
+  border: none;
+  background: transparent;
+
+  font-size: 24px;
   cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
