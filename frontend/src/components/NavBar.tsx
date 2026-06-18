@@ -75,10 +75,18 @@ function NavBar() {
   }, [location]);
 
   useEffect(() => {
-    const handleClick = () => {
-      setMenuOpen(false);
-      setSearchOpen(false);
-      setUserMenu(false);
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest(".search-input") && !target.closest(".user-menu")) {
+        setMenuOpen(false);
+        setSearchOpen(false);
+        setUserMenu(false);
+      }
+      if (!target.closest(".search-input") && !target.closest(".user-menu")) {
+        setMenuOpen(false);
+        setSearchOpen(false);
+        setUserMenu(false);
+      }
     };
 
     document.addEventListener("click", handleClick);
@@ -108,6 +116,7 @@ function NavBar() {
                 <input
                   placeholder="Search products..."
                   value={keyword}
+                  className="search-input"
                   onChange={(e) => setKeyword(e.target.value)}
                 />
                 <button type="submit">
