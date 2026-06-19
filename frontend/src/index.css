@@ -4,9 +4,9 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 }
 
 h1,
@@ -225,4 +225,12 @@ select {
   margin-top: 10px;
   color: #007bff;
   font-weight: 500;
+}
+
+.stripe-form {
+  margin-top: 20px;
+}
+
+.payment-radio {
+  margin-top: 10px;
 }

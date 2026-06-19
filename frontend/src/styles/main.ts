@@ -279,9 +279,12 @@ export const QuantityContainer = styled.div`
 `;
 
 export const Card = styled.div`
+  border: 1px solid ${vars.shadow};
   padding: 20px;
   border-radius: 10px;
-  width: 100%;
+  max-width: 400px;
+  min-width: 350px;
+  margin: 0 20px;
   .row {
     margin-bottom: 10px;
     display: flex;
@@ -546,4 +549,22 @@ export const StepLabel = styled.span<{ active?: boolean }>`
   font-size: 14px;
   color: ${({ active }) => (active ? "#000" : "#999")};
   white-space: nowrap;
+`;
+
+export const NoteContainer = styled.div`
+  width: 80%;
+  margin: 20px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  &.none {
+    display: none;
+  }
+`;
+
+export const NoteText = styled.p`
+  font-size: 14px;
+  color: #555;
 `;

@@ -6,6 +6,8 @@ import {
   Container,
   FlexBetweenRow,
   FullButtonRounded,
+  NoteContainer,
+  NoteText,
   PaymentMethod,
   Section,
 } from "../../styles/main";
@@ -14,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { CreateOrder } from "../../features/OrderFeatures";
 import { clearCart } from "../../features/CartFeatures";
+import StripeForm from "../../components/StripeForm";
 
 type OrderItem = {
   _id: string;
@@ -35,7 +38,7 @@ const CheckOut = () => {
   const cartPrice = cart.reduce(
     (acc: number, item: any) =>
       acc + (item.price - (item.discount ?? 0)) * item.quantity,
-    0
+    0,
   );
   const taxPrice = 0.1 * cartPrice;
   const shippingPrice = cartPrice > 500 ? 0 : 15;
@@ -66,7 +69,7 @@ const CheckOut = () => {
         paymentResult: {
           method: paymentMethod,
         },
-      })
+      }),
     )
       .unwrap()
       .then((_res: any) => {
@@ -177,24 +180,25 @@ const CheckOut = () => {
                         id="BankTransfer"
                         name="payment"
                         value="BankTransfer"
+                        className="payment-radio"
                         defaultChecked
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setPaymentMethod(e.target.value)
                         }
                       />
                       <label htmlFor="BankTransfer">Direct bank transfer</label>
-                    </div>
-                    <div>
-                      <input
-                        type="radio"
-                        id="paypal"
-                        name="payment"
-                        value="paypal"
-                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                          setPaymentMethod(e.target.value)
+                      <NoteContainer
+                        className={
+                          paymentMethod === "BankTransfer" ? "" : "none"
                         }
-                      />
-                      <label htmlFor="paypal">Paypal</label>
+                      >
+                        <NoteText>
+                          Make your payment directly into our bank account.
+                          Please use your Order ID as the payment reference.
+                          Your order will not be shipped until the funds have
+                          cleared in our account.
+                        </NoteText>
+                      </NoteContainer>
                     </div>
                     <div>
                       <input
@@ -202,11 +206,21 @@ const CheckOut = () => {
                         id="Stripe"
                         name="payment"
                         value="Stripe"
+                        className="payment-radio"
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                           setPaymentMethod(e.target.value)
                         }
                       />
                       <label htmlFor="Stripe">Stripe</label>
+                      <NoteContainer
+                        className={paymentMethod === "Stripe" ? "" : "none"}
+                      >
+                        <NoteText>
+                          Pay with your credit card via Stripe. We support all
+                          major credit cards.
+                        </NoteText>
+                      </NoteContainer>
+                      {paymentMethod === "Stripe" && <StripeForm />}
                     </div>
                   </PaymentMethod>
                 </div>
