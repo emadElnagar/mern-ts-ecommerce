@@ -34,12 +34,12 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
           price: itemPrice,
           quantity: item.quantity,
         };
-      })
+      }),
     );
 
     const orderPrice = validatedItems.reduce(
       (acc, item) => acc + item.price * item.quantity,
-      0
+      0,
     );
 
     const taxPrice = 0.1 * orderPrice;
@@ -64,9 +64,9 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
           await Product.findByIdAndUpdate(
             item.product,
             { $inc: { countInStock: -item.quantity } },
-            { new: true }
+            { new: true },
           );
-        })
+        }),
       );
     }
 
@@ -83,7 +83,7 @@ export const createOrder = async (req: AuthenticatedRequest, res: Response) => {
 // Get all orders ( admin only )
 export const getAllOrders = async (
   _req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const orders = await Order.find()
@@ -122,7 +122,7 @@ export const getUserOrders: RequestHandler = async (req, res) => {
 // Get specific order
 export const getSingleOrder = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const order = await Order.findById(req.params.id)
@@ -142,7 +142,7 @@ export const getSingleOrder = async (
 // Update order status ( admin only )
 export const updateOrderStatus = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -164,9 +164,9 @@ export const updateOrderStatus = async (
           await Product.findByIdAndUpdate(
             item.product,
             { $inc: { sold: item.quantity } },
-            { new: true }
+            { new: true },
           );
-        })
+        }),
       );
     }
     res.status(200).json(updatedOrder);
@@ -180,7 +180,7 @@ export const updateOrderStatus = async (
 // Update order payment status ( admin or customer )
 export const updateOrderPaymentStatus = async (
   req: AuthenticatedRequest,
-  res: Response
+  res: Response,
 ) => {
   try {
     const order = await Order.findById(req.params.id);
@@ -218,9 +218,9 @@ export const updateOrderPaymentStatus = async (
               _id: item.product,
               countInStock: { $gte: item.quantity }, // prevent negative stock
             },
-            { $inc: { countInStock: -item.quantity } }
+            { $inc: { countInStock: -item.quantity } },
           );
-        })
+        }),
       );
     }
 
@@ -269,12 +269,47 @@ export const cancelOrder = async (req: AuthenticatedRequest, res: Response) => {
           await Product.findByIdAndUpdate(
             item.product,
             { $inc: { countInStock: item.quantity } },
-            { new: true }
+            { new: true },
           );
-        })
+        }),
       );
     }
     res.status(200).json({ message: "Order Canceled successfully" });
+  } catch (error: any) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+// Create payment intent for an order
+export const createPaymentIntent = async (
+  req: AuthenticatedRequest,
+  res: Response,
+) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (
+      order.customer.toString() !== req.user._id.toString() &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
+    }
+
+    // Create a payment intent using Stripe
+    const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+    const amountCents = Math.round(((order.totalPrice ?? 0) as number) * 100);
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amountCents,
+      currency: "usd",
+      metadata: { orderId: order._id.toString() },
+    });
+
+    res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error: any) {
     res.status(500).json({
       message: error.message,
