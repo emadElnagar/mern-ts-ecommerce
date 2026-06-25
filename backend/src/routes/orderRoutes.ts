@@ -4,6 +4,7 @@ import { AuthenticatedRequest } from "../types/authTypes";
 import {
   cancelOrder,
   createOrder,
+  createPaymentIntent,
   getAllOrders,
   getSingleOrder,
   getUserOrders,
@@ -15,7 +16,7 @@ const orderRouter = Router();
 
 // Create a new order
 orderRouter.post("/create", isAuth as RequestHandler, (req, res) =>
-  createOrder(req as AuthenticatedRequest, res)
+  createOrder(req as AuthenticatedRequest, res),
 );
 
 // Get all orders
@@ -23,7 +24,7 @@ orderRouter.get(
   "/",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
-  async (req, res) => getAllOrders(req as AuthenticatedRequest, res)
+  async (req, res) => getAllOrders(req as AuthenticatedRequest, res),
 );
 
 // Get user orders
@@ -31,7 +32,7 @@ orderRouter.get("/user/:id", getUserOrders);
 
 // Get specific order
 orderRouter.get("/:id", isAuth as RequestHandler, async (req, res) =>
-  getSingleOrder(req as AuthenticatedRequest, res)
+  getSingleOrder(req as AuthenticatedRequest, res),
 );
 
 // Update order status
@@ -39,7 +40,7 @@ orderRouter.patch(
   "/:id/status",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
-  async (req, res) => updateOrderStatus(req as AuthenticatedRequest, res)
+  async (req, res) => updateOrderStatus(req as AuthenticatedRequest, res),
 );
 
 // Update order payment status
@@ -47,12 +48,18 @@ orderRouter.patch(
   "/:id/payment",
   isAuth as RequestHandler,
   isAdmin as RequestHandler,
-  async (req, res) => updateOrderPaymentStatus(req as AuthenticatedRequest, res)
+  async (req, res) =>
+    updateOrderPaymentStatus(req as AuthenticatedRequest, res),
 );
 
 // Cancel order
 orderRouter.patch("/:id/cancel", isAuth as RequestHandler, async (req, res) =>
-  cancelOrder(req as AuthenticatedRequest, res)
+  cancelOrder(req as AuthenticatedRequest, res),
+);
+
+// Order payment intent
+orderRouter.post("/:id/payment-intent", isAuth as RequestHandler, (req, res) =>
+  createPaymentIntent(req as AuthenticatedRequest, res),
 );
 
 export default orderRouter;
