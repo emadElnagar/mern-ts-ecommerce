@@ -309,6 +309,18 @@ export const createPaymentIntent = async (
       metadata: { orderId: order._id.toString() },
     });
 
+    const newPaymentResult = {
+      id: paymentIntent.id,
+      status: "paid",
+      method: "stripe",
+      update_time: new Date().toISOString(),
+      email_address: req.user.email,
+      paidAt: new Date(),
+    };
+
+    order.updateOne({ paymentResult: newPaymentResult });
+    await order.save();
+
     res.status(200).json({ clientSecret: paymentIntent.client_secret });
   } catch (error: any) {
     res.status(500).json({
